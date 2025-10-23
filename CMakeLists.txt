@@ -1,16 +1,10 @@
-# Written with significant help from Microsoft Copilot
-# ---------
-
 cmake_minimum_required(VERSION 3.10)
 project(NetworkingProject LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Include entt (header-only)
-include_directories(src/entt)
 
-# Fetch SFML
 include(FetchContent)
 FetchContent_Declare(sfml
     GIT_REPOSITORY https://github.com/SFML/SFML.git
@@ -28,15 +22,13 @@ FetchContent_Declare(spdlog
     SYSTEM)
 FetchContent_MakeAvailable(spdlog)
 
-# Add server executable
+# server
 add_executable(server src/server.cpp)
 target_compile_features(server PRIVATE cxx_std_17)
+target_link_libraries(server PRIVATE sfml-graphics sfml-network sfml-system sfml-window spdlog)
 
-# Add client executable
+# client
 add_executable(client src/client.cpp)
 target_compile_features(client PRIVATE cxx_std_17)
-
-target_link_libraries(server PRIVATE sfml-graphics sfml-network sfml-system sfml-window spdlog)
 target_link_libraries(client PRIVATE sfml-graphics sfml-network sfml-system sfml-window spdlog)
-
 
