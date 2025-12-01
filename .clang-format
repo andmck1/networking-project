@@ -1,5 +1,7 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
+IndentAccessModifiers: false
+AccessModifierOffset: 0
 UseTab: Never
 ColumnLimit: 80
 AllowShortBlocksOnASingleLine: false
@@ -13,4 +15,4 @@ SpaceAfterCStyleCast: true
 SortIncludes: false
 AlignAfterOpenBracket: BlockIndent
 AllowAllParametersOfDeclarationOnNextLine: false
-
+NamespaceIndentation: All
