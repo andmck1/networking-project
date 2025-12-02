@@ -1,3 +1,4 @@
+#include <SFML/Network/Socket.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <string>
@@ -30,5 +31,11 @@ namespace Settings
         static sf::Vector2f projectileScaling = {1.f, 1.f};
         static float projectileLifetime = .5f;
     } // namespace Actor
+
+    namespace Networking
+    {
+        static unsigned short serverPort = 6969;
+        static unsigned short playerPort = sf::Socket::AnyPort;
+    } // namespace Networking
 
 }; // namespace Settings

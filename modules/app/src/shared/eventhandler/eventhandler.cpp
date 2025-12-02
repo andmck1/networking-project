@@ -3,13 +3,14 @@
 
 EventHandlerConfig::EventHandlerConfig(
     Window *window, ShipActor *player, TextureManager *textureManager,
-    AppLayer *appLayer
+    AppLayer *appLayer, bool isServer
 )
 {
     this->window = window;
     this->player = player;
     this->textureManager = textureManager;
     this->appLayer = appLayer;
+    this->isServer = isServer;
 }
 
 void EventHandler::init(EventHandlerConfig *config)
@@ -18,6 +19,7 @@ void EventHandler::init(EventHandlerConfig *config)
     this->player = config->player;
     this->textureManager = config->textureManager;
     this->appLayer = config->appLayer;
+    this->isServer = config->isServer;
 }
 
 bool EventHandler::handle()
@@ -51,24 +53,27 @@ bool EventHandler::handleInput(std::optional<sf::Event> event)
         this->window->window.close();
         return false;
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
+    if (!this->isServer)
     {
-        this->player->currentTurnDirection = ShipTurnDirection::LEFT;
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
-    {
-        this->player->currentTurnDirection = ShipTurnDirection::RIGHT;
-    }
-    else
-    {
-        this->player->currentTurnDirection = ShipTurnDirection::NONE;
-    }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
+        {
+            this->player->currentTurnDirection = ShipTurnDirection::LEFT;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
+        {
+            this->player->currentTurnDirection = ShipTurnDirection::RIGHT;
+        }
+        else
+        {
+            this->player->currentTurnDirection = ShipTurnDirection::NONE;
+        }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
-    {
-        ProjectileActorBuilderContext projectileBuilderContext =
-            this->createProjecileBuildContext(this->player);
-        this->appLayer->addProjectile(&projectileBuilderContext);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
+        {
+            ProjectileActorBuilderContext projectileBuilderContext =
+                this->createProjecileBuildContext(this->player);
+            this->appLayer->addProjectile(&projectileBuilderContext);
+        }
     }
 
     return true;
