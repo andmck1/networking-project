@@ -15,7 +15,7 @@ class DebugLayer : public BaseLayer
     ~DebugLayer();
 
     void init(BaseLayerConfig *config) override;
-    bool render() override;
+    void render() override;
 
     private:
     Window *window;

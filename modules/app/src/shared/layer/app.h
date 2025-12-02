@@ -1,13 +1,15 @@
 #pragma once
 
-#include "core_game/window/window.h"
 #include "base.h"
-
+#include "core_game/window/window.h"
 #include "../actor/base.h"
 #include "../actor/ship.h"
+#include "../actor/projectile.h"
+
+#include <SFML/Graphics.hpp>
 
 #include <vector>
-#include <SFML/Graphics.hpp>
+#include <optional>
 
 struct AppLayerConfig : BaseLayerConfig
 {
@@ -22,21 +24,26 @@ class AppLayer : public BaseLayer
     ~AppLayer() = default;
 
     void init(BaseLayerConfig *config) override;
-    bool render() override;
+    void render() override;
 
+    void initPlayerCamera();
     void addPlayer(ShipActorBuilderContext *initialPlayerState);
-    template <typename ActorType, typename ActorStateType>
-    void addActor(ActorStateType *initialActorState);
+    void addProjectile(ProjectileActorBuilderContext *initialProjectileContext);
+
+    ShipActor *getPlayer();
 
     private:
-    std::vector<std::unique_ptr<BaseActor>> actors;
     ShipActor *player;
+    std::vector<std::unique_ptr<BaseActor>> actors;
     sf::Clock clock = sf::Clock();
     sf::Time deltaTime;
     Window *window;
+    std::optional<sf::View> playerView;
 
     void startFrame();
-    bool handleInput();
     void updateActors();
+    void updatePlayerCamera();
     void drawActors();
+    template <typename ActorType, typename ActorStateType>
+    void addActor(ActorStateType *initialActorState);
 };

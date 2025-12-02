@@ -16,6 +16,7 @@ void BaseActor::draw(Window *window)
 {
     if (sprite)
     {
+        // TODO - possibly causing jitter due to rounding
         this->sprite->setPosition(this->position);
         this->sprite->setRotation(sf::radians(this->rotation));
         window->window.draw(*this->sprite);

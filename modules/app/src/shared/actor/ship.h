@@ -1,3 +1,5 @@
+#pragma once
+
 #include "base.h"
 
 enum class ShipTurnDirection
@@ -10,10 +12,9 @@ enum class ShipTurnDirection
 struct ShipActorBuilderContext : public BaseActorBuilderContext
 {
     ShipActorBuilderContext(
-        sf::Texture *initialTexture, sf::Vector2f initialScaling,
-        sf::Vector2f initialPosition, sf::Vector2f initialForwardVector,
-        float initialSpeed, float initialRotation,
-        ShipTurnDirection initialTurnDirection, float initialTurningCircleRadius
+        sf::Texture *initialTexture, sf::Vector2f initialPosition,
+        sf::Vector2f initialForwardVector,
+        ShipTurnDirection initialTurnDirection
     );
     ~ShipActorBuilderContext() = default;
 
@@ -29,10 +30,8 @@ class ShipActor : public BaseActor
     void init(BaseActorBuilderContext *context) override;
     void update(float deltaTime) override;
 
-    void setTurnDirection(ShipTurnDirection newTurnDirection);
-
-    float turningCircleRadius;
+    ShipTurnDirection currentTurnDirection;
 
     private:
-    ShipTurnDirection currentTurnDirection;
+    float turningCircleRadius;
 };

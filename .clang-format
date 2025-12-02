@@ -16,3 +16,4 @@ SortIncludes: false
 AlignAfterOpenBracket: BlockIndent
 AllowAllParametersOfDeclarationOnNextLine: false
 NamespaceIndentation: All
+IndentCaseLabels: true

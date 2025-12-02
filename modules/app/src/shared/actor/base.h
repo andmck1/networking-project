@@ -21,6 +21,12 @@ class BaseActor
     BaseActor() = default;
     virtual ~BaseActor() = default;
 
+    sf::Vector2f position;
+    sf::Vector2f forwardVector;
+    float rotation;
+    float speed;
+    bool isDeleted = false;
+
     void moveBy(sf::Vector2f positionDelta);
     void moveTo(sf::Vector2f newPosition);
     void draw(Window *window);
@@ -32,8 +38,4 @@ class BaseActor
     protected:
     std::unique_ptr<sf::Sprite> sprite;
     sf::Vector2f spriteScaling;
-    sf::Vector2f position;
-    sf::Vector2f forwardVector;
-    float speed;
-    float rotation;
 };

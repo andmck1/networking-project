@@ -1,25 +1,24 @@
 #include "ship.h"
 
 #include "core_game/util/constants.h"
+#include "../config/settings.h"
 
 #include <cmath>
 #include <spdlog/spdlog.h>
 
 ShipActorBuilderContext::ShipActorBuilderContext(
-    sf::Texture *initialTexture, sf::Vector2f initialScaling,
-    sf::Vector2f initialPosition, sf::Vector2f initialForwardVector,
-    float initialSpeed, float initialRotation,
-    ShipTurnDirection initialTurnDirection, float initialTurningCircleRadius
+    sf::Texture *initialTexture, sf::Vector2f initialPosition,
+    sf::Vector2f initialForwardVector, ShipTurnDirection initialTurnDirection
 )
 {
     this->initialTexture = initialTexture;
-    this->initialScaling = initialScaling;
+    this->initialScaling = Settings::Actor::shipScaling;
     this->initialPosition = initialPosition;
     this->initialForwardVector = initialForwardVector;
-    this->initialSpeed = initialSpeed;
-    this->initialRotation = initialRotation;
+    this->initialSpeed = Settings::Actor::shipSpeed;
+    this->initialRotation = initialForwardVector.angle().asRadians();
     this->initialTurnDirection = initialTurnDirection;
-    this->initialTurningCircleRadius = initialTurningCircleRadius;
+    this->initialTurningCircleRadius = Settings::Actor::shipTurningRadius;
 }
 
 void ShipActor::init(BaseActorBuilderContext *context)
@@ -33,6 +32,7 @@ void ShipActor::init(BaseActorBuilderContext *context)
     this->speed = _context->initialSpeed;
     this->spriteScaling = _context->initialScaling;
     this->currentTurnDirection = _context->initialTurnDirection;
+    this->turningCircleRadius = _context->initialTurningCircleRadius;
     this->createSprite(*_context->initialTexture);
 }
 
@@ -42,31 +42,25 @@ void ShipActor::update(float deltaTime)
     float deltaTheta = 0;
     switch (currentTurnDirection)
     {
-    case ShipTurnDirection::LEFT:
-        deltaTheta = -this->speed * deltaTime / 10.f;
-        break;
-    case ShipTurnDirection::RIGHT:
-        deltaTheta = this->speed * deltaTime / 10.f;
-        break;
-    default:
-        break;
+        case ShipTurnDirection::LEFT:
+            deltaTheta = -this->speed * deltaTime / this->turningCircleRadius;
+            break;
+        case ShipTurnDirection::RIGHT:
+            deltaTheta = this->speed * deltaTime / this->turningCircleRadius;
+            break;
+        default:
+            break;
     }
     deltaTheta /= Constants::PI2;
-
-    float x = this->forwardVector.x;
-    float y = this->forwardVector.y;
-    float cosDTheta = std::cos(deltaTheta);
-    float sinDTheta = std::sin(deltaTheta);
-    this->forwardVector = {
-        x * cosDTheta - y * sinDTheta, x * sinDTheta + y * cosDTheta
-    };
-    this->forwardVector /= this->forwardVector.length();
     this->rotation += deltaTheta;
+    if (this->rotation > Constants::PI2)
+        this->rotation -= Constants::PI2;
+    else if (this->rotation < 0)
+        this->rotation += Constants::PI2;
+
+    float cosTheta = std::cos(this->rotation);
+    float sinTheta = std::sin(this->rotation);
+    this->forwardVector = {cosTheta, sinTheta};
 
     this->moveBy(this->forwardVector * this->speed * deltaTime);
-}
-
-void ShipActor::setTurnDirection(ShipTurnDirection newTurnDirection)
-{
-    this->currentTurnDirection = newTurnDirection;
 }

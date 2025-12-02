@@ -43,7 +43,7 @@ DebugLayer::~DebugLayer()
     ImGui::DestroyContext();
 }
 
-bool DebugLayer::render()
+void DebugLayer::render()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -52,5 +52,4 @@ bool DebugLayer::render()
     ImGui::End();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    return true;
 };
