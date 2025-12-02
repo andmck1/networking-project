@@ -10,14 +10,16 @@ WindowConfig::WindowConfig(
     this->appName = appName;
 }
 
-Window::Window(WindowConfig *config)
-{
-    this->config = config;
-}
-
-void Window::init()
+bool Window::init(std::unique_ptr<WindowConfig> config)
 {
     spdlog::debug("Initialising window");
+    if (!config)
+    {
+        spdlog::error("Config not defined");
+        return false;
+    }
+
+    this->config = std::move(config);
     this->window.create(
         sf::VideoMode(this->config->windowSize), this->config->appName
     );
@@ -25,6 +27,8 @@ void Window::init()
     this->config->windowOrigin = {
         this->config->windowSize.x / 2, this->config->windowSize.y / 2
     };
+
+    return true;
 }
 
 void Window::clear(sf::Color clearColour)
@@ -35,4 +39,14 @@ void Window::clear(sf::Color clearColour)
 void Window::present()
 {
     this->window.display();
+}
+
+sf::Vector2u Window::getWindowSize()
+{
+    return this->config->windowSize;
+}
+
+sf::Vector2u Window::getWindowCentre()
+{
+    return {this->config->windowSize.x / 2, this->config->windowSize.y / 2};
 }

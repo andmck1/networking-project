@@ -7,25 +7,32 @@ enum class ShipTurnDirection
     NONE
 };
 
-struct ShipActorState : public BaseActorState
+struct ShipActorBuilderContext : public BaseActorBuilderContext
 {
-    ShipActorState(
-        std::unique_ptr<Sprite> sprite, sf::Vector2f position,
-        sf::Vector2f forwardVector, float speed, float rotation,
-        float turningCircleRadius, ShipTurnDirection turnDirection
+    ShipActorBuilderContext(
+        sf::Texture *initialTexture, sf::Vector2f initialScaling,
+        sf::Vector2f initialPosition, sf::Vector2f initialForwardVector,
+        float initialSpeed, float initialRotation,
+        ShipTurnDirection initialTurnDirection, float initialTurningCircleRadius
     );
+    ~ShipActorBuilderContext() = default;
 
-    float turningCircleRadius;
-    ShipTurnDirection currentTurnDirection;
+    ShipTurnDirection initialTurnDirection;
+    float initialTurningCircleRadius;
 };
 
 class ShipActor : public BaseActor
 {
     public:
-    ShipActor(ShipActorState initialState);
-    void setTurnDirection(ShipTurnDirection newTurnDirection);
+    ShipActor() = default;
+    ~ShipActor() = default;
+    void init(BaseActorBuilderContext *context) override;
     void update(float deltaTime) override;
 
+    void setTurnDirection(ShipTurnDirection newTurnDirection);
+
+    float turningCircleRadius;
+
     private:
-    ShipActorState state;
+    ShipTurnDirection currentTurnDirection;
 };

@@ -1,22 +1,22 @@
 #pragma once
 #include "core_game/window/window.h"
-#include "layer.h"
+#include "base.h"
 
-struct DebugLayerConfig
+struct DebugLayerConfig : BaseLayerConfig
 {
     DebugLayerConfig(Window *window);
     Window *window;
 };
 
-class DebugLayer : public Layer
+class DebugLayer : public BaseLayer
 {
     public:
-    DebugLayer(DebugLayerConfig *config);
+    DebugLayer() = default;
     ~DebugLayer();
 
-    void init() override;
+    void init(BaseLayerConfig *config) override;
     bool render() override;
 
     private:
-    DebugLayerConfig *config;
+    Window *window;
 };

@@ -1,30 +1,39 @@
 #pragma once
 
-#include "core_game/sprite/sprite.h"
 #include "core_game/window/window.h"
 
-struct BaseActorState
+struct BaseActorBuilderContext
 {
-    virtual ~BaseActorState() = default;
+    BaseActorBuilderContext() = default;
+    virtual ~BaseActorBuilderContext() = default;
 
-    std::unique_ptr<Sprite> sprite;
-    sf::Vector2f position;
-    sf::Vector2f forwardVector;
-    float speed;
-    float rotation;
+    sf::Texture *initialTexture;
+    sf::Vector2f initialScaling;
+    sf::Vector2f initialPosition;
+    sf::Vector2f initialForwardVector;
+    float initialSpeed;
+    float initialRotation;
 };
 
 class BaseActor
 {
     public:
+    BaseActor() = default;
     virtual ~BaseActor() = default;
 
     void moveBy(sf::Vector2f positionDelta);
     void moveTo(sf::Vector2f newPosition);
     void draw(Window *window);
+    void createSprite(const sf::Texture &texture);
 
     virtual void update(float deltaTime);
+    virtual void init(BaseActorBuilderContext *context) = 0;
 
     protected:
-    BaseActorState state;
+    std::unique_ptr<sf::Sprite> sprite;
+    sf::Vector2f spriteScaling;
+    sf::Vector2f position;
+    sf::Vector2f forwardVector;
+    float speed;
+    float rotation;
 };

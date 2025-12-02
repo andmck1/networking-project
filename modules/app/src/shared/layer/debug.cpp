@@ -11,21 +11,13 @@ DebugLayerConfig::DebugLayerConfig(Window *window)
     this->window = window;
 }
 
-DebugLayer::DebugLayer(DebugLayerConfig *config)
-{
-    this->config = config;
-}
-
-DebugLayer::~DebugLayer()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
-}
-
-void DebugLayer::init()
+void DebugLayer::init(BaseLayerConfig *config)
 {
     spdlog::debug("Initialising debug layer");
+
+    DebugLayerConfig *_config = static_cast<DebugLayerConfig *>(config);
+    this->window = _config->window;
+
     ImGui_ImplWin32_EnableDpiAwareness();
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(
         ::MonitorFromPoint(POINT{0, 0}, MONITOR_DEFAULTTOPRIMARY)
@@ -40,10 +32,15 @@ void DebugLayer::init()
     ImGui::StyleColorsDark();
     ImGuiStyle &style = ImGui::GetStyle();
     style.ScaleAllSizes(main_scale);
-    ImGui_ImplWin32_InitForOpenGL(
-        this->config->window->window.getNativeHandle()
-    );
+    ImGui_ImplWin32_InitForOpenGL(this->window->window.getNativeHandle());
     ImGui_ImplOpenGL3_Init();
+}
+
+DebugLayer::~DebugLayer()
+{
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
 
 bool DebugLayer::render()

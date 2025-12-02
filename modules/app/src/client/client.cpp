@@ -1,10 +1,8 @@
 #include "../shared/layer/app.h"
 #include "../shared/layer/debug.h"
-#include "core_game/sprite/sprite.h"
 #include "core_game/texturemanager/texturemanager.h"
 #include "core_game/window/window.h"
 
-#include <memory>
 #include <spdlog/spdlog.h>
 
 std::string gPROJECT_NAME = "Networking Project";
@@ -20,47 +18,41 @@ int main()
 
     spdlog::info("Running " + gPROJECT_NAME);
 
-    WindowConfig windowConfig = WindowConfig({800, 400}, {0, 0}, gACTOR_NAME);
-    Window window = Window(&windowConfig);
-    window.init();
+    std::unique_ptr<WindowConfig> windowConfig = std::make_unique<WindowConfig>(
+        sf::Vector2u{1600, 1280}, sf::Vector2u{0, 0}, gACTOR_NAME
+    );
+    Window window = Window();
+    window.init(std::move(windowConfig));
 
-    sf::Vector2f playerStartingWorldPosition = {
-        window.config->windowSize.x / 2.f, window.config->windowSize.y / 2.f
-    };
+    sf::Vector2f playerStartingWorldPosition =
+        static_cast<sf::Vector2f>(window.getWindowCentre());
 
     TextureManagerConfig textureManagerConfig = TextureManagerConfig();
     TextureManager textureManager = TextureManager(&textureManagerConfig);
     textureManager.init();
 
-    SpriteConfig defaultShipSpriteConfig = SpriteConfig(
-        &textureManager.defaultShipTexture, playerStartingWorldPosition,
-        {5.f, 5.f}
-    );
-    std::unique_ptr<Sprite> defaultShipSprite =
-        std::make_unique<Sprite>(&defaultShipSpriteConfig);
-    defaultShipSprite->init();
-
     AppLayerConfig appLayerConfig = AppLayerConfig(&window);
-    AppLayer appLayer = AppLayer(&appLayerConfig);
+    AppLayer appLayer = AppLayer();
+    appLayer.init(&appLayerConfig);
 
-    ShipActorState initialPlayerState = ShipActorState(
-        std::move(defaultShipSprite), {1.f, 0.f}, {0.f, 0.f}, 10.f, 0.f, 10.f,
-        ShipTurnDirection::NONE
+    ShipActorBuilderContext initialPlayerState = ShipActorBuilderContext(
+        &textureManager.defaultShipTexture, {2.f, 2.f},
+        playerStartingWorldPosition, {0, -1}, 200.f, 0.f,
+        ShipTurnDirection::NONE, 10.f
     );
-    appLayer.addPlayer(std::move(initialPlayerState));
+    appLayer.addPlayer(&initialPlayerState);
 
     DebugLayerConfig debugLayerConfig = DebugLayerConfig(&window);
-    DebugLayer debugLayer = DebugLayer(&debugLayerConfig);
+    DebugLayer debugLayer = DebugLayer();
+    debugLayer.init(&debugLayerConfig);
 
-    std::vector<Layer *> layers = {&appLayer, &debugLayer};
-    for (Layer *layer : layers)
-        layer->init();
+    std::vector<BaseLayer *> layers = {&appLayer, &debugLayer};
 
     spdlog::info("Running app");
     while (window.window.isOpen())
     {
         window.clear(sf::Color::Black);
-        for (Layer *layer : layers)
+        for (BaseLayer *layer : layers)
             layer->render();
         window.present();
     }

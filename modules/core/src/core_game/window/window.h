@@ -16,10 +16,17 @@ struct WindowConfig
 class Window
 {
     public:
-    Window(WindowConfig *config);
-    WindowConfig *config;
-    sf::RenderWindow window = sf::RenderWindow();
-    void init();
+    Window() = default;
+    ~Window() = default;
+
+    sf::RenderWindow window;
+    bool init(std::unique_ptr<WindowConfig> config);
     void clear(sf::Color);
     void present();
+
+    sf::Vector2u getWindowSize();
+    sf::Vector2u getWindowCentre();
+
+    private:
+    std::unique_ptr<WindowConfig> config;
 };

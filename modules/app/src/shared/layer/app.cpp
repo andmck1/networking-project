@@ -9,14 +9,10 @@ AppLayerConfig::AppLayerConfig(Window *window)
     this->window = window;
 }
 
-AppLayer::AppLayer(AppLayerConfig *config) : state()
+void AppLayer::init(BaseLayerConfig *config)
 {
-    this->config = config;
-}
-
-void AppLayer::init()
-{
-    spdlog::debug("Initialising app");
+    AppLayerConfig *_config = static_cast<AppLayerConfig *>(config);
+    this->window = _config->window;
 }
 
 bool AppLayer::render()
@@ -32,63 +28,66 @@ bool AppLayer::render()
 
 void AppLayer::startFrame()
 {
-    this->state.deltaTime = this->state.clock.getElapsedTime();
-    this->state.clock.restart();
+    this->deltaTime = this->clock.getElapsedTime();
+    this->clock.restart();
 }
 
 bool AppLayer::handleInput()
 {
-    std::optional<sf::Event> event = this->config->window->window.pollEvent();
+    std::optional<sf::Event> event = this->window->window.pollEvent();
     while (event)
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Escape))
         {
-            this->config->window->window.close();
+            this->window->window.close();
             return false;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
         {
-            this->state.player->setTurnDirection(ShipTurnDirection::LEFT);
+            this->player->setTurnDirection(ShipTurnDirection::LEFT);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
         {
-            this->state.player->setTurnDirection(ShipTurnDirection::RIGHT);
+            this->player->setTurnDirection(ShipTurnDirection::RIGHT);
+        }
+        else
+        {
+            this->player->setTurnDirection(ShipTurnDirection::NONE);
         }
 
-        event = this->config->window->window.pollEvent();
+        event = this->window->window.pollEvent();
     }
     return true;
 }
 
 void AppLayer::updateActors()
 {
-    for (const std::unique_ptr<BaseActor> &actor : this->state.actors)
+    for (const std::unique_ptr<BaseActor> &actor : this->actors)
     {
-        actor->update(this->state.deltaTime.asSeconds());
+        actor->update(this->deltaTime.asSeconds());
     }
 }
 
 void AppLayer::drawActors()
 {
-    for (const std::unique_ptr<BaseActor> &actor : this->state.actors)
+    for (const std::unique_ptr<BaseActor> &actor : this->actors)
     {
-        actor->draw(this->config->window);
+        actor->draw(this->window);
     }
 }
 
 template <typename ActorType, typename ActorStateType>
-void AppLayer::addActor(ActorStateType &&initialActorState)
+void AppLayer::addActor(ActorStateType *initialActorState)
 {
     spdlog::debug("Adding actor");
-    this->state.actors.push_back(
-        std::make_unique<ActorType>(std::move(initialActorState))
-    );
+    std::unique_ptr<ActorType> actor = std::make_unique<ActorType>();
+    actor->init(initialActorState);
+    this->actors.push_back(std::move(actor));
 }
 
-void AppLayer::addPlayer(std::unique_ptr<ShipActorState> initalPlayerState)
+void AppLayer::addPlayer(ShipActorBuilderContext *initalPlayerState)
 {
     spdlog::debug("Adding player");
-    this->addActor<ShipActor>(std::move(initalPlayerState));
-    this->state.player =
-        dynamic_cast<ShipActor *>(this->state.actors.back().get());
+    this->addActor<ShipActor>(initalPlayerState);
+    this->player = dynamic_cast<ShipActor *>(this->actors.back().get());
 }
