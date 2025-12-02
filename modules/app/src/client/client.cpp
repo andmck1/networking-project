@@ -11,50 +11,11 @@
 
 int main()
 {
-
     // Likely abstracted start
     spdlog::set_level(spdlog::level::debug);
     bool isServer = false;
 
     spdlog::info("Running " + Settings::App::appName);
-
-    std::unique_ptr<WindowConfig> windowConfig = std::make_unique<WindowConfig>(
-        Settings::Window::windowSize, Settings::Window::windowOrigin,
-        Settings::App::appName
-    );
-    Window window = Window();
-    window.init(std::move(windowConfig));
-
-    sf::Vector2f playerStartingWorldPosition =
-        static_cast<sf::Vector2f>(window.getWindowCentre());
-
-    TextureManagerConfig textureManagerConfig = TextureManagerConfig();
-    TextureManager textureManager = TextureManager(&textureManagerConfig);
-    textureManager.init();
-
-    AppLayerConfig appLayerConfig = AppLayerConfig(&window);
-    AppLayer appLayer = AppLayer();
-    appLayer.init(&appLayerConfig);
-
-    ShipActorBuilderContext initialPlayerState = ShipActorBuilderContext(
-        &textureManager.defaultShipTexture, playerStartingWorldPosition,
-        {0, -1}, ShipTurnDirection::NONE
-    );
-    appLayer.addPlayer(&initialPlayerState);
-    if (!isServer)
-        appLayer.initPlayerCamera();
-
-    DebugLayerConfig debugLayerConfig = DebugLayerConfig(&window);
-    DebugLayer debugLayer = DebugLayer();
-    debugLayer.init(&debugLayerConfig);
-
-    EventHandlerConfig eventHandlerConfig = EventHandlerConfig(
-        &window, appLayer.getPlayer(), &textureManager, &appLayer, isServer
-    );
-    EventHandler eventHandler = EventHandler();
-    eventHandler.init(&eventHandlerConfig);
-
-    std::vector<BaseLayer *> layers = {&appLayer, &debugLayer};
 
     spdlog::info("Running app");
     sf::Sprite backgroundSprite(textureManager.backgroundTexture);

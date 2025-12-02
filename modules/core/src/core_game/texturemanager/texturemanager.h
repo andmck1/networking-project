@@ -19,16 +19,15 @@ struct TextureManagerConfig
 class TextureManager
 {
     public:
-    TextureManager(TextureManagerConfig *config);
+    TextureManager() = default;
+    ~TextureManager() = default;
 
     sf::Texture backgroundTexture;
     sf::Texture defaultShipTexture;
     sf::Texture projectileTexture;
 
-    bool init();
+    bool init(TextureManagerConfig *config);
 
     private:
-    TextureManagerConfig *config;
-
     static std::optional<sf::Texture> loadTexture(std::string texturePath);
 };

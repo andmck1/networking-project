@@ -12,11 +12,6 @@ TextureManagerConfig::TextureManagerConfig(
     this->projectileTexturePath = projectileTexturePath;
 }
 
-TextureManager::TextureManager(TextureManagerConfig *config)
-{
-    this->config = config;
-}
-
 std::optional<sf::Texture> TextureManager::loadTexture(std::string texturePath)
 {
     std::optional<sf::Texture> texture = sf::Texture();
@@ -28,24 +23,24 @@ std::optional<sf::Texture> TextureManager::loadTexture(std::string texturePath)
     return texture;
 }
 
-bool TextureManager::init()
+bool TextureManager::init(TextureManagerConfig *config)
 {
     std::optional<sf::Texture> texture;
 
     spdlog::debug("Loading background texture");
-    texture = this->loadTexture(this->config->backgroundTexturePath);
+    texture = this->loadTexture(config->backgroundTexturePath);
     if (!texture)
         return false;
     this->backgroundTexture = texture.value();
 
     spdlog::debug("Loading ship texture");
-    texture = this->loadTexture(this->config->defaultShipTexturePath);
+    texture = this->loadTexture(config->defaultShipTexturePath);
     if (!texture)
         return false;
     this->defaultShipTexture = texture.value();
 
     spdlog::debug("Loading projectile texture");
-    texture = this->loadTexture(this->config->projectileTexturePath);
+    texture = this->loadTexture(config->projectileTexturePath);
     if (!texture)
         return false;
     this->projectileTexture = texture.value();

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Network/Socket.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
