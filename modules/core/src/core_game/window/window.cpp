@@ -2,15 +2,18 @@
 #include <spdlog/spdlog.h>
 
 WindowConfig::WindowConfig(
-    sf::Vector2u windowSize, sf::Vector2u windowOrigin, std::string appName
+    sf::Vector2u windowSize, sf::Vector2u windowOrigin, std::string appName,
+    sf::Texture *backgroundTexture, sf::Color clearColour
 )
 {
     this->windowSize = windowSize;
     this->windowOrigin = windowOrigin;
     this->appName = appName;
+    this->backgroundTexture = backgroundTexture;
+    this->clearColour = clearColour;
 }
 
-bool Window::init(std::unique_ptr<WindowConfig> config)
+bool Window::init(WindowConfig *config)
 {
     spdlog::debug("Initialising window");
     if (!config)
@@ -19,21 +22,26 @@ bool Window::init(std::unique_ptr<WindowConfig> config)
         return false;
     }
 
-    this->config = std::move(config);
-    this->window.create(
-        sf::VideoMode(this->config->windowSize), this->config->appName
-    );
-    this->config->windowSize = this->window.getSize();
-    this->config->windowOrigin = {
-        this->config->windowSize.x / 2, this->config->windowSize.y / 2
-    };
+    this->windowSize = config->windowSize;
+    this->windowOrigin = config->windowOrigin;
+    this->appName = config->appName;
+    this->clearColour = config->clearColour;
+
+    this->window.create(sf::VideoMode(this->windowSize), this->appName);
+    this->backgroundSprite =
+        std::make_unique<sf::Sprite>(*config->backgroundTexture);
 
     return true;
 }
 
-void Window::clear(sf::Color clearColour)
+void Window::clear()
 {
     this->window.clear(clearColour);
+}
+
+void Window::drawBackground()
+{
+    this->window.draw(*this->backgroundSprite);
 }
 
 void Window::present()
@@ -43,10 +51,10 @@ void Window::present()
 
 sf::Vector2u Window::getWindowSize()
 {
-    return this->config->windowSize;
+    return this->windowSize;
 }
 
 sf::Vector2u Window::getWindowCentre()
 {
-    return {this->config->windowSize.x / 2, this->config->windowSize.y / 2};
+    return {this->windowSize.x / 2, this->windowSize.y / 2};
 }

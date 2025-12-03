@@ -64,3 +64,17 @@ void ShipActor::update(float deltaTime)
 
     this->moveBy(this->forwardVector * this->speed * deltaTime);
 }
+
+void ShipActor::setServerId(int32_t serverId)
+{
+    this->serverId = serverId;
+}
+
+void ShipActor::networkUpdate(ShipMessage *networkMessage)
+{
+    this->position = networkMessage->position;
+    this->forwardVector = networkMessage->forwardVector;
+    this->rotation = std::atan2(this->forwardVector.y, this->forwardVector.x);
+    this->rotation =
+        this->rotation < 0 ? this->rotation + Constants::PI2 : this->rotation;
+}

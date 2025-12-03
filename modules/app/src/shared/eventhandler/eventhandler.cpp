@@ -1,13 +1,11 @@
 #include "eventhandler.h"
-#include "../../shared/config/settings.h"
 
 EventHandlerConfig::EventHandlerConfig(
-    Window *window, ShipActor *player, TextureManager *textureManager,
-    AppLayer *appLayer, bool isServer
+    Window *window, TextureManager *textureManager, AppLayer *appLayer,
+    bool isServer
 )
 {
     this->window = window;
-    this->player = player;
     this->textureManager = textureManager;
     this->appLayer = appLayer;
     this->isServer = isServer;
@@ -16,10 +14,14 @@ EventHandlerConfig::EventHandlerConfig(
 void EventHandler::init(EventHandlerConfig *config)
 {
     this->window = config->window;
-    this->player = config->player;
     this->textureManager = config->textureManager;
     this->appLayer = config->appLayer;
     this->isServer = config->isServer;
+}
+
+void EventHandler::addPlayerHandle(ShipActor *player)
+{
+    this->player = player;
 }
 
 bool EventHandler::handle()
@@ -53,25 +55,28 @@ bool EventHandler::handleInput(std::optional<sf::Event> event)
         this->window->window.close();
         return false;
     }
-    if (!this->isServer)
+    if (this->player)
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
         {
-            this->player->currentTurnDirection = ShipTurnDirection::LEFT;
+            this->player.value()->currentTurnDirection =
+                ShipTurnDirection::LEFT;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
         {
-            this->player->currentTurnDirection = ShipTurnDirection::RIGHT;
+            this->player.value()->currentTurnDirection =
+                ShipTurnDirection::RIGHT;
         }
         else
         {
-            this->player->currentTurnDirection = ShipTurnDirection::NONE;
+            this->player.value()->currentTurnDirection =
+                ShipTurnDirection::NONE;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
         {
             ProjectileActorBuilderContext projectileBuilderContext =
-                this->createProjecileBuildContext(this->player);
+                this->createProjecileBuildContext(this->player.value());
             this->appLayer->addProjectile(&projectileBuilderContext);
         }
     }

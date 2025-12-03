@@ -13,13 +13,12 @@
 struct EventHandlerConfig
 {
     EventHandlerConfig(
-        Window *window, ShipActor *player, TextureManager *textureManager,
-        AppLayer *appLayer, bool isServer
+        Window *window, TextureManager *textureManager, AppLayer *appLayer,
+        bool isServer
     );
     ~EventHandlerConfig() = default;
 
     Window *window;
-    ShipActor *player;
     TextureManager *textureManager;
     AppLayer *appLayer;
     bool isServer;
@@ -32,15 +31,16 @@ class EventHandler
     ~EventHandler() = default;
 
     void init(EventHandlerConfig *config);
+    void addPlayerHandle(ShipActor *player);
     bool handle();
 
     private:
     Window *window;
-    ShipActor *player;
+    std::optional<ShipActor *> player;
     TextureManager *textureManager;
     AppLayer *appLayer;
     bool isServer;
 
-    bool handleInput(std::optional<sf::Event>);
+    bool handleInput(std::optional<sf::Event> event);
     ProjectileActorBuilderContext createProjecileBuildContext(ShipActor *ship);
 };

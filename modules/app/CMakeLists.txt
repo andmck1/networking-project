@@ -7,10 +7,18 @@ set(SHARED_FILES
     src/shared/actor/ship.cpp
     src/shared/actor/projectile.cpp
     src/shared/config/settings.cpp
-    src/shared/eventhandler/eventhandler.cpp)
+    src/shared/eventhandler/eventhandler.cpp
+    src/shared/config/state.cpp
+    src/shared/networking/messages.cpp)
+
+set(SERVER_FILES src/server/app.cpp ${SHARED_FILES}
+                 src/server/networking/server.cpp)
+
+set(CLIENT_FILES src/client/app.cpp src/client/networking/client.cpp
+                 ${SHARED_FILES})
 
 # server
-add_executable(server src/server/server.cpp ${SHARED_FILES})
+add_executable(server ${SERVER_FILES})
 target_compile_features(server PRIVATE cxx_std_20)
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR}
                                         ${imgui_SOURCE_DIR}/backends)
@@ -25,7 +33,7 @@ target_link_libraries(
           core)
 
 # client
-add_executable(client src/client/client.cpp ${SHARED_FILES})
+add_executable(client ${CLIENT_FILES})
 target_compile_features(client PRIVATE cxx_std_20)
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR}
                                         ${imgui_SOURCE_DIR}/backends)

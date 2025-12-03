@@ -3,7 +3,6 @@
 #include "../layer/app.h"
 #include "../layer/debug.h"
 #include "../eventhandler/eventhandler.h"
-#include "../config/settings.h"
 #include "core_game/texturemanager/texturemanager.h"
 #include "core_game/window/window.h"
 #include <SFML/Network.hpp>
@@ -29,17 +28,15 @@ class State
     TextureManager textureManager = TextureManager();
     std::unique_ptr<AppLayer> appLayer;
     std::unique_ptr<DebugLayer> debugLayer;
-    std::vector<BaseLayer *> layers;
 
     void init(StateConfig *config);
+    void initPlayer(sf::Vector2f startingPosition);
 
     private:
     void initWindow();
     void initTextureManager();
-    void initPlayer(sf::Vector2f startingPosition);
     void initAppLayer();
     void initDebugLayer();
     void initLayers();
-    void initActors();
     void initEventHandler();
 };

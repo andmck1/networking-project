@@ -5,15 +5,17 @@
 #include <spdlog/spdlog.h>
 #include <SFML/Window.hpp>
 
-AppLayerConfig::AppLayerConfig(Window *window)
+AppLayerConfig::AppLayerConfig(Window *window, TextureManager *textureManager)
 {
     this->window = window;
+    this->textureManager = textureManager;
 }
 
 void AppLayer::init(BaseLayerConfig *config)
 {
     AppLayerConfig *_config = static_cast<AppLayerConfig *>(config);
     this->window = _config->window;
+    this->textureManager = _config->textureManager;
 }
 
 void AppLayer::initPlayerCamera()
@@ -36,8 +38,11 @@ void AppLayer::render()
 
 void AppLayer::startFrame()
 {
-    this->deltaTime = this->clock.getElapsedTime();
-    this->clock.restart();
+    sf::Time newTotalTime = this->clock.getElapsedTime();
+    this->deltaTime = newTotalTime - this->totalTime;
+    this->deltaTime = this->deltaTime.asSeconds() > 0.f ? this->deltaTime
+                                                        : sf::milliseconds(1.f);
+    this->totalTime = newTotalTime;
 }
 
 void AppLayer::updateActors()
@@ -88,7 +93,66 @@ void AppLayer::addProjectile(
     this->addActor<ProjectileActor>(initialProjectileState);
 }
 
+void AppLayer::addServerShip(
+    int32_t serverId, sf::Vector2f initialPosition,
+    sf::Vector2f initialForwardVector
+)
+{
+    spdlog::debug("Adding ship");
+    ShipActorBuilderContext initialShipState = ShipActorBuilderContext(
+        &this->textureManager->defaultShipTexture, initialPosition,
+        initialForwardVector, ShipTurnDirection::NONE
+    );
+    this->addActor<ShipActor>(&initialShipState);
+    ShipActor *newServerShip =
+        static_cast<ShipActor *>(this->actors.back().get());
+    this->shipActorMap.insert({serverId, newServerShip});
+}
+
+void AppLayer::networkUpdate(
+    std::vector<std::unique_ptr<Message>> networkUpdates
+)
+{
+    for (std::unique_ptr<Message> &networkUpdate : networkUpdates)
+    {
+        switch (networkUpdate->type)
+        {
+            case (MessageType::Ship):
+            {
+                int32_t shipActorServerId = networkUpdate->id;
+                ShipMessage *shipMessage =
+                    static_cast<ShipMessage *>(networkUpdate.get());
+                if (this->shipActorMap.find(shipActorServerId) !=
+                    this->shipActorMap.end())
+                {
+                    this->shipActorMap[shipActorServerId]->networkUpdate(
+                        shipMessage
+                    );
+                }
+                else
+                {
+                    this->addServerShip(
+                        shipActorServerId, shipMessage->position,
+                        shipMessage->forwardVector
+                    );
+                }
+                break;
+            }
+        }
+    }
+}
+
 ShipActor *AppLayer::getPlayer()
 {
     return this->player;
+}
+
+float AppLayer::getGameTime()
+{
+    return this->totalTime.asSeconds();
+}
+
+float AppLayer::getDeltaTime()
+{
+    return this->deltaTime.asSeconds();
 }

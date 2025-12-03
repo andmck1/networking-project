@@ -2,6 +2,8 @@
 
 #include "base.h"
 
+#include "../networking/messages.h"
+
 enum class ShipTurnDirection
 {
     LEFT,
@@ -30,6 +32,10 @@ class ShipActor : public BaseActor
     void init(BaseActorBuilderContext *context) override;
     void update(float deltaTime) override;
 
+    void setServerId(int32_t serverId);
+    void networkUpdate(ShipMessage *updateMessage);
+
+    int32_t serverId;
     ShipTurnDirection currentTurnDirection;
 
     private:

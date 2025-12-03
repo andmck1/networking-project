@@ -5,12 +5,15 @@
 struct WindowConfig
 {
     WindowConfig(
-        sf::Vector2u windowSize, sf::Vector2u windowOrigin, std::string appName
+        sf::Vector2u windowSize, sf::Vector2u windowOrigin, std::string appName,
+        sf::Texture *backgroundTexture, sf::Color clearColour
     );
 
     sf::Vector2u windowSize;
     sf::Vector2u windowOrigin;
     std::string appName;
+    sf::Texture *backgroundTexture;
+    sf::Color clearColour;
 };
 
 class Window
@@ -20,13 +23,18 @@ class Window
     ~Window() = default;
 
     sf::RenderWindow window;
-    bool init(std::unique_ptr<WindowConfig> config);
-    void clear(sf::Color);
+    bool init(WindowConfig *config);
+    void clear();
+    void drawBackground();
     void present();
 
     sf::Vector2u getWindowSize();
     sf::Vector2u getWindowCentre();
 
     private:
-    std::unique_ptr<WindowConfig> config;
+    sf::Vector2u windowSize;
+    sf::Vector2u windowOrigin;
+    std::string appName;
+    std::unique_ptr<sf::Sprite> backgroundSprite;
+    sf::Color clearColour;
 };

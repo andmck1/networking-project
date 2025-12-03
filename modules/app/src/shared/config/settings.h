@@ -38,6 +38,7 @@ namespace Settings
     {
         static unsigned short serverPort = 6969;
         static unsigned short playerPort = sf::Socket::AnyPort;
+        static float clientUpdateRate = .1f;
     } // namespace Networking
 
 }; // namespace Settings
