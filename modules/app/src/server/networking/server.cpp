@@ -46,7 +46,7 @@ void Server::acceptPlayerConnections()
             std::string connectionDetailsString =
                 tcpSocket->getRemoteAddress()->toString() + ":" +
                 std::to_string(tcpSocket->getRemotePort());
-            spdlog::debug("New connection from " + connectionDetailsString);
+            spdlog::info("New connection from " + connectionDetailsString);
 
             // add new client
             std::unique_ptr<ClientConnection> newClient =
@@ -150,6 +150,7 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
         {
             spdlog::debug("Connection ready");
             sf::Packet packet;
+            // TODO - single receive, should loop until not ready?
             sf::Socket::Status status =
                 clientConnection->socket->receive(packet);
             switch (status)
@@ -204,4 +205,78 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
             std::to_string(receivedMessagesFromAllClients.at(0)->time)
         );
     return receivedMessagesFromAllClients;
+}
+
+void Server::relayNetworkUpdates(
+    const std::vector<std::unique_ptr<Message>> &networkUpdates
+)
+{
+    // for all clients, create packet,
+    // for all network updates, add to packet if client didn't send update
+    // send network update to client
+    for (const std::unique_ptr<ClientConnection> &clientConnection :
+         this->clientConnections)
+    {
+        sf::Packet packet;
+        sf::Packet packetMessages;
+        int32_t nNetworkUpdates = 0;
+        for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
+        {
+            if (networkUpdate->id != clientConnection->id)
+            {
+                packetMessages << *networkUpdate;
+                nNetworkUpdates++;
+            }
+        }
+        if (nNetworkUpdates > 0)
+        {
+            packet << nNetworkUpdates;
+            packet.append(
+                packetMessages.getData(), packetMessages.getDataSize()
+            );
+            std::string relayInformation =
+                " to " + std::to_string(clientConnection->id);
+
+            // TODO - get rid of these loops, keep in queue and try again if
+            // any left in queue
+            sf::Socket::Status status = clientConnection->socket->send(packet);
+            while (status == sf::Socket::Status::Partial)
+                status = clientConnection->socket->send(packet);
+            switch (status)
+            {
+                case (sf::Socket::Status::Done):
+                {
+                    spdlog::debug(
+                        std::to_string(nNetworkUpdates) + " messages relayed " +
+                        relayInformation
+                    );
+                    break;
+                }
+                case (sf::Socket::Status::NotReady):
+                {
+                    break;
+                }
+                case (sf::Socket::Status::Partial):
+                {
+                    break;
+                }
+                case (sf::Socket::Status::Disconnected):
+                {
+                    spdlog::error(
+                        "Client disconnected when sending relay packet " +
+                        relayInformation
+                    );
+                    break;
+                }
+                default:
+                {
+                    spdlog::error(
+                        "Unexpected error when sending relay packet " +
+                        relayInformation
+                    );
+                    break;
+                }
+            }
+        }
+    }
 }

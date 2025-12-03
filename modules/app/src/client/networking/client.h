@@ -25,7 +25,9 @@ class Client
 
     void init(ClientConfig *config);
     bool connectToServer();
-    void sendNetworkUpdate(AppLayer *appLayer);
+    void sendNetworkUpdates(AppLayer *appLayer);
+    std::vector<std::unique_ptr<Message>>
+    receiveNetworkUpdates();
 
     private:
     float sendTimer = 0.f;

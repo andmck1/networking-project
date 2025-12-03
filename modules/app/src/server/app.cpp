@@ -31,7 +31,8 @@ int main()
         server.scanSelector();
         std::vector<std::unique_ptr<Message>> clientUpdates =
             server.receiveDataFromClients();
-        state.appLayer->networkUpdate(std::move(clientUpdates));
+        state.appLayer->networkUpdate(clientUpdates);
+        server.relayNetworkUpdates(clientUpdates);
 
         // app
         state.window.clear();

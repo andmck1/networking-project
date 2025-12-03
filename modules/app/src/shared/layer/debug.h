@@ -1,6 +1,9 @@
 #pragma once
-#include "core_game/window/window.h"
 #include "base.h"
+#include "core_game/window/window.h"
+#include "../actor/base.h"
+#include "../actor/ship.h"
+#include "../actor/projectile.h"
 
 struct DebugLayerConfig : BaseLayerConfig
 {
@@ -11,7 +14,11 @@ struct DebugLayerConfig : BaseLayerConfig
 class DebugLayer : public BaseLayer
 {
     public:
-    DebugLayer() = default;
+    DebugLayer(
+        std::vector<std::unique_ptr<BaseActor>> *actors,
+        std::vector<ShipActor *> *ships,
+        std::vector<ProjectileActor *> *projectiles
+    );
     ~DebugLayer();
 
     void init(BaseLayerConfig *config) override;
@@ -19,4 +26,7 @@ class DebugLayer : public BaseLayer
 
     private:
     Window *window;
+    std::vector<std::unique_ptr<BaseActor>> *actors;
+    std::vector<ShipActor *> *ships;
+    std::vector<ProjectileActor *> *projectiles;
 };

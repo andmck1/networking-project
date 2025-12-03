@@ -36,7 +36,7 @@ bool Client::connectToServer()
     {
         case (sf::Socket::Status::Done):
         {
-            spdlog::debug("Connected to server!");
+            spdlog::info("Connected to server!");
             this->isConnectedToServer = true;
             break;
         }
@@ -61,16 +61,17 @@ bool Client::connectToServer()
 bool Client::receivePlayerConnectMessage()
 {
     sf::Packet packet;
+    this->tcpSocket.setBlocking(true);
     sf::Socket::Status status = this->tcpSocket.receive(packet);
     switch (status)
     {
         case (sf::Socket::Status::Done):
         {
-            spdlog::debug("Received player connect message");
+            spdlog::info("Received player connect message");
             std::unique_ptr<Message> message =
                 Message::deserialiseMessageFromPacket(packet);
             this->serverId = message->id;
-            spdlog::debug(
+            spdlog::info(
                 "Server assigned ID: " + std::to_string(this->serverId)
             );
             return true;
@@ -82,6 +83,7 @@ bool Client::receivePlayerConnectMessage()
             break;
         }
     }
+    this->tcpSocket.setBlocking(false);
     return false;
 }
 
@@ -90,24 +92,35 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
 {
     std::vector<std::unique_ptr<Message>> networkUpdates;
 
+    // ship
     ShipMessage shipUpdateMessage;
-
-    shipUpdateMessage.time = appLayer->getGameTime();
-    // TODO - change to given server id
     shipUpdateMessage.id = this->serverId;
+    shipUpdateMessage.time = appLayer->getGameTime();
     shipUpdateMessage.position = appLayer->getPlayer()->position;
     shipUpdateMessage.forwardVector = appLayer->getPlayer()->forwardVector;
     networkUpdates.push_back(std::make_unique<ShipMessage>(shipUpdateMessage));
 
+    // projectiles
+    while (!appLayer->shootEvents.empty())
+    {
+        std::unique_ptr<ShootMessage> &shootEvent =
+            appLayer->shootEvents.back();
+        shootEvent->id = this->serverId;
+        shootEvent->time = appLayer->getGameTime();
+        networkUpdates.push_back(std::move(shootEvent));
+
+        appLayer->shootEvents.pop_back();
+    }
+
     return networkUpdates;
 }
 
-void Client::sendNetworkUpdate(AppLayer *appLayer)
+void Client::sendNetworkUpdates(AppLayer *appLayer)
 {
     this->sendTimer += appLayer->getDeltaTime();
     if (this->sendTimer > this->sendRate)
     {
-        spdlog::debug("Sending network update");
+        spdlog::debug("Sending network updates");
 
         sf::Packet packet;
         std::vector<std::unique_ptr<Message>> networkUpdates =
@@ -127,7 +140,6 @@ void Client::sendNetworkUpdate(AppLayer *appLayer)
             " messages in one packet"
         );
         sf::Socket::Status status = this->tcpSocket.send(packet);
-        status = this->tcpSocket.send(packet);
         switch (status)
         {
             case (sf::Socket::Status::Done):
@@ -158,4 +170,52 @@ void Client::sendNetworkUpdate(AppLayer *appLayer)
         );
         this->sendTimer = 0.f;
     }
+}
+
+std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
+{
+    // TODO - copied code from server, should share?
+    sf::Packet packet;
+
+    // TODO - single receive, should loop until not ready?
+    std::vector<std::unique_ptr<Message>> allReceivedMessages = {};
+    sf::Socket::Status status = this->tcpSocket.receive(packet);
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::debug("Deserialising");
+            spdlog::debug(std::to_string(packet.getDataSize()));
+            std::vector<std::unique_ptr<Message>> receivedMessages;
+            receivedMessages = Message::deserialiseMessagesFromPacket(packet);
+
+            for (std::unique_ptr<Message> &message : receivedMessages)
+            {
+                allReceivedMessages.push_back(std::move(message));
+            }
+            spdlog::debug(
+                std::to_string(allReceivedMessages.size()) +
+                " messages received"
+            );
+            break;
+        }
+        case (sf::Socket::Status::Disconnected):
+        {
+            spdlog::error("Server disconnected while sending packet");
+            break;
+        }
+        case (sf::Socket::Status::NotReady):
+        {
+            break;
+        }
+        default:
+        {
+            spdlog::error(
+                "Unexpected error reading data from ready client "
+                "connection"
+            );
+            break;
+        }
+    }
+    return allReceivedMessages;
 }

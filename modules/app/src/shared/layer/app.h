@@ -30,22 +30,36 @@ class AppLayer : public BaseLayer
     void init(BaseLayerConfig *config) override;
     void render() override;
 
+    // TODO - this is a queue not a vector?
+    std::vector<std::unique_ptr<ShootMessage>> shootEvents = {};
+
     void initPlayerCamera();
+
     void addPlayer(ShipActorBuilderContext *initialPlayerState);
     void addServerShip(
         int32_t serverId, sf::Vector2f initialPosition,
         sf::Vector2f intialForwardVector
     );
     void addProjectile(ProjectileActorBuilderContext *initialProjectileContext);
+    ProjectileActorBuilderContext createProjecileBuildContext(ShipActor *ship);
+    void addShootEvent(sf::Vector2f position, sf::Vector2f forwardVector);
+
+    void cleanUpActors();
+
     float getGameTime();
     float getDeltaTime();
-    void networkUpdate(std::vector<std::unique_ptr<Message>> networkUpdates);
-
     ShipActor *getPlayer();
+
+    void
+    networkUpdate(const std::vector<std::unique_ptr<Message>> &networkUpdates);
+
+    std::vector<std::unique_ptr<BaseActor>> actors;
+    // TODO - shouldn't use raw refs here
+    std::vector<ShipActor *> ships;
+    std::vector<ProjectileActor *> projectiles;
 
     private:
     ShipActor *player;
-    std::vector<std::unique_ptr<BaseActor>> actors;
     std::unordered_map<int32_t, ShipActor *> shipActorMap;
     sf::Clock clock = sf::Clock();
     sf::Time deltaTime;

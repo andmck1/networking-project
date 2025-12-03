@@ -16,10 +16,19 @@ void BaseActor::draw(Window *window)
 {
     if (sprite)
     {
-        // TODO - possibly causing jitter due to rounding
         this->sprite->setPosition(this->position);
         this->sprite->setRotation(sf::radians(this->rotation));
         window->window.draw(*this->sprite);
+
+        sf::FloatRect bounds = this->sprite->getGlobalBounds();
+
+        sf::RectangleShape rect;
+        rect.setPosition(bounds.position);
+        rect.setSize(bounds.size);
+        rect.setOutlineColor(sf::Color::Red);
+        rect.setFillColor(sf::Color::Transparent);
+        rect.setOutlineThickness(1.f);
+        window->window.draw(rect);
     }
     else
         spdlog::error("Sprite not defined");

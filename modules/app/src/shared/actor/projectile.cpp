@@ -6,7 +6,7 @@
 
 ProjectileActorBuilderContext::ProjectileActorBuilderContext(
     sf::Texture *initialTexture, sf::Vector2f initialPosition,
-    sf::Vector2f initialForwardVector
+    sf::Vector2f initialForwardVector, int32_t shooterServerId
 )
 {
     this->initialTexture = initialTexture;
@@ -15,6 +15,7 @@ ProjectileActorBuilderContext::ProjectileActorBuilderContext(
     this->initialForwardVector = initialForwardVector;
     this->initialSpeed = Settings::Actor::projectileSpeed;
     this->initialRotation = initialForwardVector.angle().asRadians();
+    this->shooterServerId = shooterServerId;
 }
 
 void ProjectileActor::init(BaseActorBuilderContext *context)
@@ -28,6 +29,7 @@ void ProjectileActor::init(BaseActorBuilderContext *context)
     this->speed = _context->initialSpeed;
     this->spriteScaling = _context->initialScaling;
     this->createSprite(*_context->initialTexture);
+    this->shooterServerId = _context->shooterServerId;
 }
 
 void ProjectileActor::update(float deltaTime)

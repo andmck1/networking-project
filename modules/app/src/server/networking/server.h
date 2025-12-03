@@ -42,6 +42,9 @@ class Server
     void scanSelector();
     std::vector<std::unique_ptr<Message>> receiveDataFromClients();
     void sendPlayerConnectMessage(int32_t serverId);
+    void relayNetworkUpdates(
+        const std::vector<std::unique_ptr<Message>> &networkUpdates
+    );
 
     private:
     unsigned short port;

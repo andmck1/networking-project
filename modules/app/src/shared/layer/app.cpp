@@ -30,10 +30,14 @@ void AppLayer::initPlayerCamera()
 void AppLayer::render()
 {
     this->startFrame();
+    this->cleanUpActors();
     this->updateActors();
+    this->cleanUpActors();
     this->drawActors();
     if (this->playerView)
+    {
         this->updatePlayerCamera();
+    }
 }
 
 void AppLayer::startFrame()
@@ -52,6 +56,34 @@ void AppLayer::updateActors()
         actor->update(this->deltaTime.asSeconds());
     }
 
+    // for (ShipActor *ship : this->ships)
+    // {
+    //     for (ProjectileActor *projectile : this->projectiles)
+    //     {
+    //         if ((ship->serverId != projectile->shooterServerId) &&
+    //             (!projectile->isDeleted))
+    //         {
+    //             if (ship->sprite->getGlobalBounds().findIntersection(
+    //                     projectile->sprite->getGlobalBounds()
+    //                 ))
+    //             {
+    //                 ship->health -= 5.f;
+    //                 projectile->isDeleted = true;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
+}
+
+void AppLayer::cleanUpActors()
+{
+    std::erase_if(
+        this->projectiles, [](const auto &actor) { return actor->isDeleted; }
+    );
+    std::erase_if(
+        this->ships, [](const auto &actor) { return actor->isDeleted; }
+    );
     std::erase_if(
         this->actors, [](const auto &actor) { return actor->isDeleted; }
     );
@@ -84,6 +116,7 @@ void AppLayer::addPlayer(ShipActorBuilderContext *initalPlayerState)
     spdlog::debug("Adding player");
     this->addActor<ShipActor>(initalPlayerState);
     this->player = dynamic_cast<ShipActor *>(this->actors.back().get());
+    this->ships.push_back(this->player);
 }
 
 void AppLayer::addProjectile(
@@ -91,6 +124,26 @@ void AppLayer::addProjectile(
 )
 {
     this->addActor<ProjectileActor>(initialProjectileState);
+    this->projectiles.push_back(
+        static_cast<ProjectileActor *>(this->actors.back().get())
+    );
+}
+
+ProjectileActorBuilderContext
+AppLayer::createProjecileBuildContext(ShipActor *ship)
+{
+    return ProjectileActorBuilderContext(
+        &this->textureManager->projectileTexture, ship->position,
+        ship->forwardVector, ship->serverId
+    );
+}
+
+void AppLayer::addShootEvent(sf::Vector2f position, sf::Vector2f forwardVector)
+{
+    std::unique_ptr<ShootMessage> shootEvent = std::make_unique<ShootMessage>();
+    shootEvent->forwardVector = forwardVector;
+    shootEvent->position = position;
+    this->shootEvents.push_back(std::move(shootEvent));
 }
 
 void AppLayer::addServerShip(
@@ -107,13 +160,14 @@ void AppLayer::addServerShip(
     ShipActor *newServerShip =
         static_cast<ShipActor *>(this->actors.back().get());
     this->shipActorMap.insert({serverId, newServerShip});
+    this->ships.push_back(static_cast<ShipActor *>(this->actors.back().get()));
 }
 
 void AppLayer::networkUpdate(
-    std::vector<std::unique_ptr<Message>> networkUpdates
+    const std::vector<std::unique_ptr<Message>> &networkUpdates
 )
 {
-    for (std::unique_ptr<Message> &networkUpdate : networkUpdates)
+    for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
     {
         switch (networkUpdate->type)
         {
@@ -137,6 +191,30 @@ void AppLayer::networkUpdate(
                     );
                 }
                 break;
+            }
+            case (MessageType::Shoot):
+            {
+                int32_t shipActorServerId = networkUpdate->id;
+                ShootMessage *shootMessage =
+                    static_cast<ShootMessage *>(networkUpdate.get());
+
+                if (this->shipActorMap.find(shipActorServerId) !=
+                    this->shipActorMap.end())
+                {
+                    ProjectileActorBuilderContext projectileBuilderContext =
+                        ProjectileActorBuilderContext(
+                            &this->textureManager->projectileTexture,
+                            shootMessage->position, shootMessage->forwardVector,
+                            shipActorServerId
+                        );
+                    this->addProjectile(&projectileBuilderContext);
+                }
+                else
+                {
+                    spdlog::error(
+                        "Tried to add projectile from non-existant player"
+                    );
+                }
             }
         }
     }

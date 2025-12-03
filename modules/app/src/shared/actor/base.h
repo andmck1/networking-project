@@ -26,6 +26,7 @@ class BaseActor
     float rotation;
     float speed;
     bool isDeleted = false;
+    std::unique_ptr<sf::Sprite> sprite;
 
     void moveBy(sf::Vector2f positionDelta);
     void moveTo(sf::Vector2f newPosition);
@@ -36,6 +37,5 @@ class BaseActor
     virtual void init(BaseActorBuilderContext *context) = 0;
 
     protected:
-    std::unique_ptr<sf::Sprite> sprite;
     sf::Vector2f spriteScaling;
 };

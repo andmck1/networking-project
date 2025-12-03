@@ -8,7 +8,8 @@
 enum MessageType : int32_t
 {
     Ship = 0,
-    PlayerConnect = 1
+    PlayerConnect = 1,
+    Shoot = 2
 };
 
 struct Message
@@ -52,6 +53,20 @@ struct PlayerConnectMessage : public Message
 {
     PlayerConnectMessage();
     ~PlayerConnectMessage() = default;
+
+    void serialise(sf::Packet &packet) const override;
+
+    private:
+    void deserialise(sf::Packet &packet) override;
+};
+
+struct ShootMessage : public Message
+{
+    ShootMessage();
+    ~ShootMessage() = default;
+
+    sf::Vector2f position = {0.f, 0.f};
+    sf::Vector2f forwardVector = {0.f, -1.f};
 
     void serialise(sf::Packet &packet) const override;
 

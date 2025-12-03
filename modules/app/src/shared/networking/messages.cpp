@@ -38,6 +38,10 @@ Message::deserialiseMessageFromPacket(sf::Packet &packet)
         {
             message = std::make_unique<PlayerConnectMessage>();
         }
+        case (MessageType::Shoot):
+        {
+            message = std::make_unique<ShootMessage>();
+        }
     }
     message->baseDeserialise(packet);
     message->deserialise(packet);
@@ -91,4 +95,21 @@ void PlayerConnectMessage::serialise(sf::Packet &packet) const
 
 void PlayerConnectMessage::deserialise(sf::Packet &packet)
 {
+}
+
+ShootMessage::ShootMessage()
+{
+    this->type = MessageType::Shoot;
+}
+
+void ShootMessage::serialise(sf::Packet &packet) const
+{
+    packet << this->position.x << this->position.y << this->forwardVector.x
+           << this->forwardVector.y;
+}
+
+void ShootMessage::deserialise(sf::Packet &packet)
+{
+    packet >> this->position.x >> this->position.y >> this->forwardVector.x >>
+        this->forwardVector.y;
 }

@@ -6,6 +6,13 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_win32.h>
 
+DebugLayer::DebugLayer(
+    std::vector<std::unique_ptr<BaseActor>> *actors,
+    std::vector<ShipActor *> *ships, std::vector<ProjectileActor *> *projectiles
+)
+{
+}
+
 DebugLayerConfig::DebugLayerConfig(Window *window)
 {
     this->window = window;
@@ -48,7 +55,10 @@ void DebugLayer::render()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
-    ImGui::Begin("Hello, world!");
+    ImGui::Begin("Networking Project Debug");
+    ImGui::Text("N Actors: %d", *this->nActors);
+    ImGui::Text("N Ships: %d", *this->nShips);
+    ImGui::Text("N Projectiles: %d", *this->nShips);
     ImGui::End();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

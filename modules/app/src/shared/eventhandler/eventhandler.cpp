@@ -1,5 +1,7 @@
 #include "eventhandler.h"
 
+#include "../config/settings.h"
+
 EventHandlerConfig::EventHandlerConfig(
     Window *window, TextureManager *textureManager, AppLayer *appLayer,
     bool isServer
@@ -26,6 +28,7 @@ void EventHandler::addPlayerHandle(ShipActor *player)
 
 bool EventHandler::handle()
 {
+    this->fireTimer += this->appLayer->getDeltaTime();
     std::optional<sf::Event> event = this->window->window.pollEvent();
     while (event)
     {
@@ -72,23 +75,23 @@ bool EventHandler::handleInput(std::optional<sf::Event> event)
             this->player.value()->currentTurnDirection =
                 ShipTurnDirection::NONE;
         }
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
         {
-            ProjectileActorBuilderContext projectileBuilderContext =
-                this->createProjecileBuildContext(this->player.value());
-            this->appLayer->addProjectile(&projectileBuilderContext);
+            if (this->fireTimer > Settings::Actor::shipFirerate)
+            {
+                ProjectileActorBuilderContext projectileBuilderContext =
+                    this->appLayer->createProjecileBuildContext(
+                        this->player.value()
+                    );
+                this->appLayer->addProjectile(&projectileBuilderContext);
+                this->appLayer->addShootEvent(
+                    projectileBuilderContext.initialPosition,
+                    projectileBuilderContext.initialForwardVector
+                );
+                this->fireTimer = 0.f;
+            }
         }
     }
 
     return true;
-}
-
-ProjectileActorBuilderContext
-EventHandler::createProjecileBuildContext(ShipActor *ship)
-{
-    return ProjectileActorBuilderContext(
-        &this->textureManager->projectileTexture, ship->position,
-        ship->forwardVector
-    );
 }

@@ -37,6 +37,7 @@ class ShipActor : public BaseActor
 
     int32_t serverId;
     ShipTurnDirection currentTurnDirection;
+    int32_t health = 100.f;
 
     private:
     float turningCircleRadius;

@@ -26,9 +26,10 @@ namespace Settings
 
     namespace Actor
     {
-        static float shipSpeed = 200.f;
+        static float shipSpeed = 10.f;
         static sf::Vector2 shipScaling = {1.f, 1.f};
         static float shipTurningRadius = 10.f;
+        static float shipFirerate = 0.5f;
         static float projectileSpeed = 500.f;
         static sf::Vector2f projectileScaling = {1.f, 1.f};
         static float projectileLifetime = .5f;

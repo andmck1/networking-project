@@ -4,7 +4,6 @@
 #include "core_game/texturemanager/texturemanager.h"
 #include "core_game/window/window.h"
 #include "../../shared/actor/ship.h"
-#include "../../shared/actor/projectile.h"
 #include "../../shared/layer/app.h"
 
 #include <SFML/Window/Event.hpp>
@@ -40,7 +39,7 @@ class EventHandler
     TextureManager *textureManager;
     AppLayer *appLayer;
     bool isServer;
+    float fireTimer = 0.f;
 
     bool handleInput(std::optional<sf::Event> event);
-    ProjectileActorBuilderContext createProjecileBuildContext(ShipActor *ship);
 };

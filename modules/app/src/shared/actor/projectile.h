@@ -6,9 +6,10 @@ struct ProjectileActorBuilderContext : public BaseActorBuilderContext
 {
     ProjectileActorBuilderContext(
         sf::Texture *initialTexture, sf::Vector2f initialPosition,
-        sf::Vector2f initialForwardVector
+        sf::Vector2f initialForwardVector, int32_t shooterServerId
     );
     ~ProjectileActorBuilderContext() = default;
+    int32_t shooterServerId;
 };
 
 class ProjectileActor : public BaseActor
@@ -18,6 +19,8 @@ class ProjectileActor : public BaseActor
     ~ProjectileActor() = default;
     void init(BaseActorBuilderContext *context) override;
     void update(float deltaTime) override;
+
+    int32_t shooterServerId;
 
     private:
     float lifetime = 0.f;

@@ -35,7 +35,10 @@ int main()
 
     while (state.window.window.isOpen())
     {
-        client.sendNetworkUpdate(state.appLayer.get());
+        client.sendNetworkUpdates(state.appLayer.get());
+        std::vector<std::unique_ptr<Message>> networkUpdates =
+            client.receiveNetworkUpdates();
+        state.appLayer->networkUpdate(networkUpdates);
 
         state.window.clear();
         state.window.drawBackground();
