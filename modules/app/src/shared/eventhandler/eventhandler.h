@@ -41,5 +41,6 @@ class EventHandler
     bool isServer;
     float fireTimer = 0.f;
 
-    bool handleInput(std::optional<sf::Event> event);
+    bool handleInput();
+    void handleDebugInput(std::optional<sf::Event> event);
 };

@@ -1,5 +1,7 @@
 #include "eventhandler.h"
 
+#include "imgui.h"
+
 #include "../config/settings.h"
 
 EventHandlerConfig::EventHandlerConfig(
@@ -42,16 +44,17 @@ bool EventHandler::handle()
         }
         else
         {
-            if (!this->handleInput(event))
+            if (!this->handleInput())
                 return false;
         }
+        this->handleDebugInput(event);
 
         event = this->window->window.pollEvent();
     }
     return true;
 }
 
-bool EventHandler::handleInput(std::optional<sf::Event> event)
+bool EventHandler::handleInput()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Escape))
     {
@@ -94,4 +97,44 @@ bool EventHandler::handleInput(std::optional<sf::Event> event)
     }
 
     return true;
+}
+
+void EventHandler::handleDebugInput(std::optional<sf::Event> event)
+{
+    ImGuiIO &io = ImGui::GetIO();
+    if (const sf::Event::MouseButtonPressed *mbPressed =
+            event->getIf<sf::Event::MouseButtonPressed>())
+    {
+        switch (mbPressed->button)
+        {
+            case (sf::Mouse::Button::Left):
+                io.MouseDown[0] = true;
+                break;
+            case (sf::Mouse::Button::Right):
+                io.MouseDown[1] = true;
+                break;
+            default:
+                break;
+        }
+    }
+    if (const sf::Event::MouseButtonReleased *mbPressed =
+            event->getIf<sf::Event::MouseButtonReleased>())
+    {
+        switch (mbPressed->button)
+        {
+            case (sf::Mouse::Button::Left):
+                io.MouseDown[0] = false;
+                break;
+            case (sf::Mouse::Button::Right):
+                io.MouseDown[1] = false;
+                break;
+            default:
+                break;
+        }
+    }
+
+    sf::Vector2i mousePosition = sf::Mouse::getPosition();
+    io.MousePos = ImVec2(
+        static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y)
+    );
 }

@@ -30,7 +30,7 @@ class BaseActor
 
     void moveBy(sf::Vector2f positionDelta);
     void moveTo(sf::Vector2f newPosition);
-    void draw(Window *window);
+    void draw(Window *window, bool isBoundaryBoxesEnabled);
     void createSprite(const sf::Texture &texture);
 
     virtual void update(float deltaTime);

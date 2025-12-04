@@ -57,6 +57,7 @@ class AppLayer : public BaseLayer
     // TODO - shouldn't use raw refs here
     std::vector<ShipActor *> ships;
     std::vector<ProjectileActor *> projectiles;
+    bool isBoundaryBoxesEnabled = false;
 
     private:
     ShipActor *player;

@@ -66,12 +66,11 @@ void State::initPlayer(sf::Vector2f startingPosition)
 
 void State::initDebugLayer()
 {
-    DebugLayerConfig debugLayerConfig = DebugLayerConfig(&window);
-    std::unique_ptr<DebugLayer> debugLayer = std::make_unique<DebugLayer>(
-            this->appLayer->actors.size(),
-            this->appLayer->ships.size(),
-            this->appLayer->projectiles.size()
-            );
+    DebugLayerConfig debugLayerConfig = DebugLayerConfig(
+        &window, &this->appLayer->actors, &this->appLayer->ships,
+        &this->appLayer->projectiles, &this->appLayer->isBoundaryBoxesEnabled
+    );
+    std::unique_ptr<DebugLayer> debugLayer = std::make_unique<DebugLayer>();
     debugLayer->init(&debugLayerConfig);
     this->debugLayer = std::move(debugLayer);
 }

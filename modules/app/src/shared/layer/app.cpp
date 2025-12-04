@@ -56,24 +56,24 @@ void AppLayer::updateActors()
         actor->update(this->deltaTime.asSeconds());
     }
 
-    // for (ShipActor *ship : this->ships)
-    // {
-    //     for (ProjectileActor *projectile : this->projectiles)
-    //     {
-    //         if ((ship->serverId != projectile->shooterServerId) &&
-    //             (!projectile->isDeleted))
-    //         {
-    //             if (ship->sprite->getGlobalBounds().findIntersection(
-    //                     projectile->sprite->getGlobalBounds()
-    //                 ))
-    //             {
-    //                 ship->health -= 5.f;
-    //                 projectile->isDeleted = true;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
+    for (ShipActor *ship : this->ships)
+    {
+        for (ProjectileActor *projectile : this->projectiles)
+        {
+            if ((ship->serverId != projectile->shooterServerId) &&
+                (!projectile->isDeleted))
+            {
+                if (ship->sprite->getGlobalBounds().findIntersection(
+                        projectile->sprite->getGlobalBounds()
+                    ))
+                {
+                    ship->health -= 5.f;
+                    projectile->isDeleted = true;
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void AppLayer::cleanUpActors()
@@ -93,7 +93,7 @@ void AppLayer::drawActors()
 {
     for (const std::unique_ptr<BaseActor> &actor : this->actors)
     {
-        actor->draw(this->window);
+        actor->draw(this->window, this->isBoundaryBoxesEnabled);
     }
 }
 

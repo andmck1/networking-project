@@ -7,18 +7,23 @@
 
 struct DebugLayerConfig : BaseLayerConfig
 {
-    DebugLayerConfig(Window *window);
+    DebugLayerConfig(
+        Window *window, std::vector<std::unique_ptr<BaseActor>> *actors,
+        std::vector<ShipActor *> *ships,
+        std::vector<ProjectileActor *> *projectiles,
+        bool *isBoundaryBoxesEnabled
+    );
     Window *window;
+    std::vector<std::unique_ptr<BaseActor>> *actors;
+    std::vector<ShipActor *> *ships;
+    std::vector<ProjectileActor *> *projectiles;
+    bool *isBoundaryBoxesEnabled;
 };
 
 class DebugLayer : public BaseLayer
 {
     public:
-    DebugLayer(
-        std::vector<std::unique_ptr<BaseActor>> *actors,
-        std::vector<ShipActor *> *ships,
-        std::vector<ProjectileActor *> *projectiles
-    );
+    DebugLayer();
     ~DebugLayer();
 
     void init(BaseLayerConfig *config) override;
@@ -29,4 +34,5 @@ class DebugLayer : public BaseLayer
     std::vector<std::unique_ptr<BaseActor>> *actors;
     std::vector<ShipActor *> *ships;
     std::vector<ProjectileActor *> *projectiles;
+    bool *isBoundaryBoxesEnabled;
 };

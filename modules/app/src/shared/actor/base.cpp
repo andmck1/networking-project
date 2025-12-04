@@ -12,7 +12,7 @@ void BaseActor::moveTo(sf::Vector2f newPosition)
     this->position = newPosition;
 }
 
-void BaseActor::draw(Window *window)
+void BaseActor::draw(Window *window, bool isBoundaryBoxesEnabled)
 {
     if (sprite)
     {
@@ -20,15 +20,17 @@ void BaseActor::draw(Window *window)
         this->sprite->setRotation(sf::radians(this->rotation));
         window->window.draw(*this->sprite);
 
-        sf::FloatRect bounds = this->sprite->getGlobalBounds();
-
-        sf::RectangleShape rect;
-        rect.setPosition(bounds.position);
-        rect.setSize(bounds.size);
-        rect.setOutlineColor(sf::Color::Red);
-        rect.setFillColor(sf::Color::Transparent);
-        rect.setOutlineThickness(1.f);
-        window->window.draw(rect);
+        if (isBoundaryBoxesEnabled)
+        {
+            sf::FloatRect bounds = this->sprite->getGlobalBounds();
+            sf::RectangleShape rect;
+            rect.setPosition(bounds.position);
+            rect.setSize(bounds.size);
+            rect.setOutlineColor(sf::Color::Red);
+            rect.setFillColor(sf::Color::Transparent);
+            rect.setOutlineThickness(1.f);
+            window->window.draw(rect);
+        }
     }
     else
         spdlog::error("Sprite not defined");

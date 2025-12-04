@@ -14,14 +14,14 @@ namespace Settings
 
     namespace Window
     {
-        static sf::Vector2u windowSize = {1600, 1280};
+        static sf::Vector2u windowSize = {800, 800};
         static sf::Vector2u windowOrigin = {0, 0};
         static sf::Color clearColour = sf::Color::Black;
     } // namespace Window
 
     namespace Camera
     {
-        static sf::Vector2f viewSize = {400, 320};
+        static sf::Vector2f viewSize = {300, 300};
     }
 
     namespace Actor
