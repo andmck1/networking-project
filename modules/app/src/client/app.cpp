@@ -19,7 +19,7 @@ int main()
 
     ClientConfig clientConfig = ClientConfig(
         Settings::Networking::serverPort, Settings::Networking::playerPort,
-        sf::IpAddress::LocalHost
+        &state.clientUpdateRate, sf::IpAddress::LocalHost
     );
     Client client = Client();
     client.init(&clientConfig);
@@ -31,7 +31,7 @@ int main()
 
     sf::Vector2f playerStartingWorldPosition =
         static_cast<sf::Vector2f>(state.window.getWindowCentre());
-    state.initPlayer(playerStartingWorldPosition);
+    state.initPlayer(playerStartingWorldPosition, client.serverId);
 
     while (state.window.window.isOpen())
     {

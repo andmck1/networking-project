@@ -7,7 +7,7 @@
 struct ClientConfig
 {
     ClientConfig(
-        unsigned short serverPort, unsigned short clientPort,
+        unsigned short serverPort, unsigned short clientPort, float *updateRate,
         sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost
     );
     ~ClientConfig() = default;
@@ -15,6 +15,7 @@ struct ClientConfig
     unsigned short serverPort;
     unsigned short clientPort;
     sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost;
+    float *updateRate;
 };
 
 class Client
@@ -26,13 +27,13 @@ class Client
     void init(ClientConfig *config);
     bool connectToServer();
     void sendNetworkUpdates(AppLayer *appLayer);
-    std::vector<std::unique_ptr<Message>>
-    receiveNetworkUpdates();
+    std::vector<std::unique_ptr<Message>> receiveNetworkUpdates();
+
+    int32_t serverId;
 
     private:
     float sendTimer = 0.f;
-    float sendRate;
-    int32_t serverId;
+    float *updateRate;
     unsigned short serverPort;
     unsigned short clientPort;
     sf::TcpSocket tcpSocket;

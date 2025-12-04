@@ -19,6 +19,7 @@ StateConfig::StateConfig(bool isServer)
 void State::init(StateConfig *config)
 {
     this->isServer = config->isServer;
+    this->clientUpdateRate = Settings::Networking::clientUpdateRate;
 
     this->initTextureManager();
     this->initWindow();
@@ -51,14 +52,14 @@ void State::initAppLayer()
     this->appLayer = std::move(appLayer);
 }
 
-void State::initPlayer(sf::Vector2f startingPosition)
+void State::initPlayer(sf::Vector2f startingPosition, int32_t serverId)
 {
     ShipActorBuilderContext initialPlayerState = ShipActorBuilderContext(
         &textureManager.defaultShipTexture, startingPosition, {0, -1},
-        ShipTurnDirection::NONE
+        ShipTurnDirection::NONE, serverId
     );
     this->appLayer->addPlayer(&initialPlayerState);
-    this->eventHandler.addPlayerHandle(appLayer->getPlayer());
+    this->eventHandler.addPlayerHandle(appLayer->player);
 
     if (!isServer)
         this->appLayer->initPlayerCamera();
@@ -68,7 +69,8 @@ void State::initDebugLayer()
 {
     DebugLayerConfig debugLayerConfig = DebugLayerConfig(
         &window, &this->appLayer->actors, &this->appLayer->ships,
-        &this->appLayer->projectiles, &this->appLayer->isBoundaryBoxesEnabled
+        &this->appLayer->projectiles, &this->appLayer->isBoundaryBoxesEnabled,
+        &this->clientUpdateRate, this->isServer
     );
     std::unique_ptr<DebugLayer> debugLayer = std::make_unique<DebugLayer>();
     debugLayer->init(&debugLayerConfig);

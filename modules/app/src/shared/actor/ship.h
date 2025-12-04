@@ -4,11 +4,11 @@
 
 #include "../networking/messages.h"
 
-enum class ShipTurnDirection
+enum ShipTurnDirection : int32_t
 {
-    LEFT,
-    RIGHT,
-    NONE
+    LEFT = 0,
+    RIGHT = 1,
+    NONE = 2
 };
 
 struct ShipActorBuilderContext : public BaseActorBuilderContext
@@ -16,12 +16,13 @@ struct ShipActorBuilderContext : public BaseActorBuilderContext
     ShipActorBuilderContext(
         sf::Texture *initialTexture, sf::Vector2f initialPosition,
         sf::Vector2f initialForwardVector,
-        ShipTurnDirection initialTurnDirection
+        int32_t initialTurnDirection, int32_t serverId
     );
     ~ShipActorBuilderContext() = default;
 
-    ShipTurnDirection initialTurnDirection;
+    int32_t initialTurnDirection;
     float initialTurningCircleRadius;
+    int32_t serverId;
 };
 
 class ShipActor : public BaseActor
@@ -32,11 +33,10 @@ class ShipActor : public BaseActor
     void init(BaseActorBuilderContext *context) override;
     void update(float deltaTime) override;
 
-    void setServerId(int32_t serverId);
     void networkUpdate(ShipMessage *updateMessage);
 
     int32_t serverId;
-    ShipTurnDirection currentTurnDirection;
+    int32_t currentTurnDirection;
     int32_t health = 100.f;
 
     private:

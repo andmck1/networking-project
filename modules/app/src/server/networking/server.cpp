@@ -1,5 +1,6 @@
 #include "server.h"
 
+#include "../../shared/config/settings.h"
 #include <spdlog/spdlog.h>
 
 ClientConnection::ClientConnection(
@@ -10,14 +11,75 @@ ClientConnection::ClientConnection(
     this->socket = std::move(socket);
 }
 
-ServerConfig::ServerConfig(unsigned short port)
+sf::Vector2f ClientConnection::interpolateVectorLinear(
+    sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
+)
+{
+    return ((vector1 - vector0) * interpolationTime) + vector0;
+}
+
+sf::Vector2f ClientConnection::interpolateVectorCircular(
+    sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
+)
+{
+    return vector0 + ((vector1 - vector0) * interpolationTime);
+}
+
+ShipMessage
+ClientConnection::interpolateShipMessages(float deltaTime, float totalTime)
+{
+    ShipMessage interpolatedShipMessage;
+
+    ShipMessage message0 = this->shipMessageHistory[0];
+    sf::Vector2f interpolatedPosition = this->shipMessageHistory[0].position;
+    sf::Vector2f interpolatedForwardVector =
+        this->shipMessageHistory[0].forwardVector;
+    int32_t interpolatedTurnDirection =
+        this->shipMessageHistory[0].turnDirection;
+
+    // Some lab code here (linear interpolation)
+    if (this->shipMessageHistory.size() > 1)
+    {
+        ShipMessage message1 = this->shipMessageHistory[1];
+        float step =
+            1.f / (((float) message0.time - (float) message1.time) / deltaTime);
+        this->interpolationTime += step;
+        this->interpolationTime = std::clamp(this->interpolationTime, 0.f, 1.f);
+
+        interpolatedPosition = this->interpolateVectorLinear(
+            message1.position, message0.position, this->interpolationTime
+        );
+        interpolatedForwardVector = this->interpolateVectorLinear(
+            message1.forwardVector, message0.forwardVector,
+            this->interpolationTime
+        );
+        interpolatedForwardVector /= interpolatedForwardVector.length();
+        interpolatedTurnDirection = this->shipMessageHistory[1].turnDirection;
+    }
+
+    interpolatedShipMessage.id = message0.id;
+    interpolatedShipMessage.time = totalTime;
+    interpolatedShipMessage.position = interpolatedPosition;
+    interpolatedShipMessage.forwardVector = interpolatedForwardVector;
+    interpolatedShipMessage.turnDirection = interpolatedTurnDirection;
+
+    return interpolatedShipMessage;
+}
+
+ServerConfig::ServerConfig(
+    unsigned short port, sf::Time *deltaTime, sf::Time *totalTime
+)
 {
     this->port = port;
+    this->deltaTime = deltaTime;
+    this->totalTime = totalTime;
 }
 
 void Server::init(ServerConfig *config)
 {
     this->port = config->port;
+    this->deltaTime = config->deltaTime;
+    this->totalTime = config->totalTime;
     this->listener.setBlocking(false);
 }
 
@@ -199,12 +261,67 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
         " messages"
     );
 
-    if (receivedMessagesFromAllClients.size() > 0)
-        spdlog::debug(
-            "Game time received: " +
-            std::to_string(receivedMessagesFromAllClients.at(0)->time)
-        );
     return receivedMessagesFromAllClients;
+}
+
+std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
+    std::vector<std::unique_ptr<Message>> clientUpdates
+)
+{
+    std::vector<std::unique_ptr<Message>> processedMessages = {};
+
+    for (std::unique_ptr<Message> &message : clientUpdates)
+    {
+        switch (message->type)
+        {
+            case (MessageType::Ship):
+            {
+                const ShipMessage *shipMessage =
+                    static_cast<ShipMessage *>(message.get());
+                int32_t shipId = shipMessage->id;
+                const std::unique_ptr<ClientConnection> &clientConnection =
+                    this->clientConnections[shipId];
+
+                clientConnection->interpolationTime = 0.f;
+                clientConnection->shipMessageHistory.push_front(*shipMessage);
+                if (clientConnection->shipMessageHistory.size() >
+                    Settings::Networking::maxShipMessageHistory)
+                {
+                    clientConnection->shipMessageHistory.pop_back();
+                }
+                break;
+            }
+            case (MessageType::Shoot):
+            {
+                processedMessages.push_back(std::move(message));
+                break;
+            }
+            default:
+            {
+                spdlog::warn("Unsuported message type sent");
+                processedMessages.push_back(std::move(message));
+                break;
+            }
+        }
+    }
+
+    for (const std::unique_ptr<ClientConnection> &clientConnection :
+         this->clientConnections)
+    {
+        if (!clientConnection->shipMessageHistory.empty())
+        {
+            processedMessages.push_back(
+                std::make_unique<ShipMessage>(
+                    clientConnection->interpolateShipMessages(
+                        this->deltaTime->asSeconds(),
+                        this->totalTime->asSeconds()
+                    )
+                )
+            );
+        }
+    }
+
+    return processedMessages;
 }
 
 void Server::relayNetworkUpdates(

@@ -13,7 +13,8 @@ DebugLayer::DebugLayer()
 DebugLayerConfig::DebugLayerConfig(
     Window *window, std::vector<std::unique_ptr<BaseActor>> *actors,
     std::vector<ShipActor *> *ships,
-    std::vector<ProjectileActor *> *projectiles, bool *isBoundaryBoxesEnabled
+    std::vector<ProjectileActor *> *projectiles, bool *isBoundaryBoxesEnabled,
+    float *clientUpdateRate, bool isServer
 )
 {
     this->window = window;
@@ -21,6 +22,8 @@ DebugLayerConfig::DebugLayerConfig(
     this->ships = ships;
     this->projectiles = projectiles;
     this->isBoundaryBoxesEnabled = isBoundaryBoxesEnabled;
+    this->clientUpdateRate = clientUpdateRate;
+    this->isServer = isServer;
 }
 
 void DebugLayer::init(BaseLayerConfig *config)
@@ -33,6 +36,8 @@ void DebugLayer::init(BaseLayerConfig *config)
     this->ships = _config->ships;
     this->projectiles = _config->projectiles;
     this->isBoundaryBoxesEnabled = _config->isBoundaryBoxesEnabled;
+    this->clientUpdateRate = _config->clientUpdateRate;
+    this->isServer = _config->isServer;
 
     ImGui_ImplWin32_EnableDpiAwareness();
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(
@@ -66,11 +71,21 @@ void DebugLayer::render()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
-    ImGui::Begin("Networking Project Debug");
+    if (this->isServer)
+        ImGui::Begin("Networking Project Debug: SERVER");
+    else
+        ImGui::Begin("Networking Project Debug: CLIENT");
+
     ImGui::Text("N Actors: %d", (int) this->actors->size());
     ImGui::Text("N Ships: %d", (int) this->ships->size());
     ImGui::Text("N Projectiles: %d", (int) this->projectiles->size());
     ImGui::Checkbox("Enabled Boundary Boxes?", this->isBoundaryBoxesEnabled);
+    if (!this->isServer)
+    {
+        ImGui::SliderFloat(
+            "Client Send Rate", this->clientUpdateRate, 0.f, 2.f
+        );
+    }
     if (ImGui::BeginTable("Ship Information", 4, flags))
     {
         ImGui::TableSetupColumn("Ship Server ID");

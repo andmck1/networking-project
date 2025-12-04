@@ -2,20 +2,20 @@
 
 #include <SFML/Network/Packet.hpp>
 #include <SFML/System/Vector2.hpp>
-
 #include <memory>
 
 enum MessageType : int32_t
 {
-    Ship = 0,
-    PlayerConnect = 1,
-    Shoot = 2
+    Ship,
+    PlayerConnect,
+    Shoot,
+    END
 };
 
 struct Message
 {
     int32_t type;
-    int32_t time = 0;
+    float_t time = 0.f;
     int32_t id = 0;
 
     virtual ~Message() = default;
@@ -42,6 +42,7 @@ struct ShipMessage : public Message
 
     sf::Vector2f position = {0.f, 0.f};
     sf::Vector2f forwardVector = {0.f, -1.f};
+    int32_t turnDirection = 0;
 
     void serialise(sf::Packet &packet) const override;
 

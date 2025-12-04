@@ -46,10 +46,6 @@ class AppLayer : public BaseLayer
 
     void cleanUpActors();
 
-    float getGameTime();
-    float getDeltaTime();
-    ShipActor *getPlayer();
-
     void
     networkUpdate(const std::vector<std::unique_ptr<Message>> &networkUpdates);
 
@@ -58,16 +54,16 @@ class AppLayer : public BaseLayer
     std::vector<ShipActor *> ships;
     std::vector<ProjectileActor *> projectiles;
     bool isBoundaryBoxesEnabled = false;
-
-    private:
-    ShipActor *player;
-    std::unordered_map<int32_t, ShipActor *> shipActorMap;
-    sf::Clock clock = sf::Clock();
     sf::Time deltaTime;
     sf::Time totalTime;
+    ShipActor *player;
+
+    private:
+    std::unordered_map<int32_t, ShipActor *> shipActorMap;
     Window *window;
     std::optional<sf::View> playerView;
     TextureManager *textureManager;
+    sf::Clock clock = sf::Clock();
 
     void startFrame();
     void updateActors();

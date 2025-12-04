@@ -30,7 +30,7 @@ void EventHandler::addPlayerHandle(ShipActor *player)
 
 bool EventHandler::handle()
 {
-    this->fireTimer += this->appLayer->getDeltaTime();
+    this->fireTimer += this->appLayer->deltaTime.asSeconds();
     std::optional<sf::Event> event = this->window->window.pollEvent();
     while (event)
     {

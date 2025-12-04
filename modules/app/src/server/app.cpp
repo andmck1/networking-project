@@ -17,7 +17,10 @@ int main()
     State state = State();
     state.init(&stateConfig);
 
-    ServerConfig serverConfig = ServerConfig(Settings::Networking::serverPort);
+    ServerConfig serverConfig = ServerConfig(
+        Settings::Networking::serverPort, &state.appLayer->deltaTime,
+        &state.appLayer->totalTime
+    );
     Server server = Server();
     server.init(&serverConfig);
     if (!server.checkListenAvailable())
@@ -27,14 +30,17 @@ int main()
     while (state.window.window.isOpen())
     {
         // network
+        // TODO - consolidate as server.frame
         server.acceptPlayerConnections();
         server.scanSelector();
         std::vector<std::unique_ptr<Message>> clientUpdates =
             server.receiveDataFromClients();
+        clientUpdates = server.processClientUpdates(std::move(clientUpdates));
         state.appLayer->networkUpdate(clientUpdates);
         server.relayNetworkUpdates(clientUpdates);
 
         // app
+        // TODO - consolidate as state.frame
         state.window.clear();
         state.window.drawBackground();
         state.eventHandler.handle();

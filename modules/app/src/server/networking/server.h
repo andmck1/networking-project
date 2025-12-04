@@ -3,9 +3,11 @@
 #include "../../shared/networking/messages.h"
 
 #include <SFML/Network.hpp>
+#include <deque>
 
-struct ClientConnection
+class ClientConnection
 {
+    public:
     // Lab code
     enum class ConnectionState
     {
@@ -20,14 +22,28 @@ struct ClientConnection
     int id;
     std::unique_ptr<sf::TcpSocket> socket;
     ConnectionState connectionState = ConnectionState::Disconnected;
+    std::deque<ShipMessage> shipMessageHistory = {};
+    float interpolationTime = 0.f;
+
+    ShipMessage interpolateShipMessages(float deltaTime, float totalTime);
+
+    private:
+    static sf::Vector2f interpolateVectorLinear(
+        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
+    );
+    static sf::Vector2f interpolateVectorCircular(
+        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
+    );
 };
 
 struct ServerConfig
 {
-    ServerConfig(unsigned short port);
+    ServerConfig(unsigned short port, sf::Time *deltaTime, sf::Time *totalTime);
     ~ServerConfig() = default;
 
     unsigned short port;
+    sf::Time *deltaTime;
+    sf::Time *totalTime;
 };
 
 class Server
@@ -45,6 +61,8 @@ class Server
     void relayNetworkUpdates(
         const std::vector<std::unique_ptr<Message>> &networkUpdates
     );
+    std::vector<std::unique_ptr<Message>>
+    processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);
 
     private:
     unsigned short port;
@@ -52,4 +70,6 @@ class Server
     sf::SocketSelector selector;
     std::vector<std::unique_ptr<ClientConnection>> clientConnections;
     int clientIDCounter = 0;
+    sf::Time *deltaTime;
+    sf::Time *totalTime;
 };

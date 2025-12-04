@@ -154,7 +154,7 @@ void AppLayer::addServerShip(
     spdlog::debug("Adding ship");
     ShipActorBuilderContext initialShipState = ShipActorBuilderContext(
         &this->textureManager->defaultShipTexture, initialPosition,
-        initialForwardVector, ShipTurnDirection::NONE
+        initialForwardVector, ShipTurnDirection::NONE, serverId
     );
     this->addActor<ShipActor>(&initialShipState);
     ShipActor *newServerShip =
@@ -218,19 +218,4 @@ void AppLayer::networkUpdate(
             }
         }
     }
-}
-
-ShipActor *AppLayer::getPlayer()
-{
-    return this->player;
-}
-
-float AppLayer::getGameTime()
-{
-    return this->totalTime.asSeconds();
-}
-
-float AppLayer::getDeltaTime()
-{
-    return this->deltaTime.asSeconds();
 }

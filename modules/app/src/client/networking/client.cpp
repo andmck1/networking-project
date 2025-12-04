@@ -1,17 +1,16 @@
 #include "client.h"
 
-#include "../../shared/config/settings.h"
-
 #include <spdlog/spdlog.h>
 
 ClientConfig::ClientConfig(
-    unsigned short serverPort, unsigned short clientPort,
+    unsigned short serverPort, unsigned short clientPort, float *updateRate,
     sf::IpAddress serverIPAddress
 )
 {
     this->serverPort = serverPort;
     this->clientPort = clientPort;
     this->serverIPAddress = serverIPAddress;
+    this->updateRate = updateRate;
 }
 
 void Client::init(ClientConfig *config)
@@ -19,7 +18,7 @@ void Client::init(ClientConfig *config)
     this->serverPort = config->serverPort;
     this->clientPort = config->clientPort;
     this->serverIPAddress = config->serverIPAddress;
-    this->sendRate = Settings::Networking::clientUpdateRate;
+    this->updateRate = config->updateRate;
     this->isConnectedToServer = false;
     this->tcpSocket = sf::TcpSocket();
     // TODO - support non blocking calls
@@ -95,9 +94,10 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
     // ship
     ShipMessage shipUpdateMessage;
     shipUpdateMessage.id = this->serverId;
-    shipUpdateMessage.time = appLayer->getGameTime();
-    shipUpdateMessage.position = appLayer->getPlayer()->position;
-    shipUpdateMessage.forwardVector = appLayer->getPlayer()->forwardVector;
+    shipUpdateMessage.time = appLayer->totalTime.asSeconds();
+    shipUpdateMessage.position = appLayer->player->position;
+    shipUpdateMessage.forwardVector = appLayer->player->forwardVector;
+    shipUpdateMessage.turnDirection = appLayer->player->currentTurnDirection;
     networkUpdates.push_back(std::make_unique<ShipMessage>(shipUpdateMessage));
 
     // projectiles
@@ -106,7 +106,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
         std::unique_ptr<ShootMessage> &shootEvent =
             appLayer->shootEvents.back();
         shootEvent->id = this->serverId;
-        shootEvent->time = appLayer->getGameTime();
+        shootEvent->time = appLayer->totalTime.asSeconds();
         networkUpdates.push_back(std::move(shootEvent));
 
         appLayer->shootEvents.pop_back();
@@ -117,8 +117,8 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
 
 void Client::sendNetworkUpdates(AppLayer *appLayer)
 {
-    this->sendTimer += appLayer->getDeltaTime();
-    if (this->sendTimer > this->sendRate)
+    this->sendTimer += appLayer->deltaTime.asSeconds();
+    if (this->sendTimer > *this->updateRate)
     {
         spdlog::debug("Sending network updates");
 

@@ -11,13 +11,15 @@ struct DebugLayerConfig : BaseLayerConfig
         Window *window, std::vector<std::unique_ptr<BaseActor>> *actors,
         std::vector<ShipActor *> *ships,
         std::vector<ProjectileActor *> *projectiles,
-        bool *isBoundaryBoxesEnabled
+        bool *isBoundaryBoxesEnabled, float *clientUpdateRate, bool isServer
     );
     Window *window;
     std::vector<std::unique_ptr<BaseActor>> *actors;
     std::vector<ShipActor *> *ships;
     std::vector<ProjectileActor *> *projectiles;
     bool *isBoundaryBoxesEnabled;
+    float *clientUpdateRate = nullptr;
+    bool isServer;
 };
 
 class DebugLayer : public BaseLayer
@@ -35,4 +37,6 @@ class DebugLayer : public BaseLayer
     std::vector<ShipActor *> *ships;
     std::vector<ProjectileActor *> *projectiles;
     bool *isBoundaryBoxesEnabled;
+    float *clientUpdateRate = nullptr;
+    bool isServer;
 };

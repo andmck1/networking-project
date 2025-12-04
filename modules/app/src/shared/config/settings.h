@@ -26,7 +26,7 @@ namespace Settings
 
     namespace Actor
     {
-        static float shipSpeed = 10.f;
+        static float shipSpeed = 100.f;
         static sf::Vector2 shipScaling = {1.f, 1.f};
         static float shipTurningRadius = 10.f;
         static float shipFirerate = 0.5f;
@@ -39,7 +39,8 @@ namespace Settings
     {
         static unsigned short serverPort = 6969;
         static unsigned short playerPort = sf::Socket::AnyPort;
-        static float clientUpdateRate = .1f;
+        static float clientUpdateRate = .5f;
+        static unsigned short maxShipMessageHistory = 5;
     } // namespace Networking
 
 }; // namespace Settings

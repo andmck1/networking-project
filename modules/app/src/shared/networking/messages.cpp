@@ -75,13 +75,13 @@ ShipMessage::ShipMessage()
 void ShipMessage::serialise(sf::Packet &packet) const
 {
     packet << this->position.x << this->position.y << this->forwardVector.x
-           << this->forwardVector.y;
+           << this->forwardVector.y << this->turnDirection;
 }
 
 void ShipMessage::deserialise(sf::Packet &packet)
 {
     packet >> this->position.x >> this->position.y >> this->forwardVector.x >>
-        this->forwardVector.y;
+        this->forwardVector.y >> this->turnDirection;
 }
 
 PlayerConnectMessage::PlayerConnectMessage()
