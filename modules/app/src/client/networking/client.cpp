@@ -78,11 +78,6 @@ bool Client::receivePlayerConnectMessage()
             std::unique_ptr<Message> message =
                 Message::deserialiseMessageFromPacket(packet);
 
-            // TODO - check logic
-            // Should really check for ping first but it doesn't matter too
-            // much as well update quickly
-            this->serverTime = message->time;
-
             this->serverId = message->id;
             spdlog::info(
                 "Server assigned ID: " + std::to_string(this->serverId)
@@ -105,7 +100,6 @@ bool Client::syncWithServer()
     spdlog::info("Syncing with server");
     this->tcpSocket.setBlocking(true);
 
-    float serverSyncTime = 0.f;
     for (int pingCheckCount = 0;
          pingCheckCount < Settings::Networking::maxPingCheckMessageHistory;
          pingCheckCount++)
@@ -131,8 +125,7 @@ bool Client::syncWithServer()
                 }
                 PingCheckMessage *pingCheckMessage =
                     static_cast<PingCheckMessage *>(messages[0].get());
-                serverSyncTime =
-                    pingCheckMessage->time + pingCheckMessage->ping;
+                this->serverTime = pingCheckMessage->time;
                 this->ping = pingCheckMessage->ping;
                 this->sendPingCheckMessageResponse(pingCheckMessage);
                 break;
@@ -145,7 +138,6 @@ bool Client::syncWithServer()
             }
         }
     }
-    this->serverTime = serverSyncTime;
     this->tcpSocket.setBlocking(false);
     return true;
 }
@@ -260,6 +252,9 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
                     PingCheckMessage *pingCheckMessage =
                         static_cast<PingCheckMessage *>(message.get());
                     this->ping = pingCheckMessage->ping;
+                    this->serverDeltaTime = pingCheckMessage->deltaTime;
+                    this->serverTime =
+                        pingCheckMessage->time + pingCheckMessage->time;
                     this->sendPingCheckMessageResponse(pingCheckMessage);
                 }
                 else
@@ -301,6 +296,7 @@ void Client::sendPingCheckMessageResponse(
     responseMessage.id = this->serverId;
     responseMessage.time = this->totalTime->asSeconds();
     responseMessage.echoTime = receivedRequestMessage->time;
+    responseMessage.deltaTime = this->deltaTime->asSeconds();
 
     packet << (int32_t) 1;
     packet << responseMessage;

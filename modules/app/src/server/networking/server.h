@@ -43,6 +43,8 @@ class ClientConnection
     std::deque<float> pingHistory = {};
     float averagePing = 0.f;
     float theirGameTime = 0.f;
+    float theirDeltaTime = 0.f;
+    float deltaWithServer = 0.f;
     bool syncRequestSent = false;
 
     ShipMessage interpolateShipMessages(float deltaTime, float totalTime);
@@ -85,6 +87,7 @@ class Server
     void sendPlayerPingCheckMessages();
     void sendPingCheckMessage(const ClientConnection *clientConnection);
     std::vector<std::unique_ptr<ClientConnection>> clientConnections;
+    void frameClientConnections();
 
     private:
     unsigned short port;

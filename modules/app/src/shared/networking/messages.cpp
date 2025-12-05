@@ -132,10 +132,10 @@ PingCheckMessage::PingCheckMessage()
 
 void PingCheckMessage::serialise(sf::Packet &packet) const
 {
-    packet << this->echoTime << this->ping;
+    packet << this->echoTime << this->ping << this->deltaTime;
 }
 
 void PingCheckMessage::deserialise(sf::Packet &packet)
 {
-    packet >> this->echoTime >> this->ping;
+    packet >> this->echoTime >> this->ping >> this->deltaTime;
 }

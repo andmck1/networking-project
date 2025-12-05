@@ -32,6 +32,7 @@ int main()
     {
         // network
         // TODO - consolidate as server.frame
+        server.frameClientConnections();
         server.acceptPlayerConnections();
         server.sendPlayerPingCheckMessages();
         server.scanSelector();

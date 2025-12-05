@@ -33,7 +33,8 @@ int main()
     {
         state.eventHandler.handle();
     }
-    state.appLayer->serverOffsetTime = sf::seconds(client.serverTime);
+    state.appLayer->serverOffsetTime =
+        sf::seconds(client.serverTime + client.ping);
     spdlog::info(
         std::format("Synced with server time: {:.2f}", client.serverTime)
     );

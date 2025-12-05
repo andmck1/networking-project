@@ -299,15 +299,7 @@ void Server::checkForSyncs()
             {
                 clientConnection->connectionState.finishedSyncing();
                 clientConnection->syncRequestSent = false;
-                spdlog::info(
-                    std::format(
-                        "Client synced with time {:.2f}, ping {:.2f} while "
-                        "server time is {:.2f}",
-                        clientConnection->theirGameTime,
-                        clientConnection->averagePing,
-                        this->totalTime->asSeconds()
-                    )
-                );
+                spdlog::info("Client synced");
             }
             else if (!clientConnection->syncRequestSent)
             {
@@ -368,7 +360,7 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
                 case (sf::Socket::Status::NotReady):
                 {
                     if (clientConnection->connectionState.isSyncing())
-                        spdlog::info(
+                        spdlog::debug(
                             "Not ready status while receiving messages "
                             "from client while it's syncing"
                         );
@@ -440,13 +432,18 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
                      pingCheckMessage->echoTime) /
                     2.f
                 );
-                clientConnection->theirGameTime = pingCheckMessage->time;
+                clientConnection->deltaWithServer =
+                    this->totalTime->asSeconds() -
+                    clientConnection->theirGameTime;
                 if (clientConnection->pingHistory.size() >
                     Settings::Networking::maxPingCheckMessageHistory)
                 {
                     clientConnection->pingHistory.pop_back();
                 }
                 clientConnection->updateAveragePing();
+                clientConnection->theirGameTime =
+                    pingCheckMessage->time + clientConnection->averagePing;
+                clientConnection->theirDeltaTime = pingCheckMessage->deltaTime;
                 break;
             }
             default:
@@ -557,6 +554,7 @@ void Server::sendPingCheckMessage(const ClientConnection *clientConnection)
     message.id = clientConnection->id;
     message.time = this->totalTime->asSeconds();
     message.ping = clientConnection->averagePing;
+    message.deltaTime = this->deltaTime->asSeconds();
     packet << (int32_t) 1;
     packet << message;
 
@@ -605,5 +603,14 @@ void Server::sendPlayerPingCheckMessages()
         {
             this->sendPingCheckMessage(clientConnection.get());
         }
+    }
+}
+
+void Server::frameClientConnections()
+{
+    for (const std::unique_ptr<ClientConnection> &clientConnection :
+         this->clientConnections)
+    {
+        clientConnection->theirGameTime += this->deltaTime->asSeconds();
     }
 }

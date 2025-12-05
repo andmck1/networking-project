@@ -134,10 +134,11 @@ void DebugLayer::render()
 
     if (this->clients)
     {
-        if (ImGui::BeginTable("Client Information", 2, flags))
+        if (ImGui::BeginTable("Client Information", 3, flags))
         {
             ImGui::TableSetupColumn("Client ID");
             ImGui::TableSetupColumn("Ping (ms)");
+            ImGui::TableSetupColumn("Client Time delta with Server Time");
             ImGui::TableHeadersRow();
 
             std::string cellText;
@@ -153,6 +154,12 @@ void DebugLayer::render()
                     ImGui::TableSetColumnIndex(1);
                     cellText = std::format(
                         "{:.2f}", clientConnection->averagePing * 1000.f
+                    );
+                    ImGui::TextUnformatted(cellText.c_str());
+
+                    ImGui::TableSetColumnIndex(2);
+                    cellText = std::format(
+                        "{:.3f}", clientConnection->deltaWithServer
                     );
                     ImGui::TextUnformatted(cellText.c_str());
                 }

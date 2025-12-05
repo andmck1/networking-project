@@ -35,6 +35,7 @@ class Client
 
     int32_t serverId;
     float serverTime;
+    float serverDeltaTime = 0.f;
     float ping = 0.f;
 
     private:

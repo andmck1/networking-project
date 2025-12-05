@@ -83,6 +83,7 @@ struct PingCheckMessage : public Message
 
     float_t echoTime;
     float_t ping = 0.f;
+    float_t deltaTime = 0.f;
 
     void serialise(sf::Packet &packet) const override;
 
