@@ -35,6 +35,7 @@ class DebugLayer : public BaseLayer
     void render() override;
     std::vector<std::unique_ptr<ClientConnection>> *clients = nullptr;
     ShipActor *player = nullptr;
+    bool *isClientConnectionEnabled = nullptr;
 
     private:
     Window *window;

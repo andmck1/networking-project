@@ -26,6 +26,7 @@ class BaseActor
     float rotation;
     float speed;
     bool isDeleted = false;
+    bool isEnabled = true;
     std::unique_ptr<sf::Sprite> sprite;
 
     void moveBy(sf::Vector2f positionDelta);

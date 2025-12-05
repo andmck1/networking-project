@@ -2,60 +2,9 @@
 
 #include "../../shared/networking/messages.h"
 #include "../../shared/layer/app.h"
+#include "../../shared/networking/clientconnection.h"
 
 #include <SFML/Network.hpp>
-#include <deque>
-
-struct ClientConnectionState
-{
-    enum class ConnectionState
-    {
-        NotReady,
-        Ready,
-        Syncing,
-        Disconnected
-    };
-
-    ClientConnectionState() = default;
-    ~ClientConnectionState() = default;
-    ConnectionState connectionState = ConnectionState::Syncing;
-
-    void nextState();
-    void disconnected();
-    void finishedSyncing();
-    bool isReady();
-    bool isConnectedAndNotSyncing();
-    bool isReceiving();
-    bool isSyncing();
-    bool isDisconnected();
-};
-
-class ClientConnection
-{
-    public:
-    ClientConnection(int id, std::unique_ptr<sf::TcpSocket> socket);
-    ~ClientConnection() = default;
-
-    int id;
-    std::unique_ptr<sf::TcpSocket> socket;
-    ClientConnectionState connectionState = ClientConnectionState();
-    std::deque<ShipMessage> shipMessageHistory = {};
-    float interpolationTime;
-    std::deque<float> pingHistory = {};
-    float averagePing = 0.f;
-    float theirGameTime = 0.f;
-    float theirDeltaTime = 0.f;
-    float deltaWithServer = 0.f;
-    bool syncRequestSent = false;
-
-    ShipMessage interpolateShipMessages(float deltaTime, float totalTime);
-    void updateAveragePing();
-
-    private:
-    static sf::Vector2f interpolateVectorLinear(
-        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
-    );
-};
 
 struct ServerConfig
 {
@@ -73,6 +22,10 @@ class Server
     Server() = default;
     ~Server() = default;
 
+    std::vector<std::unique_ptr<ClientConnection>> clientConnections;
+    std::unordered_map<std::string, ClientConnection *> clientConnectionsMap =
+        {};
+
     void init(ServerConfig *config);
     bool checkListenAvailable();
     void acceptPlayerConnections();
@@ -86,8 +39,7 @@ class Server
     std::vector<std::unique_ptr<Message>>
     processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);
     void sendPlayerPingCheckMessages();
-    void sendPingCheckMessage(const ClientConnection *clientConnection);
-    std::vector<std::unique_ptr<ClientConnection>> clientConnections;
+    void sendPingCheckMessage(ClientConnection *clientConnection);
     void frameClientConnections();
     std::vector<std::unique_ptr<Message>>
     prepareGameUpdates(AppLayer *appLayer);

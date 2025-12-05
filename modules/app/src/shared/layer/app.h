@@ -7,6 +7,7 @@
 #include "../actor/ship.h"
 #include "../actor/projectile.h"
 #include "../networking/messages.h"
+#include "../networking/clientconnection.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -51,8 +52,10 @@ class AppLayer : public BaseLayer
 
     void cleanUpActors();
 
-    void
-    networkUpdate(const std::vector<std::unique_ptr<Message>> &networkUpdates);
+    void networkUpdate(
+        const std::vector<std::unique_ptr<Message>> &networkUpdates,
+        const std::vector<std::unique_ptr<ClientConnection>> &clients = {}
+    );
 
     std::vector<std::unique_ptr<BaseActor>> actors;
     // TODO - shouldn't use raw refs here
@@ -63,6 +66,8 @@ class AppLayer : public BaseLayer
     sf::Time totalTime;
     sf::Time serverOffsetTime = sf::seconds(0.f);
     ShipActor *player = nullptr;
+    bool *isConnectedToServer;
+    sf::Clock clock = sf::Clock();
 
     private:
     std::unordered_map<int32_t, ShipActor *> shipActorMap;
@@ -70,7 +75,6 @@ class AppLayer : public BaseLayer
     std::optional<sf::View> playerView;
     std::optional<sf::View> serverView;
     TextureManager *textureManager;
-    sf::Clock clock = sf::Clock();
     int nFrames = 0;
     bool isServer;
 

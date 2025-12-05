@@ -31,20 +31,22 @@ class Client
     bool connectToServer();
     bool syncWithServer();
     void sendNetworkUpdates(AppLayer *appLayer);
+    void disconnectFromServer();
     std::vector<std::unique_ptr<Message>> receiveNetworkUpdates();
 
     int32_t serverId;
     float serverTime;
     float serverDeltaTime = 0.f;
     float ping = 0.f;
+    bool isConnectedToServer = false;
+    bool isConnectionEnabled = true;
+    sf::TcpSocket tcpSocket;
 
     private:
     float sendTimer = 0.f;
     float *updateRate;
     unsigned short serverPort;
     unsigned short clientPort;
-    sf::TcpSocket tcpSocket;
-    bool isConnectedToServer = false;
     sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost;
     sf::Time *deltaTime;
     sf::Time *totalTime;

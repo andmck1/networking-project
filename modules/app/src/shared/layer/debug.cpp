@@ -78,10 +78,12 @@ void DebugLayer::render()
     else
         ImGui::Begin("Networking Project Debug: CLIENT");
 
-    ImGui::Text("Current Game Time: %.2fs", this->currentGameTime->asSeconds());
-    ImGui::Text("N Actors: %d", (int) this->actors->size());
-    ImGui::Text("N Ships: %d", (int) this->ships->size());
-    ImGui::Text("N Projectiles: %d", (int) this->projectiles->size());
+    ImGui::TextWrapped(
+        "Current Game Time: %.2fs", this->currentGameTime->asSeconds()
+    );
+    ImGui::TextWrapped("N Actors: %d", (int) this->actors->size());
+    ImGui::TextWrapped("N Ships: %d", (int) this->ships->size());
+    ImGui::TextWrapped("N Projectiles: %d", (int) this->projectiles->size());
     ImGui::Checkbox("Enabled Boundary Boxes?", this->isBoundaryBoxesEnabled);
     if (this->player)
     {
@@ -89,6 +91,9 @@ void DebugLayer::render()
     }
     if (!this->isServer)
     {
+        ImGui::Checkbox(
+            "Enable Client Connection?", this->isClientConnectionEnabled
+        );
         ImGui::SliderFloat(
             "Client Send Rate (s/update)", this->clientUpdateRate, 0.f, 2.f
         );
@@ -108,37 +113,36 @@ void DebugLayer::render()
             {
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                cellText = std::format("{}", ship->serverId);
-                ImGui::TextUnformatted(cellText.c_str());
+                ImGui::TextWrapped("%d", ship->serverId);
 
                 ImGui::TableSetColumnIndex(1);
-                cellText = std::format(
-                    "{:.2f}, {:.2f}", ship->position.x, ship->position.y
+                ImGui::TextWrapped(
+                    "%.2f, %.2f", ship->position.x, ship->position.y
                 );
-                ImGui::TextUnformatted(cellText.c_str());
 
                 ImGui::TableSetColumnIndex(2);
-                cellText = std::format(
-                    "{:.2f}, {:.2f}", ship->forwardVector.x,
-                    ship->forwardVector.y
+                ImGui::TextWrapped(
+                    "%.2f, %.2f", ship->forwardVector.x, ship->forwardVector.y
                 );
-                ImGui::TextUnformatted(cellText.c_str());
 
                 ImGui::TableSetColumnIndex(3);
-                cellText = std::format("{}", ship->health);
-                ImGui::TextUnformatted(cellText.c_str());
+                ImGui::TextWrapped("%d", ship->health);
             }
         }
         ImGui::EndTable();
     }
 
+    ImGui::Separator();
+
     if (this->clients)
     {
-        if (ImGui::BeginTable("Client Information", 3, flags))
+        if (ImGui::BeginTable("Client Information", 5, flags))
         {
-            ImGui::TableSetupColumn("Client ID");
+            ImGui::TableSetupColumn("ID");
+            ImGui::TableSetupColumn("Connection Details");
             ImGui::TableSetupColumn("Ping (ms)");
             ImGui::TableSetupColumn("Client Time delta with Server Time");
+            ImGui::TableSetupColumn("Is Connected?");
             ImGui::TableHeadersRow();
 
             std::string cellText;
@@ -147,21 +151,31 @@ void DebugLayer::render()
                 if (clientConnection)
                 {
                     ImGui::TableNextRow();
+
                     ImGui::TableSetColumnIndex(0);
-                    cellText = std::format("{}", clientConnection->id);
-                    ImGui::TextUnformatted(cellText.c_str());
+                    ImGui::TextWrapped("%d", clientConnection->id);
 
                     ImGui::TableSetColumnIndex(1);
-                    cellText = std::format(
-                        "{:.2f}", clientConnection->averagePing * 1000.f
+                    ImGui::TextWrapped(
+                        "%s", clientConnection->connectionDetails.c_str()
                     );
-                    ImGui::TextUnformatted(cellText.c_str());
 
                     ImGui::TableSetColumnIndex(2);
-                    cellText = std::format(
-                        "{:.3f}", clientConnection->deltaWithServer
+                    ImGui::TextWrapped(
+                        "%.2f", clientConnection->averagePing * 1000.f
                     );
-                    ImGui::TextUnformatted(cellText.c_str());
+
+                    ImGui::TableSetColumnIndex(3);
+                    ImGui::TextWrapped(
+                        "%.3f", clientConnection->deltaWithServer
+                    );
+
+                    ImGui::TableSetColumnIndex(4);
+                    if (clientConnection->connectionState.connectionState ==
+                        ClientConnectionState::ConnectionState::Disconnected)
+                        ImGui::TextWrapped("false");
+                    else
+                        ImGui::TextWrapped("true");
                 }
             }
         }

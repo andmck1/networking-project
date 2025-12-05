@@ -42,6 +42,7 @@ class ShipActor : public BaseActor
     int32_t health = 100.f;
     // TODO - should have a player class that this lives in
     bool isPlayerControlling = false;
+    bool isConnected = true;
     TextureManager::ShipTextures *shipTextures;
 
     private:

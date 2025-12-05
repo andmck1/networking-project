@@ -35,6 +35,8 @@ namespace Settings
         static float projectileSpeed = 500.f;
         static sf::Vector2f projectileScaling = {4.f, 4.f};
         static float projectileLifetime = .5f;
+        static sf::Color connectedMask = sf::Color(255, 255, 255, 255);
+        static sf::Color disconnectedMask = sf::Color(255, 255, 255, 100);
     } // namespace Actor
 
     namespace Networking

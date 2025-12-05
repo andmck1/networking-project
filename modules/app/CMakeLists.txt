@@ -9,7 +9,8 @@ set(SHARED_FILES
     src/shared/config/settings.cpp
     src/shared/eventhandler/eventhandler.cpp
     src/shared/config/state.cpp
-    src/shared/networking/messages.cpp)
+    src/shared/networking/messages.cpp
+    src/shared/networking/clientconnection.cpp)
 
 set(SERVER_FILES src/server/app.cpp ${SHARED_FILES}
                  src/server/networking/server.cpp)

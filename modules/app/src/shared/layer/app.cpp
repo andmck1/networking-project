@@ -50,7 +50,8 @@ void AppLayer::render()
     this->updateActors();
     this->cleanUpActors();
     this->drawActors();
-    if (this->playerView)
+
+    if (!this->isServer)
     {
         this->updatePlayerCamera();
     }
@@ -64,31 +65,30 @@ void AppLayer::startFrame()
     this->deltaTime = newTotalTime - this->totalTime;
     this->deltaTime = this->deltaTime.asSeconds() > 0.f ? this->deltaTime
                                                         : sf::milliseconds(1.f);
+    this->deltaTime =
+        this->deltaTime.asSeconds() > 1.f ? sf::seconds(1.f) : this->deltaTime;
     this->totalTime = newTotalTime;
 }
 
 void AppLayer::updateActors()
 {
-    if (this->nFrames < 5)
+    if (this->player)
     {
-        if (this->player)
-        {
-            this->player->sprite->setColor(sf::Color(255, 255, 255, 128));
-        }
+        if (this->isConnectedToServer)
+            this->player->sprite->setColor(Settings::Actor::connectedMask);
+        else
+            this->player->sprite->setColor(Settings::Actor::disconnectedMask);
     }
-    else
+    for (const std::unique_ptr<BaseActor> &actor : this->actors)
     {
-        if (this->player)
-        {
-            this->player->sprite->setColor(sf::Color(255, 255, 255, 255));
-        }
-        for (const std::unique_ptr<BaseActor> &actor : this->actors)
-        {
-            actor->update(this->deltaTime.asSeconds());
-        }
+        actor->update(this->deltaTime.asSeconds());
+    }
 
-        for (ShipActor *ship : this->ships)
+    for (ShipActor *ship : this->ships)
+    {
+        if (ship->isEnabled)
         {
+            ship->sprite->setColor(Settings::Actor::connectedMask);
             for (ProjectileActor *projectile : this->projectiles)
             {
                 if ((ship->serverId != projectile->shooterServerId) &&
@@ -114,6 +114,10 @@ void AppLayer::updateActors()
                     }
                 }
             }
+        }
+        else
+        {
+            ship->sprite->setColor(Settings::Actor::disconnectedMask);
         }
     }
 }
@@ -210,7 +214,8 @@ void AppLayer::addServerShip(
 }
 
 void AppLayer::networkUpdate(
-    const std::vector<std::unique_ptr<Message>> &networkUpdates
+    const std::vector<std::unique_ptr<Message>> &networkUpdates,
+    const std::vector<std::unique_ptr<ClientConnection>> &clients
 )
 {
     for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
@@ -276,6 +281,23 @@ void AppLayer::networkUpdate(
             {
                 spdlog::warn("Unhandled message type sent");
                 break;
+            }
+        }
+    }
+
+    for (const std::unique_ptr<ClientConnection> &client : clients)
+    {
+        int32_t clientId = client->id;
+        if (this->shipActorMap.find(clientId) != this->shipActorMap.end())
+        {
+            ShipActor *ship = shipActorMap[clientId];
+            if (client->connectionState.isDisconnected())
+            {
+                ship->isEnabled = false;
+            }
+            else
+            {
+                ship->isEnabled = true;
             }
         }
     }

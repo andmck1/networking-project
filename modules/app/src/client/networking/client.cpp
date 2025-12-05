@@ -205,6 +205,7 @@ void Client::sendNetworkUpdates(AppLayer *appLayer)
             }
             case (sf::Socket::Status::Disconnected):
             {
+                this->isConnectedToServer = false;
                 spdlog::error("Server disconnected while sending packet");
                 break;
             }
@@ -215,6 +216,7 @@ void Client::sendNetworkUpdates(AppLayer *appLayer)
             }
             default:
             {
+                this->isConnectedToServer = false;
                 spdlog::warn("Unexpected error sending packet to server");
                 break;
             }
@@ -268,6 +270,7 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
         }
         case (sf::Socket::Status::Disconnected):
         {
+            this->isConnectedToServer = false;
             spdlog::error("Server disconnected while sending packet");
             break;
         }
@@ -281,6 +284,7 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
                 "Unexpected error reading data from ready client "
                 "connection"
             );
+            this->isConnectedToServer = false;
             break;
         }
     }
@@ -313,18 +317,31 @@ void Client::sendPingCheckMessageResponse(
         }
         case (sf::Socket::Status::Disconnected):
         {
-            spdlog::error("Server disconnected while sending packet");
+            this->isConnectedToServer = false;
+            spdlog::error(
+                "Server disconnected while sending ping check message response"
+            );
             break;
         }
         case (sf::Socket::Status::NotReady):
         {
-            spdlog::error("Server not able to send/receive data");
+            spdlog::error(
+                "Server not ready while sending ping check message response"
+            );
             break;
         }
         default:
         {
-            spdlog::warn("Unexpected error sending packet to server");
+            spdlog::error(
+                "Unexpected error sending ping check message to server"
+            );
+            this->isConnectedToServer = false;
             break;
         }
     }
+}
+
+void Client::disconnectFromServer()
+{
+    this->tcpSocket.disconnect();
 }

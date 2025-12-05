@@ -25,6 +25,9 @@ int main()
     Client client = Client();
     client.init(&clientConfig);
 
+    state.appLayer->isConnectedToServer = &client.isConnectedToServer;
+    state.debugLayer->isClientConnectionEnabled = &client.isConnectionEnabled;
+
     while (!client.connectToServer())
     {
         state.eventHandler.handle();
@@ -50,15 +53,52 @@ int main()
 
     while (state.window.window.isOpen())
     {
-        client.sendNetworkUpdates(state.appLayer.get());
-        std::vector<std::unique_ptr<Message>> networkUpdates =
-            client.receiveNetworkUpdates();
-        state.appLayer->networkUpdate(networkUpdates);
+        if (!client.isConnectionEnabled)
+            client.disconnectFromServer();
 
-        state.window.clear();
-        state.window.drawBackground();
+        if (client.isConnectedToServer)
+        {
+            // TODO - have client.frame function
+            client.sendNetworkUpdates(state.appLayer.get());
+            std::vector<std::unique_ptr<Message>> networkUpdates =
+                client.receiveNetworkUpdates();
+            state.appLayer->networkUpdate(networkUpdates);
+        }
+        else
+        {
+            state.appLayer->clock.stop();
+        }
+        if (client.isConnectionEnabled && !client.isConnectedToServer)
+        {
+            // TODO - repeated code
+            while (!client.connectToServer())
+            {
+                state.eventHandler.handle();
+            }
+            while (!client.syncWithServer())
+            {
+                state.eventHandler.handle();
+            }
+            state.appLayer->serverOffsetTime =
+                sf::seconds(client.serverTime + client.ping);
+            spdlog::info(
+                std::format(
+                    "Synced with server time: {:.2f}", client.serverTime
+                )
+            );
+            state.appLayer->clock.start();
+        }
+
+        if (client.isConnectedToServer)
+        {
+            state.window.clear();
+            state.window.drawBackground();
+        }
         state.eventHandler.handle();
-        state.appLayer->render();
+        if (client.isConnectedToServer)
+        {
+            state.appLayer->render();
+        }
         state.debugLayer->render();
         state.window.present();
     }

@@ -38,7 +38,8 @@ void BaseActor::draw(Window *window, bool isBoundaryBoxesEnabled)
 
 void BaseActor::update(float deltaTime)
 {
-    this->moveBy(this->forwardVector * this->speed * deltaTime);
+    if (this->isEnabled)
+        this->moveBy(this->forwardVector * this->speed * deltaTime);
 }
 
 void BaseActor::createSprite(const sf::Texture &texture)
