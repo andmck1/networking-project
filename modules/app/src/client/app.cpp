@@ -29,11 +29,23 @@ int main()
     {
         state.eventHandler.handle();
     }
+    while (!client.syncWithServer())
+    {
+        state.eventHandler.handle();
+    }
     state.appLayer->serverOffsetTime = sf::seconds(client.serverTime);
+    spdlog::info(
+        std::format("Synced with server time: {:.2f}", client.serverTime)
+    );
 
     sf::Vector2f playerStartingWorldPosition =
-        static_cast<sf::Vector2f>(state.window.getWindowCentre());
+        static_cast<sf::Vector2f>(state.window.getRandomWindowPosition());
+    playerStartingWorldPosition.x *=
+        Settings::Camera::serverViewSize.x / Settings::Window::windowSize.x;
+    playerStartingWorldPosition.y *=
+        Settings::Camera::serverViewSize.y / Settings::Window::windowSize.y;
     state.initPlayer(playerStartingWorldPosition, client.serverId);
+    state.debugLayer->player = state.appLayer->player;
 
     while (state.window.window.isOpen())
     {

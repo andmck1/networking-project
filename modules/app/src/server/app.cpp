@@ -35,6 +35,7 @@ int main()
         server.acceptPlayerConnections();
         server.sendPlayerPingCheckMessages();
         server.scanSelector();
+        server.checkForSyncs();
         std::vector<std::unique_ptr<Message>> clientUpdates =
             server.receiveDataFromClients();
         clientUpdates = server.processClientUpdates(std::move(clientUpdates));

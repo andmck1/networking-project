@@ -31,6 +31,17 @@ bool Window::init(WindowConfig *config)
     this->backgroundSprite =
         std::make_unique<sf::Sprite>(*config->backgroundTexture);
 
+    // Some copilot help for this one
+    this->randomNumberGenerator = std::mt19937(this->randomDevice());
+    this->randomNumberDistributionWindowWidth =
+        std::uniform_int_distribution<unsigned int>(
+            this->windowSize.x / 10, this->windowSize.x * 9 / 10
+        );
+    this->randomNumberDistributionWindowLength =
+        std::uniform_int_distribution<unsigned int>(
+            this->windowSize.y / 10, this->windowSize.y * 9 / 10
+        );
+
     return true;
 }
 
@@ -57,4 +68,12 @@ sf::Vector2u Window::getWindowSize()
 sf::Vector2u Window::getWindowCentre()
 {
     return {this->windowSize.x / 2, this->windowSize.y / 2};
+}
+
+sf::Vector2u Window::getRandomWindowPosition()
+{
+    return {
+        this->randomNumberDistributionWindowWidth(this->randomNumberGenerator),
+        this->randomNumberDistributionWindowLength(this->randomNumberGenerator)
+    };
 }

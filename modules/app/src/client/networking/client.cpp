@@ -1,5 +1,7 @@
 #include "client.h"
 
+#include "../../shared/config/settings.h"
+#include <format>
 #include <spdlog/spdlog.h>
 
 ClientConfig::ClientConfig(
@@ -96,6 +98,56 @@ bool Client::receivePlayerConnectMessage()
     }
     this->tcpSocket.setBlocking(false);
     return false;
+}
+
+bool Client::syncWithServer()
+{
+    spdlog::info("Syncing with server");
+    this->tcpSocket.setBlocking(true);
+
+    float serverSyncTime = 0.f;
+    for (int pingCheckCount = 0;
+         pingCheckCount < Settings::Networking::maxPingCheckMessageHistory;
+         pingCheckCount++)
+    {
+        sf::Packet packet;
+        sf::Socket::Status status = tcpSocket.receive(packet);
+        switch (status)
+        {
+            case (sf::Socket::Status::Done):
+            {
+                spdlog::info(
+                    std::format(
+                        "Received sync message {} / {}", pingCheckCount + 1,
+                        Settings::Networking::maxPingCheckMessageHistory
+                    )
+                );
+                std::vector<std::unique_ptr<Message>> messages =
+                    Message::deserialiseMessagesFromPacket(packet);
+                if (messages.empty())
+                {
+                    spdlog::error("Failed to sync, no messages received");
+                    return false;
+                }
+                PingCheckMessage *pingCheckMessage =
+                    static_cast<PingCheckMessage *>(messages[0].get());
+                serverSyncTime =
+                    pingCheckMessage->time + pingCheckMessage->ping;
+                this->ping = pingCheckMessage->ping;
+                this->sendPingCheckMessageResponse(pingCheckMessage);
+                break;
+            }
+            default:
+            {
+                spdlog::error("Unexpected error connecting to server");
+                return false;
+                break;
+            }
+        }
+    }
+    this->serverTime = serverSyncTime;
+    this->tcpSocket.setBlocking(false);
+    return true;
 }
 
 std::vector<std::unique_ptr<Message>>
@@ -205,11 +257,9 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
             {
                 if (message->type == MessageType::PingCheck)
                 {
-
                     PingCheckMessage *pingCheckMessage =
                         static_cast<PingCheckMessage *>(message.get());
                     this->ping = pingCheckMessage->ping;
-                    this->serverTime = pingCheckMessage->time + this->ping;
                     this->sendPingCheckMessageResponse(pingCheckMessage);
                 }
                 else
@@ -250,7 +300,7 @@ void Client::sendPingCheckMessageResponse(
     PingCheckMessage responseMessage = PingCheckMessage();
     responseMessage.id = this->serverId;
     responseMessage.time = this->totalTime->asSeconds();
-    responseMessage.echoTime = responseMessage.time;
+    responseMessage.echoTime = receivedRequestMessage->time;
 
     packet << (int32_t) 1;
     packet << responseMessage;

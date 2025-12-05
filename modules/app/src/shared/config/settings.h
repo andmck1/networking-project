@@ -22,17 +22,18 @@ namespace Settings
 
     namespace Camera
     {
-        static sf::Vector2f viewSize = {300, 300};
-    }
+        static sf::Vector2f playerViewSize = {500, 500};
+        static sf::Vector2f serverViewSize = {2560, 1920};
+    } // namespace Camera
 
     namespace Actor
     {
-        static float shipSpeed = 100.f;
-        static sf::Vector2 shipScaling = {1.f, 1.f};
+        static float shipSpeed = 90.f;
+        static sf::Vector2 shipScaling = {4.f, 4.f};
         static float shipTurningRadius = 10.f;
         static float shipFirerate = 0.5f;
         static float projectileSpeed = 500.f;
-        static sf::Vector2f projectileScaling = {1.f, 1.f};
+        static sf::Vector2f projectileScaling = {4.f, 4.f};
         static float projectileLifetime = .5f;
     } // namespace Actor
 

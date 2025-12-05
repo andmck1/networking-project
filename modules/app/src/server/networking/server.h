@@ -5,27 +5,45 @@
 #include <SFML/Network.hpp>
 #include <deque>
 
-class ClientConnection
+struct ClientConnectionState
 {
-    public:
-    // Lab code
     enum class ConnectionState
     {
         NotReady,
         Ready,
+        Syncing,
         Disconnected
     };
 
+    ClientConnectionState() = default;
+    ~ClientConnectionState() = default;
+    ConnectionState connectionState = ConnectionState::Syncing;
+
+    void nextState();
+    void disconnected();
+    void finishedSyncing();
+    bool isReady();
+    bool isConnectedAndNotSyncing();
+    bool isReceiving();
+    bool isSyncing();
+    bool isDisconnected();
+};
+
+class ClientConnection
+{
+    public:
     ClientConnection(int id, std::unique_ptr<sf::TcpSocket> socket);
     ~ClientConnection() = default;
 
     int id;
     std::unique_ptr<sf::TcpSocket> socket;
-    ConnectionState connectionState = ConnectionState::Disconnected;
+    ClientConnectionState connectionState = ClientConnectionState();
     std::deque<ShipMessage> shipMessageHistory = {};
     float interpolationTime;
     std::deque<float> pingHistory = {};
     float averagePing = 0.f;
+    float theirGameTime = 0.f;
+    bool syncRequestSent = false;
 
     ShipMessage interpolateShipMessages(float deltaTime, float totalTime);
     void updateAveragePing();
@@ -56,6 +74,7 @@ class Server
     bool checkListenAvailable();
     void acceptPlayerConnections();
     void scanSelector();
+    void checkForSyncs();
     std::vector<std::unique_ptr<Message>> receiveDataFromClients();
     void sendPlayerConnectMessage(int32_t serverId);
     void relayNetworkUpdates(
@@ -64,6 +83,7 @@ class Server
     std::vector<std::unique_ptr<Message>>
     processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);
     void sendPlayerPingCheckMessages();
+    void sendPingCheckMessage(const ClientConnection *clientConnection);
     std::vector<std::unique_ptr<ClientConnection>> clientConnections;
 
     private:

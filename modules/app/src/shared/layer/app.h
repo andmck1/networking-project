@@ -34,6 +34,7 @@ class AppLayer : public BaseLayer
     std::vector<std::unique_ptr<ShootMessage>> shootEvents = {};
 
     void initPlayerCamera();
+    void initServerCamera();
 
     void addPlayer(ShipActorBuilderContext *initialPlayerState);
     void addServerShip(
@@ -57,12 +58,13 @@ class AppLayer : public BaseLayer
     sf::Time deltaTime;
     sf::Time totalTime;
     sf::Time serverOffsetTime = sf::seconds(0.f);
-    ShipActor *player;
+    ShipActor *player = nullptr;
 
     private:
     std::unordered_map<int32_t, ShipActor *> shipActorMap;
     Window *window;
     std::optional<sf::View> playerView;
+    std::optional<sf::View> serverView;
     TextureManager *textureManager;
     sf::Clock clock = sf::Clock();
     int nFrames = 0;

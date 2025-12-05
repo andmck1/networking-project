@@ -25,6 +25,8 @@ void State::init(StateConfig *config)
     this->initWindow();
     this->initLayers();
     this->initEventHandler();
+    if (this->isServer)
+        this->appLayer->initServerCamera();
 }
 
 void State::initWindow()

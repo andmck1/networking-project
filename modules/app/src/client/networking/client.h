@@ -29,6 +29,7 @@ class Client
 
     void init(ClientConfig *config);
     bool connectToServer();
+    bool syncWithServer();
     void sendNetworkUpdates(AppLayer *appLayer);
     std::vector<std::unique_ptr<Message>> receiveNetworkUpdates();
 

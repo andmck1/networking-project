@@ -3,6 +3,89 @@
 #include "../../shared/config/settings.h"
 #include <spdlog/spdlog.h>
 
+void ClientConnectionState::nextState()
+{
+    switch (this->connectionState)
+    {
+        case (ClientConnectionState::ConnectionState::Ready):
+        {
+            this->connectionState =
+                ClientConnectionState::ConnectionState::NotReady;
+            break;
+        }
+        case (ClientConnectionState::ConnectionState::Syncing):
+        {
+            this->connectionState =
+                ClientConnectionState::ConnectionState::Syncing;
+            break;
+        }
+        case (ClientConnectionState::ConnectionState::NotReady):
+        {
+            this->connectionState =
+                ClientConnectionState::ConnectionState::Ready;
+            break;
+        }
+        case (ClientConnectionState::ConnectionState::Disconnected):
+        {
+            break;
+        }
+        default:
+        {
+            spdlog::warn("Connection state path not defined, disconnecting");
+            this->disconnected();
+            break;
+        }
+    }
+}
+
+void ClientConnectionState::disconnected()
+{
+    this->connectionState =
+        ClientConnectionState::ConnectionState::Disconnected;
+}
+
+void ClientConnectionState::finishedSyncing()
+{
+    this->connectionState = ClientConnectionState::ConnectionState::NotReady;
+}
+
+bool ClientConnectionState::isSyncing()
+{
+    if (this->connectionState ==
+        ClientConnectionState::ConnectionState::Syncing)
+        return true;
+    return false;
+}
+
+bool ClientConnectionState::isReady()
+{
+    if (this->connectionState == ClientConnectionState::ConnectionState::Ready)
+        return true;
+    return false;
+}
+
+bool ClientConnectionState::isConnectedAndNotSyncing()
+{
+    if (!this->isDisconnected() && !this->isSyncing())
+        return true;
+    return false;
+}
+
+bool ClientConnectionState::isReceiving()
+{
+    if (this->isSyncing() || this->isReady())
+        return true;
+    return false;
+}
+
+bool ClientConnectionState::isDisconnected()
+{
+    if (this->connectionState ==
+        ClientConnectionState::ConnectionState::Disconnected)
+        return true;
+    return false;
+}
+
 ClientConnection::ClientConnection(
     int id, std::unique_ptr<sf::TcpSocket> socket
 )
@@ -34,6 +117,7 @@ ClientConnection::interpolateShipMessages(float deltaTime, float totalTime)
     if (this->shipMessageHistory.size() > 1)
     {
         ShipMessage message1 = this->shipMessageHistory[1];
+        // TODO - Could calculate using ping and deltaTime as well
         float step =
             1.f / (((float) message0.time - (float) message1.time) / deltaTime);
         this->interpolationTime += step;
@@ -117,8 +201,6 @@ void Server::acceptPlayerConnections()
                 std::make_unique<ClientConnection>(
                     this->clientIDCounter, std::move(tcpSocket)
                 );
-            newClient->connectionState =
-                ClientConnection::ConnectionState::NotReady;
             newClient->socket->setBlocking(false);
             this->selector.add(*newClient->socket);
             this->clientConnections.push_back(std::move(newClient));
@@ -172,7 +254,12 @@ void Server::sendPlayerConnectMessage(int32_t serverId)
         }
         case (sf::Socket::Status::NotReady):
         {
-            spdlog::error("Client not able to send/receive data");
+            if (clientConnection->connectionState.isSyncing())
+                spdlog::info("Client syncing");
+            else
+                spdlog::error(
+                    "Client not ready to receive data while sending messages"
+                );
             break;
         }
         default:
@@ -194,8 +281,48 @@ void Server::scanSelector()
              this->clientConnections)
         {
             if (this->selector.isReady(*clientConnection->socket))
-                clientConnection->connectionState =
-                    ClientConnection::ConnectionState::Ready;
+                clientConnection->connectionState.nextState();
+        }
+    }
+}
+
+void Server::checkForSyncs()
+{
+    for (const std::unique_ptr<ClientConnection> &clientConnection :
+         this->clientConnections)
+    {
+        if (clientConnection->connectionState.isSyncing())
+        {
+            // TODO - can check if out of sync and reset and ask to sync again
+            if (clientConnection->pingHistory.size() >=
+                Settings::Networking::maxPingCheckMessageHistory)
+            {
+                clientConnection->connectionState.finishedSyncing();
+                clientConnection->syncRequestSent = false;
+                spdlog::info(
+                    std::format(
+                        "Client synced with time {:.2f}, ping {:.2f} while "
+                        "server time is {:.2f}",
+                        clientConnection->theirGameTime,
+                        clientConnection->averagePing,
+                        this->totalTime->asSeconds()
+                    )
+                );
+            }
+            else if (!clientConnection->syncRequestSent)
+            {
+                spdlog::info("Client syncing");
+                spdlog::info(
+                    std::format(
+                        "Sending ping check messages to {}",
+                        clientConnection->id
+                    )
+                );
+                for (int _ = 0;
+                     _ < Settings::Networking::maxPingCheckMessageHistory; _++)
+                    this->sendPingCheckMessage(clientConnection.get());
+                clientConnection->syncRequestSent = true;
+            }
         }
     }
 }
@@ -208,8 +335,7 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
     for (const std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
-        if (clientConnection->connectionState ==
-            ClientConnection::ConnectionState::Ready)
+        if (clientConnection->connectionState.isReceiving())
         {
             spdlog::debug("Connection ready");
             sf::Packet packet;
@@ -231,8 +357,7 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
                             std::move(message)
                         );
                     }
-                    clientConnection->connectionState =
-                        ClientConnection::ConnectionState::NotReady;
+                    clientConnection->connectionState.nextState();
                     break;
                 }
                 case (sf::Socket::Status::Disconnected):
@@ -242,7 +367,16 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
                 }
                 case (sf::Socket::Status::NotReady):
                 {
-                    spdlog::error("Client not able to send/receive data");
+                    if (clientConnection->connectionState.isSyncing())
+                        spdlog::info(
+                            "Not ready status while receiving messages "
+                            "from client while it's syncing"
+                        );
+                    else
+                        spdlog::warn(
+                            "Client not ready to send data while receiving "
+                            "messages"
+                        );
                     break;
                 }
                 default:
@@ -306,6 +440,7 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
                      pingCheckMessage->echoTime) /
                     2.f
                 );
+                clientConnection->theirGameTime = pingCheckMessage->time;
                 if (clientConnection->pingHistory.size() >
                     Settings::Networking::maxPingCheckMessageHistory)
                 {
@@ -415,6 +550,50 @@ void Server::relayNetworkUpdates(
     }
 }
 
+void Server::sendPingCheckMessage(const ClientConnection *clientConnection)
+{
+    sf::Packet packet;
+    PingCheckMessage message = PingCheckMessage();
+    message.id = clientConnection->id;
+    message.time = this->totalTime->asSeconds();
+    message.ping = clientConnection->averagePing;
+    packet << (int32_t) 1;
+    packet << message;
+
+    std::string relayInformation =
+        " to " + std::to_string(clientConnection->id);
+    sf::Socket::Status status = clientConnection->socket->send(packet);
+    while (status == sf::Socket::Status::Partial)
+        status = clientConnection->socket->send(packet);
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::debug("Player connect message sent" + relayInformation);
+            break;
+        }
+        case (sf::Socket::Status::NotReady):
+        {
+            break;
+        }
+        case (sf::Socket::Status::Disconnected):
+        {
+            spdlog::error(
+                "Client disconnected when sending relay packet " +
+                relayInformation
+            );
+            break;
+        }
+        default:
+        {
+            spdlog::error(
+                "Unexpected error when sending relay packet " + relayInformation
+            );
+            break;
+        }
+    }
+}
+
 void Server::sendPlayerPingCheckMessages()
 {
     this->pingCheckTimer += this->deltaTime->asSeconds();
@@ -424,49 +603,7 @@ void Server::sendPlayerPingCheckMessages()
         for (const std::unique_ptr<ClientConnection> &clientConnection :
              clientConnections)
         {
-            sf::Packet packet;
-            PingCheckMessage message = PingCheckMessage();
-            message.id = clientConnection->id;
-            message.time = this->totalTime->asSeconds();
-            message.ping = clientConnection->averagePing;
-            packet << (int32_t) 1;
-            packet << message;
-
-            std::string relayInformation =
-                " to " + std::to_string(clientConnection->id);
-            sf::Socket::Status status = clientConnection->socket->send(packet);
-            while (status == sf::Socket::Status::Partial)
-                status = clientConnection->socket->send(packet);
-            switch (status)
-            {
-                case (sf::Socket::Status::Done):
-                {
-                    spdlog::debug(
-                        "Player connect message sent" + relayInformation
-                    );
-                    break;
-                }
-                case (sf::Socket::Status::NotReady):
-                {
-                    break;
-                }
-                case (sf::Socket::Status::Disconnected):
-                {
-                    spdlog::error(
-                        "Client disconnected when sending relay packet " +
-                        relayInformation
-                    );
-                    break;
-                }
-                default:
-                {
-                    spdlog::error(
-                        "Unexpected error when sending relay packet " +
-                        relayInformation
-                    );
-                    break;
-                }
-            }
+            this->sendPingCheckMessage(clientConnection.get());
         }
     }
 }

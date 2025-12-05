@@ -2,7 +2,6 @@
 
 #include "../../shared/config/settings.h"
 #include <algorithm>
-#include <random>
 #include <spdlog/spdlog.h>
 #include <SFML/Window.hpp>
 
@@ -22,10 +21,22 @@ void AppLayer::init(BaseLayerConfig *config)
 void AppLayer::initPlayerCamera()
 {
     this->playerView = sf::View();
-    this->playerView->setSize(Settings::Camera::viewSize);
+    this->playerView->setSize(Settings::Camera::playerViewSize);
     this->playerView->setCenter(this->player->position);
     this->playerView->setViewport(sf::FloatRect({0.f, 0.f}, {1.f, 1.f}));
     this->window->window.setView(this->playerView.value());
+}
+
+void AppLayer::initServerCamera()
+{
+    this->serverView = sf::View();
+    this->serverView->setSize(Settings::Camera::serverViewSize);
+    sf::Vector2f viewCentre = {
+        Settings::Camera::serverViewSize.x / 2.f,
+        Settings::Camera::serverViewSize.y / 2.f
+    };
+    this->serverView->setCenter(viewCentre);
+    this->window->window.setView(this->serverView.value());
 }
 
 void AppLayer::render()

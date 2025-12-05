@@ -78,17 +78,19 @@ void DebugLayer::render()
     else
         ImGui::Begin("Networking Project Debug: CLIENT");
 
-    ImGui::Text(
-        "Current Game Time: %d", (int) this->currentGameTime->asMilliseconds()
-    );
+    ImGui::Text("Current Game Time: %.2fs", this->currentGameTime->asSeconds());
     ImGui::Text("N Actors: %d", (int) this->actors->size());
     ImGui::Text("N Ships: %d", (int) this->ships->size());
     ImGui::Text("N Projectiles: %d", (int) this->projectiles->size());
     ImGui::Checkbox("Enabled Boundary Boxes?", this->isBoundaryBoxesEnabled);
+    if (this->player)
+    {
+        ImGui::Checkbox("Enable WASD?", &this->player->isPlayerControlling);
+    }
     if (!this->isServer)
     {
         ImGui::SliderFloat(
-            "Client Send Rate", this->clientUpdateRate, 0.f, 2.f
+            "Client Send Rate (s/update)", this->clientUpdateRate, 0.f, 2.f
         );
     }
     if (ImGui::BeginTable("Ship Information", 4, flags))
@@ -135,7 +137,7 @@ void DebugLayer::render()
         if (ImGui::BeginTable("Client Information", 2, flags))
         {
             ImGui::TableSetupColumn("Client ID");
-            ImGui::TableSetupColumn("Ping");
+            ImGui::TableSetupColumn("Ping (ms)");
             ImGui::TableHeadersRow();
 
             std::string cellText;
@@ -149,8 +151,9 @@ void DebugLayer::render()
                     ImGui::TextUnformatted(cellText.c_str());
 
                     ImGui::TableSetColumnIndex(1);
-                    cellText =
-                        std::format("{:.2f}", clientConnection->averagePing);
+                    cellText = std::format(
+                        "{:.2f}", clientConnection->averagePing * 1000.f
+                    );
                     ImGui::TextUnformatted(cellText.c_str());
                 }
             }

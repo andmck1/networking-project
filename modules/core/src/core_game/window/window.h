@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <random>
 
 struct WindowConfig
 {
@@ -30,6 +31,7 @@ class Window
 
     sf::Vector2u getWindowSize();
     sf::Vector2u getWindowCentre();
+    sf::Vector2u getRandomWindowPosition();
 
     private:
     sf::Vector2u windowSize;
@@ -37,4 +39,8 @@ class Window
     std::string appName;
     std::unique_ptr<sf::Sprite> backgroundSprite;
     sf::Color clearColour;
+    std::random_device randomDevice;
+    std::mt19937 randomNumberGenerator;
+    std::uniform_int_distribution<unsigned int> randomNumberDistributionWindowWidth;
+    std::uniform_int_distribution<unsigned int> randomNumberDistributionWindowLength;
 };

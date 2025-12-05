@@ -1,5 +1,6 @@
 #include "eventhandler.h"
 
+#include "core_game/util/constants.h"
 #include "imgui.h"
 
 #include "../config/settings.h"
@@ -63,45 +64,56 @@ bool EventHandler::handleInput()
     }
     if (this->player)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
+        if (this->player.value()->isPlayerControlling)
+        {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A))
+            {
+                this->player.value()->currentTurnDirection =
+                    ShipTurnDirection::LEFT;
+                this->player.value()->createSprite(
+                    this->player.value()->shipTextures->left
+                );
+            }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
+            {
+                this->player.value()->currentTurnDirection =
+                    ShipTurnDirection::RIGHT;
+                this->player.value()->createSprite(
+                    this->player.value()->shipTextures->right
+                );
+            }
+            else
+            {
+                this->player.value()->currentTurnDirection =
+                    ShipTurnDirection::NONE;
+                this->player.value()->createSprite(
+                    this->player.value()->shipTextures->forward
+                );
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
+            {
+                if (this->fireTimer > Settings::Actor::shipFirerate)
+                {
+                    ProjectileActorBuilderContext projectileBuilderContext =
+                        this->appLayer->createProjecileBuildContext(
+                            this->player.value()
+                        );
+                    this->appLayer->addProjectile(&projectileBuilderContext);
+                    this->appLayer->addShootEvent(
+                        projectileBuilderContext.initialPosition,
+                        projectileBuilderContext.initialForwardVector
+                    );
+                    this->fireTimer = 0.f;
+                }
+            }
+        }
+        else
         {
             this->player.value()->currentTurnDirection =
                 ShipTurnDirection::LEFT;
             this->player.value()->createSprite(
                 this->player.value()->shipTextures->left
             );
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
-        {
-            this->player.value()->currentTurnDirection =
-                ShipTurnDirection::RIGHT;
-            this->player.value()->createSprite(
-                this->player.value()->shipTextures->right
-            );
-        }
-        else
-        {
-            this->player.value()->currentTurnDirection =
-                ShipTurnDirection::NONE;
-            this->player.value()->createSprite(
-                this->player.value()->shipTextures->forward
-            );
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
-        {
-            if (this->fireTimer > Settings::Actor::shipFirerate)
-            {
-                ProjectileActorBuilderContext projectileBuilderContext =
-                    this->appLayer->createProjecileBuildContext(
-                        this->player.value()
-                    );
-                this->appLayer->addProjectile(&projectileBuilderContext);
-                this->appLayer->addShootEvent(
-                    projectileBuilderContext.initialPosition,
-                    projectileBuilderContext.initialForwardVector
-                );
-                this->fireTimer = 0.f;
-            }
         }
     }
 
