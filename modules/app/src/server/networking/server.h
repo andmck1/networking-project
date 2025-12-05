@@ -29,6 +29,7 @@ class Server
     void init(ServerConfig *config);
     bool checkListenAvailable();
     void acceptPlayerConnections();
+    void createNewClient(int32_t serverId);
     void scanSelector();
     void checkForSyncs();
     std::vector<std::unique_ptr<Message>> receiveDataFromClients();

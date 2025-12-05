@@ -32,15 +32,17 @@ class Client
     bool syncWithServer();
     void sendNetworkUpdates(AppLayer *appLayer);
     void disconnectFromServer();
+    void disconnectAndRestConnectionStatusWithServer();
     std::vector<std::unique_ptr<Message>> receiveNetworkUpdates();
 
-    int32_t serverId;
+    int32_t serverId = -1;
     float serverTime;
     float serverDeltaTime = 0.f;
     float ping = 0.f;
     bool isConnectedToServer = false;
     bool isConnectionEnabled = true;
     sf::TcpSocket tcpSocket;
+    int nServerConnectTries = 0;
 
     private:
     float sendTimer = 0.f;

@@ -47,6 +47,10 @@ namespace Settings
         static float serverPingCheckRate = 1.f;
         static unsigned short maxShipMessageHistory = 5;
         static unsigned short maxPingCheckMessageHistory = 3;
+        static unsigned short maxClientConnectToServerTries = 5;
+        static unsigned short maxClientReconnectToServerTries = 10;
+        static float clientConnectToServerWaitTime = 0.2f;
+        static float clientReconnectToServerWaitTime = 1.f;
     } // namespace Networking
 
 }; // namespace Settings

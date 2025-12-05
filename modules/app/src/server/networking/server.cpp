@@ -45,36 +45,39 @@ void Server::acceptPlayerConnections()
             std::string ipAddressString =
                 tcpSocket->getRemoteAddress()->toString();
             unsigned int port = tcpSocket->getRemotePort();
+            std::string clientConnectionDetails =
+                std::format("{}:{}", ipAddressString, port);
 
             // if client exists reconnect, otherwise add new one
-            if (this->clientConnectionsMap.find(
-                    tcpSocket->getRemoteAddress()->toString()
-                ) != this->clientConnectionsMap.end())
+            if (this->clientConnectionsMap.find(clientConnectionDetails) !=
+                this->clientConnectionsMap.end())
             {
                 spdlog::info(
-                    "Client {} reconnected at port {}", ipAddressString, port
+                    "Client {} reconnected at port {}", clientConnectionDetails,
+                    port
                 );
                 this->selector.remove(
-                    *this->clientConnectionsMap[ipAddressString]->socket
+                    *this->clientConnectionsMap[clientConnectionDetails]->socket
                 );
-                this->clientConnectionsMap[ipAddressString]->socket =
+                this->clientConnectionsMap[clientConnectionDetails]->socket =
                     std::move(tcpSocket);
                 this->selector.add(
-                    *this->clientConnectionsMap[ipAddressString]->socket
+                    *this->clientConnectionsMap[clientConnectionDetails]->socket
                 );
-                this->clientConnectionsMap[ipAddressString]
+                this->clientConnectionsMap[clientConnectionDetails]
                     ->connectionState.syncing();
-                this->clientConnectionsMap[ipAddressString]->port = port;
-                this->clientConnectionsMap[ipAddressString]
+                this->clientConnectionsMap[clientConnectionDetails]->port =
+                    port;
+                this->clientConnectionsMap[clientConnectionDetails]
                     ->socket->setBlocking(false);
                 this->sendPlayerConnectMessage(
-                    this->clientConnectionsMap[ipAddressString]->id
+                    this->clientConnectionsMap[clientConnectionDetails]->id
                 );
             }
             else
             {
                 spdlog::info(
-                    "New client {}:{} connected", ipAddressString, port
+                    "New client {}:{} connected", clientConnectionDetails, port
                 );
                 std::unique_ptr<ClientConnection> newClient =
                     std::make_unique<ClientConnection>(
@@ -85,7 +88,8 @@ void Server::acceptPlayerConnections()
 
                 this->clientConnections.push_back(std::move(newClient));
                 this->clientConnectionsMap.insert(
-                    {ipAddressString, this->clientConnections.back().get()}
+                    {clientConnectionDetails,
+                     this->clientConnections.back().get()}
                 );
                 this->clientConnections.back()->connectionState.syncing();
 

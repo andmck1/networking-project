@@ -31,6 +31,20 @@ int main()
     while (!client.connectToServer())
     {
         state.eventHandler.handle();
+        if (client.nServerConnectTries >
+            Settings::Networking::maxClientConnectToServerTries)
+        {
+            spdlog::error("Failed to connect to server, max retries reached");
+            return -1;
+        }
+        sf::Clock connectionTimer = sf::Clock();
+        connectionTimer.start();
+        while (connectionTimer.getElapsedTime().asSeconds() <
+               Settings::Networking::clientConnectToServerWaitTime)
+        {
+            if (!state.eventHandler.handle())
+                return 0;
+        }
     }
     while (!client.syncWithServer())
     {
@@ -74,6 +88,22 @@ int main()
             while (!client.connectToServer())
             {
                 state.eventHandler.handle();
+                if (client.nServerConnectTries >
+                    Settings::Networking::maxClientReconnectToServerTries)
+                {
+                    spdlog::error(
+                        "Failed to connect to server, max retries reached"
+                    );
+                    return -1;
+                }
+                sf::Clock connectionTimer = sf::Clock();
+                connectionTimer.start();
+                while (connectionTimer.getElapsedTime().asSeconds() <
+                       Settings::Networking::clientReconnectToServerWaitTime)
+                {
+                    if (!state.eventHandler.handle())
+                        return 0;
+                }
             }
             while (!client.syncWithServer())
             {

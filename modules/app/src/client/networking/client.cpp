@@ -28,37 +28,48 @@ void Client::init(ClientConfig *config)
 
     this->isConnectedToServer = false;
     this->tcpSocket = sf::TcpSocket();
-    // TODO - support non blocking calls
     this->tcpSocket.setBlocking(false);
 }
 
 bool Client::connectToServer()
 {
+    sf::Socket::Status status;
     spdlog::info("Connecting to server");
     this->tcpSocket.setBlocking(true);
-    sf::Socket::Status status =
-        tcpSocket.connect(this->serverIPAddress, this->serverPort);
+    status = this->tcpSocket.connect(
+        this->serverIPAddress, this->serverPort, sf::seconds(1.f)
+    );
     switch (status)
     {
         case (sf::Socket::Status::Done):
         {
             spdlog::info("Connected to server!");
             this->isConnectedToServer = true;
+            this->nServerConnectTries = 0;
+
+            spdlog::info("Waiting for player connect confirmation");
+            this->isConnectedToServer = this->receivePlayerConnectMessage();
             break;
         }
         case (sf::Socket::Status::NotReady):
+            spdlog::info(
+                "Waiting for connectiong to server. Try {}/{}",
+                this->nServerConnectTries + 1,
+                Settings::Networking::maxClientConnectToServerTries
+            );
+            this->nServerConnectTries += 1;
             break;
         default:
         {
-            spdlog::error("Unexpected error connecting to server");
+            spdlog::error(
+                "Unexpected error connecting to server, try {}/{}",
+                this->nServerConnectTries + 1,
+                Settings::Networking::maxClientConnectToServerTries
+            );
+            this->nServerConnectTries += 1;
+            this->disconnectAndRestConnectionStatusWithServer();
             break;
         }
-    }
-
-    if (this->isConnectedToServer)
-    {
-        spdlog::info("Waiting for player connect confirmation");
-        this->isConnectedToServer = this->receivePlayerConnectMessage();
     }
     this->tcpSocket.setBlocking(false);
     return this->isConnectedToServer;
@@ -83,11 +94,11 @@ bool Client::receivePlayerConnectMessage()
                 "Server assigned ID: " + std::to_string(this->serverId)
             );
             return true;
-            break;
         }
         default:
         {
-            spdlog::error("Unexpected error connecting to server");
+            spdlog::error("Unexpected error receiving player connect message");
+            this->disconnectAndRestConnectionStatusWithServer();
             break;
         }
     }
@@ -132,7 +143,7 @@ bool Client::syncWithServer()
             }
             default:
             {
-                spdlog::error("Unexpected error connecting to server");
+                spdlog::error("Unexpected error receivng sync message");
                 return false;
                 break;
             }
@@ -344,4 +355,13 @@ void Client::sendPingCheckMessageResponse(
 void Client::disconnectFromServer()
 {
     this->tcpSocket.disconnect();
+}
+
+void Client::disconnectAndRestConnectionStatusWithServer()
+{
+    this->tcpSocket.disconnect();
+    this->tcpSocket = sf::TcpSocket();
+    this->tcpSocket.setBlocking(false);
+    this->disconnectFromServer();
+    this->isConnectedToServer = false;
 }
