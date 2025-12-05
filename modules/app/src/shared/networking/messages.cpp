@@ -37,10 +37,21 @@ Message::deserialiseMessageFromPacket(sf::Packet &packet)
         case (MessageType::PlayerConnect):
         {
             message = std::make_unique<PlayerConnectMessage>();
+            break;
         }
         case (MessageType::Shoot):
         {
             message = std::make_unique<ShootMessage>();
+            break;
+        }
+        case (MessageType::PingCheck):
+        {
+            message = std::make_unique<PingCheckMessage>();
+            break;
+        }
+        default:
+        {
+            spdlog::error("Unhandled message type, will error");
         }
     }
     message->baseDeserialise(packet);
@@ -112,4 +123,19 @@ void ShootMessage::deserialise(sf::Packet &packet)
 {
     packet >> this->position.x >> this->position.y >> this->forwardVector.x >>
         this->forwardVector.y;
+}
+
+PingCheckMessage::PingCheckMessage()
+{
+    this->type = MessageType::PingCheck;
+}
+
+void PingCheckMessage::serialise(sf::Packet &packet) const
+{
+    packet << this->echoTime << this->ping;
+}
+
+void PingCheckMessage::deserialise(sf::Packet &packet)
+{
+    packet >> this->echoTime >> this->ping;
 }

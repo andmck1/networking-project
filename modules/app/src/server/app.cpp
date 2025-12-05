@@ -26,12 +26,14 @@ int main()
     if (!server.checkListenAvailable())
         return -1;
 
+    state.debugLayer->clients = &server.clientConnections;
     // server specific networking
     while (state.window.window.isOpen())
     {
         // network
         // TODO - consolidate as server.frame
         server.acceptPlayerConnections();
+        server.sendPlayerPingCheckMessages();
         server.scanSelector();
         std::vector<std::unique_ptr<Message>> clientUpdates =
             server.receiveDataFromClients();

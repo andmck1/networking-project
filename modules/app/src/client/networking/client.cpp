@@ -4,13 +4,15 @@
 
 ClientConfig::ClientConfig(
     unsigned short serverPort, unsigned short clientPort, float *updateRate,
-    sf::IpAddress serverIPAddress
+    sf::Time *deltaTime, sf::Time *totalTime, sf::IpAddress serverIPAddress
 )
 {
     this->serverPort = serverPort;
     this->clientPort = clientPort;
     this->serverIPAddress = serverIPAddress;
     this->updateRate = updateRate;
+    this->deltaTime = deltaTime;
+    this->totalTime = totalTime;
 }
 
 void Client::init(ClientConfig *config)
@@ -19,6 +21,9 @@ void Client::init(ClientConfig *config)
     this->clientPort = config->clientPort;
     this->serverIPAddress = config->serverIPAddress;
     this->updateRate = config->updateRate;
+    this->deltaTime = config->deltaTime;
+    this->totalTime = config->totalTime;
+
     this->isConnectedToServer = false;
     this->tcpSocket = sf::TcpSocket();
     // TODO - support non blocking calls
@@ -60,6 +65,7 @@ bool Client::connectToServer()
 bool Client::receivePlayerConnectMessage()
 {
     sf::Packet packet;
+
     this->tcpSocket.setBlocking(true);
     sf::Socket::Status status = this->tcpSocket.receive(packet);
     switch (status)
@@ -69,6 +75,12 @@ bool Client::receivePlayerConnectMessage()
             spdlog::info("Received player connect message");
             std::unique_ptr<Message> message =
                 Message::deserialiseMessageFromPacket(packet);
+
+            // TODO - check logic
+            // Should really check for ping first but it doesn't matter too
+            // much as well update quickly
+            this->serverTime = message->time;
+
             this->serverId = message->id;
             spdlog::info(
                 "Server assigned ID: " + std::to_string(this->serverId)
@@ -144,7 +156,7 @@ void Client::sendNetworkUpdates(AppLayer *appLayer)
         {
             case (sf::Socket::Status::Done):
             {
-                spdlog::debug("Packet send to server");
+                spdlog::debug("Packet sent to server");
                 break;
             }
             case (sf::Socket::Status::Disconnected):
@@ -191,7 +203,17 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
 
             for (std::unique_ptr<Message> &message : receivedMessages)
             {
-                allReceivedMessages.push_back(std::move(message));
+                if (message->type == MessageType::PingCheck)
+                {
+
+                    PingCheckMessage *pingCheckMessage =
+                        static_cast<PingCheckMessage *>(message.get());
+                    this->ping = pingCheckMessage->ping;
+                    this->serverTime = pingCheckMessage->time + this->ping;
+                    this->sendPingCheckMessageResponse(pingCheckMessage);
+                }
+                else
+                    allReceivedMessages.push_back(std::move(message));
             }
             spdlog::debug(
                 std::to_string(allReceivedMessages.size()) +
@@ -218,4 +240,45 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
         }
     }
     return allReceivedMessages;
+}
+
+void Client::sendPingCheckMessageResponse(
+    PingCheckMessage *receivedRequestMessage
+)
+{
+    sf::Packet packet;
+    PingCheckMessage responseMessage = PingCheckMessage();
+    responseMessage.id = this->serverId;
+    responseMessage.time = this->totalTime->asSeconds();
+    responseMessage.echoTime = responseMessage.time;
+
+    packet << (int32_t) 1;
+    packet << responseMessage;
+
+    sf::Socket::Status status = this->tcpSocket.send(packet);
+    while (status == sf::Socket::Status::Partial)
+        status = this->tcpSocket.send(packet);
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::debug("Packet sent to server");
+            break;
+        }
+        case (sf::Socket::Status::Disconnected):
+        {
+            spdlog::error("Server disconnected while sending packet");
+            break;
+        }
+        case (sf::Socket::Status::NotReady):
+        {
+            spdlog::error("Server not able to send/receive data");
+            break;
+        }
+        default:
+        {
+            spdlog::warn("Unexpected error sending packet to server");
+            break;
+        }
+    }
 }

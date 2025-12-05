@@ -56,6 +56,7 @@ class AppLayer : public BaseLayer
     bool isBoundaryBoxesEnabled = false;
     sf::Time deltaTime;
     sf::Time totalTime;
+    sf::Time serverOffsetTime = sf::seconds(0.f);
     ShipActor *player;
 
     private:
@@ -64,6 +65,7 @@ class AppLayer : public BaseLayer
     std::optional<sf::View> playerView;
     TextureManager *textureManager;
     sf::Clock clock = sf::Clock();
+    int nFrames = 0;
 
     void startFrame();
     void updateActors();

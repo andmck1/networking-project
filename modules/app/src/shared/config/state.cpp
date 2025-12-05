@@ -29,11 +29,16 @@ void State::init(StateConfig *config)
 
 void State::initWindow()
 {
+    sf::Vector2u windowSize;
+    if (this->isServer)
+        windowSize = Settings::Window::serverWindowSize;
+    else
+        windowSize = Settings::Window::windowSize;
     WindowConfig windowConfig = WindowConfig(
-        Settings::Window::windowSize, Settings::Window::windowOrigin,
-        Settings::App::appName, &this->textureManager.backgroundTexture,
-        Settings::Window::clearColour
+        windowSize, Settings::Window::windowOrigin, Settings::App::appName,
+        &this->textureManager.backgroundTexture, Settings::Window::clearColour
     );
+
     this->window.init(&windowConfig);
 }
 
@@ -54,9 +59,12 @@ void State::initAppLayer()
 
 void State::initPlayer(sf::Vector2f startingPosition, int32_t serverId)
 {
+
+    int randomTextureIndex = this->textureManager.getRandomTextureIndex();
+
     ShipActorBuilderContext initialPlayerState = ShipActorBuilderContext(
-        &textureManager.defaultShipTexture, startingPosition, {0, -1},
-        ShipTurnDirection::NONE, serverId
+        &textureManager.shipTextures[randomTextureIndex], startingPosition,
+        {0, -1}, ShipTurnDirection::NONE, serverId
     );
     this->appLayer->addPlayer(&initialPlayerState);
     this->eventHandler.addPlayerHandle(appLayer->player);
@@ -70,7 +78,7 @@ void State::initDebugLayer()
     DebugLayerConfig debugLayerConfig = DebugLayerConfig(
         &window, &this->appLayer->actors, &this->appLayer->ships,
         &this->appLayer->projectiles, &this->appLayer->isBoundaryBoxesEnabled,
-        &this->clientUpdateRate, this->isServer
+        &this->clientUpdateRate, this->isServer, &this->appLayer->totalTime
     );
     std::unique_ptr<DebugLayer> debugLayer = std::make_unique<DebugLayer>();
     debugLayer->init(&debugLayerConfig);

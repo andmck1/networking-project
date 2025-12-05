@@ -2,6 +2,7 @@
 
 #include "../../shared/config/settings.h"
 #include <algorithm>
+#include <random>
 #include <spdlog/spdlog.h>
 #include <SFML/Window.hpp>
 
@@ -38,11 +39,13 @@ void AppLayer::render()
     {
         this->updatePlayerCamera();
     }
+    this->nFrames++;
 }
 
 void AppLayer::startFrame()
 {
-    sf::Time newTotalTime = this->clock.getElapsedTime();
+    sf::Time newTotalTime =
+        this->clock.getElapsedTime() + this->serverOffsetTime;
     this->deltaTime = newTotalTime - this->totalTime;
     this->deltaTime = this->deltaTime.asSeconds() > 0.f ? this->deltaTime
                                                         : sf::milliseconds(1.f);
@@ -51,25 +54,39 @@ void AppLayer::startFrame()
 
 void AppLayer::updateActors()
 {
-    for (const std::unique_ptr<BaseActor> &actor : this->actors)
+    if (this->nFrames < 5)
     {
-        actor->update(this->deltaTime.asSeconds());
-    }
-
-    for (ShipActor *ship : this->ships)
-    {
-        for (ProjectileActor *projectile : this->projectiles)
+        if (this->player)
         {
-            if ((ship->serverId != projectile->shooterServerId) &&
-                (!projectile->isDeleted))
+            this->player->sprite->setColor(sf::Color(255, 255, 255, 128));
+        }
+    }
+    else
+    {
+        if (this->player)
+        {
+            this->player->sprite->setColor(sf::Color(255, 255, 255, 255));
+        }
+        for (const std::unique_ptr<BaseActor> &actor : this->actors)
+        {
+            actor->update(this->deltaTime.asSeconds());
+        }
+
+        for (ShipActor *ship : this->ships)
+        {
+            for (ProjectileActor *projectile : this->projectiles)
             {
-                if (ship->sprite->getGlobalBounds().findIntersection(
-                        projectile->sprite->getGlobalBounds()
-                    ))
+                if ((ship->serverId != projectile->shooterServerId) &&
+                    (!projectile->isDeleted))
                 {
-                    ship->health -= 5.f;
-                    projectile->isDeleted = true;
-                    break;
+                    if (ship->sprite->getGlobalBounds().findIntersection(
+                            projectile->sprite->getGlobalBounds()
+                        ))
+                    {
+                        ship->health -= 5.f;
+                        projectile->isDeleted = true;
+                        break;
+                    }
                 }
             }
         }
@@ -152,9 +169,11 @@ void AppLayer::addServerShip(
 )
 {
     spdlog::debug("Adding ship");
+
+    int randomTextureIndex = this->textureManager->getRandomTextureIndex();
     ShipActorBuilderContext initialShipState = ShipActorBuilderContext(
-        &this->textureManager->defaultShipTexture, initialPosition,
-        initialForwardVector, ShipTurnDirection::NONE, serverId
+        &this->textureManager->shipTextures[randomTextureIndex],
+        initialPosition, initialForwardVector, ShipTurnDirection::NONE, serverId
     );
     this->addActor<ShipActor>(&initialShipState);
     ShipActor *newServerShip =
@@ -215,6 +234,12 @@ void AppLayer::networkUpdate(
                         "Tried to add projectile from non-existant player"
                     );
                 }
+                break;
+            }
+            default:
+            {
+                spdlog::warn("Unhandled message type sent");
+                break;
             }
         }
     }

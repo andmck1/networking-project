@@ -23,6 +23,7 @@ class State
     ~State() = default;
     bool isServer;
     float clientUpdateRate;
+    std::vector<ClientConnection *> *clients = nullptr;
 
     Window window = Window();
     EventHandler eventHandler = EventHandler();

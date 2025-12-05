@@ -9,6 +9,7 @@ enum MessageType : int32_t
     Ship,
     PlayerConnect,
     Shoot,
+    PingCheck,
     END
 };
 
@@ -68,6 +69,20 @@ struct ShootMessage : public Message
 
     sf::Vector2f position = {0.f, 0.f};
     sf::Vector2f forwardVector = {0.f, -1.f};
+
+    void serialise(sf::Packet &packet) const override;
+
+    private:
+    void deserialise(sf::Packet &packet) override;
+};
+
+struct PingCheckMessage : public Message
+{
+    PingCheckMessage();
+    ~PingCheckMessage() = default;
+
+    float_t echoTime;
+    float_t ping = 0.f;
 
     void serialise(sf::Packet &packet) const override;
 

@@ -23,15 +23,15 @@ class ClientConnection
     std::unique_ptr<sf::TcpSocket> socket;
     ConnectionState connectionState = ConnectionState::Disconnected;
     std::deque<ShipMessage> shipMessageHistory = {};
-    float interpolationTime = 0.f;
+    float interpolationTime;
+    std::deque<float> pingHistory = {};
+    float averagePing = 0.f;
 
     ShipMessage interpolateShipMessages(float deltaTime, float totalTime);
+    void updateAveragePing();
 
     private:
     static sf::Vector2f interpolateVectorLinear(
-        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
-    );
-    static sf::Vector2f interpolateVectorCircular(
         sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
     );
 };
@@ -63,13 +63,15 @@ class Server
     );
     std::vector<std::unique_ptr<Message>>
     processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);
+    void sendPlayerPingCheckMessages();
+    std::vector<std::unique_ptr<ClientConnection>> clientConnections;
 
     private:
     unsigned short port;
     sf::TcpListener listener;
     sf::SocketSelector selector;
-    std::vector<std::unique_ptr<ClientConnection>> clientConnections;
     int clientIDCounter = 0;
     sf::Time *deltaTime;
     sf::Time *totalTime;
+    float pingCheckTimer = 0.f;
 };

@@ -4,6 +4,7 @@
 #include "../actor/base.h"
 #include "../actor/ship.h"
 #include "../actor/projectile.h"
+#include "../../server/networking/server.h"
 
 struct DebugLayerConfig : BaseLayerConfig
 {
@@ -11,7 +12,8 @@ struct DebugLayerConfig : BaseLayerConfig
         Window *window, std::vector<std::unique_ptr<BaseActor>> *actors,
         std::vector<ShipActor *> *ships,
         std::vector<ProjectileActor *> *projectiles,
-        bool *isBoundaryBoxesEnabled, float *clientUpdateRate, bool isServer
+        bool *isBoundaryBoxesEnabled, float *clientUpdateRate, bool isServer,
+        sf::Time *currentGameTime
     );
     Window *window;
     std::vector<std::unique_ptr<BaseActor>> *actors;
@@ -20,6 +22,7 @@ struct DebugLayerConfig : BaseLayerConfig
     bool *isBoundaryBoxesEnabled;
     float *clientUpdateRate = nullptr;
     bool isServer;
+    sf::Time *currentGameTime;
 };
 
 class DebugLayer : public BaseLayer
@@ -30,6 +33,7 @@ class DebugLayer : public BaseLayer
 
     void init(BaseLayerConfig *config) override;
     void render() override;
+    std::vector<std::unique_ptr<ClientConnection>> *clients = nullptr;
 
     private:
     Window *window;
@@ -39,4 +43,5 @@ class DebugLayer : public BaseLayer
     bool *isBoundaryBoxesEnabled;
     float *clientUpdateRate = nullptr;
     bool isServer;
+    sf::Time *currentGameTime;
 };

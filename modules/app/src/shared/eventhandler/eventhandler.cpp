@@ -67,16 +67,25 @@ bool EventHandler::handleInput()
         {
             this->player.value()->currentTurnDirection =
                 ShipTurnDirection::LEFT;
+            this->player.value()->createSprite(
+                this->player.value()->shipTextures->left
+            );
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D))
         {
             this->player.value()->currentTurnDirection =
                 ShipTurnDirection::RIGHT;
+            this->player.value()->createSprite(
+                this->player.value()->shipTextures->right
+            );
         }
         else
         {
             this->player.value()->currentTurnDirection =
                 ShipTurnDirection::NONE;
+            this->player.value()->createSprite(
+                this->player.value()->shipTextures->forward
+            );
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
         {

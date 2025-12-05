@@ -7,12 +7,12 @@
 #include <spdlog/spdlog.h>
 
 ShipActorBuilderContext::ShipActorBuilderContext(
-    sf::Texture *initialTexture, sf::Vector2f initialPosition,
+    TextureManager::ShipTextures *shipTextures, sf::Vector2f initialPosition,
     sf::Vector2f initialForwardVector, int32_t initialTurnDirection,
     int32_t serverId
 )
 {
-    this->initialTexture = initialTexture;
+    this->initialTexture = &shipTextures->forward;
     this->initialScaling = Settings::Actor::shipScaling;
     this->initialPosition = initialPosition;
     this->initialForwardVector = initialForwardVector;
@@ -21,6 +21,7 @@ ShipActorBuilderContext::ShipActorBuilderContext(
     this->initialTurnDirection = initialTurnDirection;
     this->initialTurningCircleRadius = Settings::Actor::shipTurningRadius;
     this->serverId = serverId;
+    this->shipTextures = shipTextures;
 }
 
 void ShipActor::init(BaseActorBuilderContext *context)
@@ -36,6 +37,7 @@ void ShipActor::init(BaseActorBuilderContext *context)
     this->currentTurnDirection = _context->initialTurnDirection;
     this->turningCircleRadius = _context->initialTurningCircleRadius;
     this->serverId = _context->serverId;
+    this->shipTextures = _context->shipTextures;
     this->createSprite(*_context->initialTexture);
 }
 

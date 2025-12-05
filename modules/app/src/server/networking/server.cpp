@@ -18,13 +18,6 @@ sf::Vector2f ClientConnection::interpolateVectorLinear(
     return ((vector1 - vector0) * interpolationTime) + vector0;
 }
 
-sf::Vector2f ClientConnection::interpolateVectorCircular(
-    sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
-)
-{
-    return vector0 + ((vector1 - vector0) * interpolationTime);
-}
-
 ShipMessage
 ClientConnection::interpolateShipMessages(float deltaTime, float totalTime)
 {
@@ -44,14 +37,13 @@ ClientConnection::interpolateShipMessages(float deltaTime, float totalTime)
         float step =
             1.f / (((float) message0.time - (float) message1.time) / deltaTime);
         this->interpolationTime += step;
-        this->interpolationTime = std::clamp(this->interpolationTime, 0.f, 1.f);
+        this->interpolationTime = std::clamp(interpolationTime, 0.f, 1.f);
 
         interpolatedPosition = this->interpolateVectorLinear(
-            message1.position, message0.position, this->interpolationTime
+            message1.position, message0.position, interpolationTime
         );
         interpolatedForwardVector = this->interpolateVectorLinear(
-            message1.forwardVector, message0.forwardVector,
-            this->interpolationTime
+            message1.forwardVector, message0.forwardVector, interpolationTime
         );
         interpolatedForwardVector /= interpolatedForwardVector.length();
         interpolatedTurnDirection = this->shipMessageHistory[1].turnDirection;
@@ -64,6 +56,16 @@ ClientConnection::interpolateShipMessages(float deltaTime, float totalTime)
     interpolatedShipMessage.turnDirection = interpolatedTurnDirection;
 
     return interpolatedShipMessage;
+}
+
+void ClientConnection::updateAveragePing()
+{
+    float cumulativePing = 0.f;
+    for (const float ping : this->pingHistory)
+    {
+        cumulativePing += ping;
+    }
+    this->averagePing = cumulativePing / this->pingHistory.size();
 }
 
 ServerConfig::ServerConfig(
@@ -149,8 +151,7 @@ void Server::sendPlayerConnectMessage(int32_t serverId)
     sf::Packet packet;
     PlayerConnectMessage message;
     message.id = serverId;
-    // TODO - update
-    message.time = 0.f;
+    message.time = this->totalTime->asSeconds();
     packet << message;
     sf::Socket::Status status = clientConnection->socket->send(packet);
     while (status == sf::Socket::Status::Partial)
@@ -272,15 +273,15 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
 
     for (std::unique_ptr<Message> &message : clientUpdates)
     {
+        const int32_t clientId = message->id;
+        const std::unique_ptr<ClientConnection> &clientConnection =
+            this->clientConnections[clientId];
         switch (message->type)
         {
             case (MessageType::Ship):
             {
                 const ShipMessage *shipMessage =
                     static_cast<ShipMessage *>(message.get());
-                int32_t shipId = shipMessage->id;
-                const std::unique_ptr<ClientConnection> &clientConnection =
-                    this->clientConnections[shipId];
 
                 clientConnection->interpolationTime = 0.f;
                 clientConnection->shipMessageHistory.push_front(*shipMessage);
@@ -296,10 +297,26 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
                 processedMessages.push_back(std::move(message));
                 break;
             }
+            case (MessageType::PingCheck):
+            {
+                const PingCheckMessage *pingCheckMessage =
+                    static_cast<PingCheckMessage *>(message.get());
+                clientConnection->pingHistory.push_front(
+                    (this->totalTime->asSeconds() -
+                     pingCheckMessage->echoTime) /
+                    2.f
+                );
+                if (clientConnection->pingHistory.size() >
+                    Settings::Networking::maxPingCheckMessageHistory)
+                {
+                    clientConnection->pingHistory.pop_back();
+                }
+                clientConnection->updateAveragePing();
+                break;
+            }
             default:
             {
-                spdlog::warn("Unsuported message type sent");
-                processedMessages.push_back(std::move(message));
+                spdlog::warn("Unsupported message type sent");
                 break;
             }
         }
@@ -374,6 +391,62 @@ void Server::relayNetworkUpdates(
                     break;
                 }
                 case (sf::Socket::Status::Partial):
+                {
+                    break;
+                }
+                case (sf::Socket::Status::Disconnected):
+                {
+                    spdlog::error(
+                        "Client disconnected when sending relay packet " +
+                        relayInformation
+                    );
+                    break;
+                }
+                default:
+                {
+                    spdlog::error(
+                        "Unexpected error when sending relay packet " +
+                        relayInformation
+                    );
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void Server::sendPlayerPingCheckMessages()
+{
+    this->pingCheckTimer += this->deltaTime->asSeconds();
+    if (this->pingCheckTimer > Settings::Networking::serverPingCheckRate)
+    {
+        this->pingCheckTimer = 0.f;
+        for (const std::unique_ptr<ClientConnection> &clientConnection :
+             clientConnections)
+        {
+            sf::Packet packet;
+            PingCheckMessage message = PingCheckMessage();
+            message.id = clientConnection->id;
+            message.time = this->totalTime->asSeconds();
+            message.ping = clientConnection->averagePing;
+            packet << (int32_t) 1;
+            packet << message;
+
+            std::string relayInformation =
+                " to " + std::to_string(clientConnection->id);
+            sf::Socket::Status status = clientConnection->socket->send(packet);
+            while (status == sf::Socket::Status::Partial)
+                status = clientConnection->socket->send(packet);
+            switch (status)
+            {
+                case (sf::Socket::Status::Done):
+                {
+                    spdlog::debug(
+                        "Player connect message sent" + relayInformation
+                    );
+                    break;
+                }
+                case (sf::Socket::Status::NotReady):
                 {
                     break;
                 }

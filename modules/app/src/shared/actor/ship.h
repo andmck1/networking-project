@@ -3,6 +3,7 @@
 #include "base.h"
 
 #include "../networking/messages.h"
+#include "core_game/texturemanager/texturemanager.h"
 
 enum ShipTurnDirection : int32_t
 {
@@ -14,12 +15,13 @@ enum ShipTurnDirection : int32_t
 struct ShipActorBuilderContext : public BaseActorBuilderContext
 {
     ShipActorBuilderContext(
-        sf::Texture *initialTexture, sf::Vector2f initialPosition,
-        sf::Vector2f initialForwardVector,
+        TextureManager::ShipTextures *shipTextures,
+        sf::Vector2f initialPosition, sf::Vector2f initialForwardVector,
         int32_t initialTurnDirection, int32_t serverId
     );
     ~ShipActorBuilderContext() = default;
 
+    TextureManager::ShipTextures *shipTextures;
     int32_t initialTurnDirection;
     float initialTurningCircleRadius;
     int32_t serverId;
@@ -38,6 +40,7 @@ class ShipActor : public BaseActor
     int32_t serverId;
     int32_t currentTurnDirection;
     int32_t health = 100.f;
+    TextureManager::ShipTextures *shipTextures;
 
     private:
     float turningCircleRadius;

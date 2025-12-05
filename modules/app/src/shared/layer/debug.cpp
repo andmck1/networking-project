@@ -14,7 +14,7 @@ DebugLayerConfig::DebugLayerConfig(
     Window *window, std::vector<std::unique_ptr<BaseActor>> *actors,
     std::vector<ShipActor *> *ships,
     std::vector<ProjectileActor *> *projectiles, bool *isBoundaryBoxesEnabled,
-    float *clientUpdateRate, bool isServer
+    float *clientUpdateRate, bool isServer, sf::Time *currentGameTime
 )
 {
     this->window = window;
@@ -24,6 +24,7 @@ DebugLayerConfig::DebugLayerConfig(
     this->isBoundaryBoxesEnabled = isBoundaryBoxesEnabled;
     this->clientUpdateRate = clientUpdateRate;
     this->isServer = isServer;
+    this->currentGameTime = currentGameTime;
 }
 
 void DebugLayer::init(BaseLayerConfig *config)
@@ -38,6 +39,7 @@ void DebugLayer::init(BaseLayerConfig *config)
     this->isBoundaryBoxesEnabled = _config->isBoundaryBoxesEnabled;
     this->clientUpdateRate = _config->clientUpdateRate;
     this->isServer = _config->isServer;
+    this->currentGameTime = _config->currentGameTime;
 
     ImGui_ImplWin32_EnableDpiAwareness();
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(
@@ -76,6 +78,9 @@ void DebugLayer::render()
     else
         ImGui::Begin("Networking Project Debug: CLIENT");
 
+    ImGui::Text(
+        "Current Game Time: %d", (int) this->currentGameTime->asMilliseconds()
+    );
     ImGui::Text("N Actors: %d", (int) this->actors->size());
     ImGui::Text("N Ships: %d", (int) this->ships->size());
     ImGui::Text("N Projectiles: %d", (int) this->projectiles->size());
@@ -120,6 +125,34 @@ void DebugLayer::render()
                 ImGui::TableSetColumnIndex(3);
                 cellText = std::format("{}", ship->health);
                 ImGui::TextUnformatted(cellText.c_str());
+            }
+        }
+        ImGui::EndTable();
+    }
+
+    if (this->clients)
+    {
+        if (ImGui::BeginTable("Client Information", 2, flags))
+        {
+            ImGui::TableSetupColumn("Client ID");
+            ImGui::TableSetupColumn("Ping");
+            ImGui::TableHeadersRow();
+
+            std::string cellText;
+            for (const auto &clientConnection : *this->clients)
+            {
+                if (clientConnection)
+                {
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    cellText = std::format("{}", clientConnection->id);
+                    ImGui::TextUnformatted(cellText.c_str());
+
+                    ImGui::TableSetColumnIndex(1);
+                    cellText =
+                        std::format("{:.2f}", clientConnection->averagePing);
+                    ImGui::TextUnformatted(cellText.c_str());
+                }
             }
         }
         ImGui::EndTable();
