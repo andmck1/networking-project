@@ -614,3 +614,25 @@ void Server::frameClientConnections()
         clientConnection->theirGameTime += this->deltaTime->asSeconds();
     }
 }
+
+std::vector<std::unique_ptr<Message>>
+Server::prepareGameUpdates(AppLayer *appLayer)
+{
+    std::vector<std::unique_ptr<Message>> gameUpdates = {};
+    // hits
+    while (!appLayer->hitEvents.empty())
+    {
+        std::unique_ptr<HitMessage> &hitEvent = appLayer->hitEvents.back();
+        for (const std::unique_ptr<ClientConnection> &clientConnection :
+             this->clientConnections)
+        {
+            HitMessage gameUpdate = HitMessage();
+            gameUpdate.id = clientConnection->id;
+            gameUpdate.time = hitEvent->time;
+            gameUpdate.hitShipId = hitEvent->hitShipId;
+            gameUpdates.push_back(std::make_unique<HitMessage>(gameUpdate));
+        }
+        appLayer->hitEvents.pop_back();
+    }
+    return gameUpdates;
+}

@@ -40,7 +40,13 @@ int main()
         std::vector<std::unique_ptr<Message>> clientUpdates =
             server.receiveDataFromClients();
         clientUpdates = server.processClientUpdates(std::move(clientUpdates));
+        std::vector<std::unique_ptr<Message>> gameUpdates =
+            server.prepareGameUpdates(state.appLayer.get());
         state.appLayer->networkUpdate(clientUpdates);
+        for (std::unique_ptr<Message> &gameUpdate : gameUpdates)
+        {
+            clientUpdates.push_back(std::move(gameUpdate));
+        }
         server.relayNetworkUpdates(clientUpdates);
 
         // app

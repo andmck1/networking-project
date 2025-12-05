@@ -41,7 +41,7 @@ namespace Settings
     {
         static unsigned short serverPort = 6969;
         static unsigned short playerPort = sf::Socket::AnyPort;
-        static float clientUpdateRate = .5f;
+        static float clientUpdateRate = 0.1f;
         static float serverPingCheckRate = 1.f;
         static unsigned short maxShipMessageHistory = 5;
         static unsigned short maxPingCheckMessageHistory = 3;

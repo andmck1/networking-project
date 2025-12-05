@@ -5,10 +5,13 @@
 #include <spdlog/spdlog.h>
 #include <SFML/Window.hpp>
 
-AppLayerConfig::AppLayerConfig(Window *window, TextureManager *textureManager)
+AppLayerConfig::AppLayerConfig(
+    Window *window, TextureManager *textureManager, bool isServer
+)
 {
     this->window = window;
     this->textureManager = textureManager;
+    this->isServer = isServer;
 }
 
 void AppLayer::init(BaseLayerConfig *config)
@@ -16,6 +19,7 @@ void AppLayer::init(BaseLayerConfig *config)
     AppLayerConfig *_config = static_cast<AppLayerConfig *>(config);
     this->window = _config->window;
     this->textureManager = _config->textureManager;
+    this->isServer = _config->isServer;
 }
 
 void AppLayer::initPlayerCamera()
@@ -94,7 +98,17 @@ void AppLayer::updateActors()
                             projectile->sprite->getGlobalBounds()
                         ))
                     {
-                        ship->health -= 5.f;
+                        if (this->isServer)
+                        {
+                            ship->health -= 5.f;
+                            std::unique_ptr<HitMessage> hitEvent =
+                                std::make_unique<HitMessage>();
+                            hitEvent->hitShipId = ship->serverId;
+                            hitEvent->time = this->totalTime.asSeconds();
+                            this->hitEvents.push_back(std::move(hitEvent));
+                        }
+                        // TODO if the projectile doesn't hit on the server this
+                        // could be strange
                         projectile->isDeleted = true;
                         break;
                     }
@@ -144,7 +158,9 @@ void AppLayer::addPlayer(ShipActorBuilderContext *initalPlayerState)
     spdlog::debug("Adding player");
     this->addActor<ShipActor>(initalPlayerState);
     this->player = dynamic_cast<ShipActor *>(this->actors.back().get());
+    // TODO - add ship should be a function to handle map updates
     this->ships.push_back(this->player);
+    this->shipActorMap.insert({initalPlayerState->serverId, this->player});
 }
 
 void AppLayer::addProjectile(
@@ -199,24 +215,22 @@ void AppLayer::networkUpdate(
 {
     for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
     {
+        int32_t clientId = networkUpdate->id;
         switch (networkUpdate->type)
         {
             case (MessageType::Ship):
             {
-                int32_t shipActorServerId = networkUpdate->id;
                 ShipMessage *shipMessage =
                     static_cast<ShipMessage *>(networkUpdate.get());
-                if (this->shipActorMap.find(shipActorServerId) !=
+                if (this->shipActorMap.find(clientId) !=
                     this->shipActorMap.end())
                 {
-                    this->shipActorMap[shipActorServerId]->networkUpdate(
-                        shipMessage
-                    );
+                    this->shipActorMap[clientId]->networkUpdate(shipMessage);
                 }
                 else
                 {
                     this->addServerShip(
-                        shipActorServerId, shipMessage->position,
+                        clientId, shipMessage->position,
                         shipMessage->forwardVector
                     );
                 }
@@ -224,18 +238,17 @@ void AppLayer::networkUpdate(
             }
             case (MessageType::Shoot):
             {
-                int32_t shipActorServerId = networkUpdate->id;
                 ShootMessage *shootMessage =
                     static_cast<ShootMessage *>(networkUpdate.get());
 
-                if (this->shipActorMap.find(shipActorServerId) !=
+                if (this->shipActorMap.find(clientId) !=
                     this->shipActorMap.end())
                 {
                     ProjectileActorBuilderContext projectileBuilderContext =
                         ProjectileActorBuilderContext(
                             &this->textureManager->projectileTexture,
                             shootMessage->position, shootMessage->forwardVector,
-                            shipActorServerId
+                            clientId
                         );
                     this->addProjectile(&projectileBuilderContext);
                 }
@@ -244,6 +257,18 @@ void AppLayer::networkUpdate(
                     spdlog::error(
                         "Tried to add projectile from non-existant player"
                     );
+                }
+                break;
+            }
+            case (MessageType::Hit):
+            {
+                HitMessage *hitMessage =
+                    static_cast<HitMessage *>(networkUpdate.get());
+                int32_t hitShipId = hitMessage->hitShipId;
+                if (this->shipActorMap.find(hitShipId) !=
+                    this->shipActorMap.end())
+                {
+                    this->shipActorMap[hitShipId]->health -= 5;
                 }
                 break;
             }

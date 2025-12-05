@@ -16,9 +16,12 @@
 
 struct AppLayerConfig : BaseLayerConfig
 {
-    AppLayerConfig(Window *window, TextureManager *textureManager);
+    AppLayerConfig(
+        Window *window, TextureManager *textureManager, bool isServer
+    );
     Window *window;
     TextureManager *textureManager;
+    bool isServer;
 };
 
 class AppLayer : public BaseLayer
@@ -32,6 +35,7 @@ class AppLayer : public BaseLayer
 
     // TODO - this is a queue not a vector?
     std::vector<std::unique_ptr<ShootMessage>> shootEvents = {};
+    std::vector<std::unique_ptr<HitMessage>> hitEvents = {};
 
     void initPlayerCamera();
     void initServerCamera();
@@ -68,6 +72,7 @@ class AppLayer : public BaseLayer
     TextureManager *textureManager;
     sf::Clock clock = sf::Clock();
     int nFrames = 0;
+    bool isServer;
 
     void startFrame();
     void updateActors();

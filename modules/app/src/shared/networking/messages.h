@@ -10,6 +10,7 @@ enum MessageType : int32_t
     PlayerConnect,
     Shoot,
     PingCheck,
+    Hit,
     END
 };
 
@@ -84,6 +85,19 @@ struct PingCheckMessage : public Message
     float_t echoTime;
     float_t ping = 0.f;
     float_t deltaTime = 0.f;
+
+    void serialise(sf::Packet &packet) const override;
+
+    private:
+    void deserialise(sf::Packet &packet) override;
+};
+
+struct HitMessage : public Message
+{
+    HitMessage();
+    ~HitMessage() = default;
+
+    int32_t hitShipId;
 
     void serialise(sf::Packet &packet) const override;
 

@@ -49,6 +49,11 @@ Message::deserialiseMessageFromPacket(sf::Packet &packet)
             message = std::make_unique<PingCheckMessage>();
             break;
         }
+        case (MessageType::Hit):
+        {
+            message = std::make_unique<HitMessage>();
+            break;
+        }
         default:
         {
             spdlog::error("Unhandled message type, will error");
@@ -138,4 +143,19 @@ void PingCheckMessage::serialise(sf::Packet &packet) const
 void PingCheckMessage::deserialise(sf::Packet &packet)
 {
     packet >> this->echoTime >> this->ping >> this->deltaTime;
+}
+
+HitMessage::HitMessage()
+{
+    this->type = MessageType::Hit;
+}
+
+void HitMessage::serialise(sf::Packet &packet) const
+{
+    packet << this->hitShipId;
+}
+
+void HitMessage::deserialise(sf::Packet &packet)
+{
+    packet >> this->hitShipId;
 }

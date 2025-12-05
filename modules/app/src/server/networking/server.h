@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../shared/networking/messages.h"
+#include "../../shared/layer/app.h"
 
 #include <SFML/Network.hpp>
 #include <deque>
@@ -88,6 +89,8 @@ class Server
     void sendPingCheckMessage(const ClientConnection *clientConnection);
     std::vector<std::unique_ptr<ClientConnection>> clientConnections;
     void frameClientConnections();
+    std::vector<std::unique_ptr<Message>>
+    prepareGameUpdates(AppLayer *appLayer);
 
     private:
     unsigned short port;

@@ -53,7 +53,7 @@ void State::initTextureManager()
 void State::initAppLayer()
 {
     AppLayerConfig appLayerConfig =
-        AppLayerConfig(&this->window, &this->textureManager);
+        AppLayerConfig(&this->window, &this->textureManager, this->isServer);
     std::unique_ptr<AppLayer> appLayer = std::make_unique<AppLayer>();
     appLayer->init(&appLayerConfig);
     this->appLayer = std::move(appLayer);
