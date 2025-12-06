@@ -84,7 +84,11 @@ bool Client::sendPlayerConnectMessage()
 {
     sf::Packet packet;
     PlayerConnectMessage message = PlayerConnectMessage();
-    int32_t id = this->generateRandomId();
+    int32_t id;
+    if (this->serverId < 0)
+        id = this->generateRandomId();
+    else
+        id = this->serverId;
     message.id = id;
     message.time = this->totalTime->asSeconds();
     packet << (int32_t) 1;

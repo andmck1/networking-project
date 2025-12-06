@@ -32,11 +32,17 @@ bool Server::checkListenAvailable()
 
 void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
 {
+    spdlog::info("Creating new client");
+
     sf::Packet packet;
     int32_t serverId;
+
+    spdlog::debug("Receiving from tcp socket");
     sf::Socket::Status status = tcpSocket->receive(packet);
     while (status == sf::Socket::Status::Partial)
         status = tcpSocket->receive(packet);
+    
+    spdlog::debug("Status available");
     switch (status)
     {
         case (sf::Socket::Status::Done):
@@ -117,6 +123,7 @@ void Server::acceptPlayerConnections()
                 tcpSocket->getRemoteAddress()->toString(),
                 tcpSocket->getRemotePort()
             );
+            tcpSocket->setBlocking(false);
             this->connectingClientSockets.push_back(std::move(tcpSocket));
             this->selector.add(*this->connectingClientSockets.back().get());
         }
@@ -140,15 +147,9 @@ void Server::acceptPlayerConnections()
 
 void Server::scanSelector()
 {
+    spdlog::debug("Scanning selector");
     if (this->selector.wait(sf::milliseconds(5)))
     {
-        for (const std::unique_ptr<ClientConnection> &clientConnection :
-             this->clientConnections)
-        {
-            if (this->selector.isReady(*clientConnection->socket))
-                clientConnection->connectionState.nextState();
-        }
-
         for (auto iterator = this->connectingClientSockets.begin();
              iterator != this->connectingClientSockets.end();)
         {
@@ -162,11 +163,23 @@ void Server::scanSelector()
                     iterator = this->connectingClientSockets.erase(iterator);
                     this->createNewClient(std::move(movedConnectingSocket));
                 }
+                else
+                {
+                    iterator++;
+                }
             }
             else
             {
                 iterator++;
             }
+        }
+
+        spdlog::debug("Scanning current selector sockets");
+        for (const std::unique_ptr<ClientConnection> &clientConnection :
+             this->clientConnections)
+        {
+            if (this->selector.isReady(*clientConnection->socket))
+                clientConnection->connectionState.nextState();
         }
     }
 }
