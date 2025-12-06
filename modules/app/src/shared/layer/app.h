@@ -57,6 +57,8 @@ class AppLayer : public BaseLayer
         const std::vector<std::unique_ptr<ClientConnection>> &clients = {}
     );
 
+    void resetTime(float newStartTime);
+
     std::vector<std::unique_ptr<BaseActor>> actors;
     // TODO - shouldn't use raw refs here
     std::vector<ShipActor *> ships;

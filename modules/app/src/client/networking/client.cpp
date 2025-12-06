@@ -92,6 +92,7 @@ bool Client::sendPlayerConnectMessage()
         id = this->serverId;
     message.id = id;
     message.time = this->totalTime->asSeconds();
+    message.ping = this->ping;
     packet << (int32_t) 1;
     packet << message;
 
@@ -176,6 +177,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
     ShipMessage shipUpdateMessage;
     shipUpdateMessage.id = this->serverId;
     shipUpdateMessage.time = appLayer->totalTime.asSeconds();
+    shipUpdateMessage.ping = this->ping;
     shipUpdateMessage.position = appLayer->player->position;
     shipUpdateMessage.forwardVector = appLayer->player->forwardVector;
     shipUpdateMessage.turnDirection = appLayer->player->currentTurnDirection;
@@ -188,6 +190,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
             appLayer->shootEvents.back();
         shootEvent->id = this->serverId;
         shootEvent->time = appLayer->totalTime.asSeconds();
+        shootEvent->ping = this->ping;
         networkUpdates.push_back(std::move(shootEvent));
 
         appLayer->shootEvents.pop_back();
@@ -328,6 +331,7 @@ void Client::sendPingCheckMessageResponse(
     responseMessage.time = this->totalTime->asSeconds();
     responseMessage.echoTime = receivedRequestMessage->time;
     responseMessage.deltaTime = this->deltaTime->asSeconds();
+    responseMessage.ping = this->ping;
 
     packet << (int32_t) 1;
     packet << responseMessage;

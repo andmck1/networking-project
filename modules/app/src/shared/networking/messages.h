@@ -19,6 +19,7 @@ struct Message
     int32_t type;
     float_t time = 0.f;
     int32_t id = 0;
+    float_t ping = 0.f;
 
     virtual ~Message() = default;
 
@@ -83,7 +84,6 @@ struct PingCheckMessage : public Message
     ~PingCheckMessage() = default;
 
     float_t echoTime;
-    float_t ping = 0.f;
     float_t deltaTime = 0.f;
 
     void serialise(sf::Packet &packet) const override;

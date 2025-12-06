@@ -545,6 +545,7 @@ Server::prepareGameUpdates(AppLayer *appLayer)
             gameUpdate.id = clientConnection->id;
             gameUpdate.time = hitEvent->time;
             gameUpdate.hitShipId = hitEvent->hitShipId;
+            gameUpdate.ping = clientConnection->averagePing;
             gameUpdates.push_back(std::make_unique<HitMessage>(gameUpdate));
         }
         appLayer->hitEvents.pop_back();

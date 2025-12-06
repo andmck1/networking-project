@@ -11,13 +11,13 @@ sf::Packet &operator<<(sf::Packet &packet, const Message &message)
 
 void Message::baseSerialise(sf::Packet &packet) const
 {
-    packet << this->type << this->time << this->id;
+    packet << this->type << this->time << this->id << this->ping;
 }
 
 void Message::baseDeserialise(sf::Packet &packet)
 {
     // Assume you get type before this
-    packet >> this->time >> this->id;
+    packet >> this->time >> this->id >> this->ping;
 }
 
 std::unique_ptr<Message>
@@ -137,12 +137,12 @@ PingCheckMessage::PingCheckMessage()
 
 void PingCheckMessage::serialise(sf::Packet &packet) const
 {
-    packet << this->echoTime << this->ping << this->deltaTime;
+    packet << this->echoTime << this->deltaTime;
 }
 
 void PingCheckMessage::deserialise(sf::Packet &packet)
 {
-    packet >> this->echoTime >> this->ping >> this->deltaTime;
+    packet >> this->echoTime >> this->deltaTime;
 }
 
 HitMessage::HitMessage()

@@ -25,7 +25,7 @@ int main()
     server.init(&serverConfig);
     if (!server.checkListenAvailable())
         return -1;
-    state.debugLayer->server = &server; 
+    state.debugLayer->server = &server;
 
     state.debugLayer->clientConnections = &server.clientConnections;
     // server specific networking

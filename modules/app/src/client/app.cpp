@@ -66,6 +66,7 @@ int main()
                 return 0;
         }
     }
+    state.appLayer->totalTime = sf::seconds(client.estimatedServerTime);
 
     sf::Vector2f playerStartingWorldPosition =
         static_cast<sf::Vector2f>(state.window.getRandomWindowPosition());
@@ -137,7 +138,8 @@ int main()
                         return 0;
                 }
             }
-            state.appLayer->clock.start();
+            state.appLayer->clock.restart();
+            state.appLayer->totalTime = sf::seconds(client.estimatedServerTime);
         }
 
         if (client.isConnectedToServer)

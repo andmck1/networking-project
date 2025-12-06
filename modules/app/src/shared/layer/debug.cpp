@@ -249,7 +249,7 @@ void DebugLayer::render()
             columnIndex++;
 
             ImGui::TableSetColumnIndex(columnIndex);
-            ImGui::TextWrapped("%.2f", this->client->ping);
+            ImGui::TextWrapped("%.2f", this->client->ping * 1000.f);
             columnIndex++;
 
             ImGui::TableSetColumnIndex(columnIndex);

@@ -60,13 +60,14 @@ void AppLayer::render()
 
 void AppLayer::startFrame()
 {
-    sf::Time newTotalTime = this->clock.getElapsedTime();
-    this->deltaTime = newTotalTime - this->totalTime;
+    this->deltaTime = this->clock.restart();
+    this->totalTime += this->deltaTime;
+
+    // for physics make sure delta time isn't zero or too high
     this->deltaTime = this->deltaTime.asSeconds() > 0.f ? this->deltaTime
                                                         : sf::milliseconds(1.f);
     this->deltaTime =
         this->deltaTime.asSeconds() > 1.f ? sf::seconds(1.f) : this->deltaTime;
-    this->totalTime = newTotalTime;
 }
 
 void AppLayer::updateActors()
@@ -266,10 +267,27 @@ void AppLayer::networkUpdate(
                 if (this->shipActorMap.find(clientId) !=
                     this->shipActorMap.end())
                 {
+                    sf::Vector2f estimatedPosition;
+                    if (this->isServer)
+                    {
+                        estimatedPosition =
+                            shootMessage->position +
+                            shootMessage->forwardVector *
+                                (Settings::Actor::projectileSpeed *
+                                 (networkUpdate->ping));
+                    }
+                    else
+                    {
+                        estimatedPosition =
+                            shootMessage->position +
+                            shootMessage->forwardVector *
+                                (Settings::Actor::projectileSpeed *
+                                 (2.f * networkUpdate->ping));
+                    }
                     ProjectileActorBuilderContext projectileBuilderContext =
                         ProjectileActorBuilderContext(
                             &this->textureManager->projectileTexture,
-                            shootMessage->position, shootMessage->forwardVector,
+                            estimatedPosition, shootMessage->forwardVector,
                             clientId
                         );
                     this->addProjectile(&projectileBuilderContext);
@@ -318,4 +336,9 @@ void AppLayer::networkUpdate(
             }
         }
     }
+}
+
+void AppLayer::resetTime(float newStartTime)
+{
+    this->totalTime = sf::seconds(newStartTime);
 }
