@@ -268,27 +268,17 @@ void AppLayer::networkUpdate(
                     this->shipActorMap.end())
                 {
                     sf::Vector2f estimatedPosition;
-                    if (this->isServer)
-                    {
-                        estimatedPosition =
-                            shootMessage->position +
-                            shootMessage->forwardVector *
-                                (Settings::Actor::projectileSpeed *
-                                 (networkUpdate->ping));
-                    }
-                    else
-                    {
-                        estimatedPosition =
-                            shootMessage->position +
-                            shootMessage->forwardVector *
-                                (Settings::Actor::projectileSpeed *
-                                 (2.f * networkUpdate->ping));
-                    }
+                    float estimatedLifetime =
+                        this->totalTime.asSeconds() - networkUpdate->time;
+                    estimatedPosition = shootMessage->position +
+                                        shootMessage->forwardVector *
+                                            (Settings::Actor::projectileSpeed *
+                                             estimatedLifetime);
                     ProjectileActorBuilderContext projectileBuilderContext =
                         ProjectileActorBuilderContext(
                             &this->textureManager->projectileTexture,
                             estimatedPosition, shootMessage->forwardVector,
-                            clientId
+                            clientId, estimatedLifetime
                         );
                     this->addProjectile(&projectileBuilderContext);
                 }
