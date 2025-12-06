@@ -29,6 +29,11 @@ void Client::init(ClientConfig *config)
     this->isConnectedToServer = false;
     this->tcpSocket = sf::TcpSocket();
     this->tcpSocket.setBlocking(false);
+
+    // Some copilot help for this one
+    this->randomNumberGenerator = std::mt19937(this->randomDevice());
+    this->randomNumberDistribution =
+        std::uniform_int_distribution<int32_t>(0, 1000000 - 1);
 }
 
 bool Client::connectToServer()
@@ -48,7 +53,7 @@ bool Client::connectToServer()
             this->nServerConnectTries = 0;
 
             spdlog::info("Waiting for player connect confirmation");
-            this->isConnectedToServer = this->receivePlayerConnectMessage();
+            this->isConnectedToServer = this->sendPlayerConnectMessage();
             break;
         }
         case (sf::Socket::Status::NotReady):
@@ -75,24 +80,25 @@ bool Client::connectToServer()
     return this->isConnectedToServer;
 }
 
-bool Client::receivePlayerConnectMessage()
+bool Client::sendPlayerConnectMessage()
 {
     sf::Packet packet;
+    PlayerConnectMessage message = PlayerConnectMessage();
+    int32_t id = this->generateRandomId();
+    message.id = id;
+    message.time = this->totalTime->asSeconds();
+    packet << (int32_t) 1;
+    packet << message;
 
     this->tcpSocket.setBlocking(true);
-    sf::Socket::Status status = this->tcpSocket.receive(packet);
+    sf::Socket::Status status = this->tcpSocket.send(packet);
     switch (status)
     {
         case (sf::Socket::Status::Done):
         {
-            spdlog::info("Received player connect message");
-            std::unique_ptr<Message> message =
-                Message::deserialiseMessageFromPacket(packet);
-
-            this->serverId = message->id;
-            spdlog::info(
-                "Server assigned ID: " + std::to_string(this->serverId)
-            );
+            spdlog::info("Sent player connect message");
+            this->serverId = id;
+            spdlog::info("ID {} assigned", id);
             return true;
         }
         default:
@@ -364,4 +370,9 @@ void Client::disconnectAndRestConnectionStatusWithServer()
     this->tcpSocket.setBlocking(false);
     this->disconnectFromServer();
     this->isConnectedToServer = false;
+}
+
+int32_t Client::generateRandomId()
+{
+    return this->randomNumberDistribution(this->randomNumberGenerator);
 }

@@ -23,17 +23,16 @@ class Server
     ~Server() = default;
 
     std::vector<std::unique_ptr<ClientConnection>> clientConnections;
-    std::unordered_map<std::string, ClientConnection *> clientConnectionsMap =
-        {};
+    std::vector<std::unique_ptr<sf::TcpSocket>> connectingClientSockets;
+    std::unordered_map<int32_t, ClientConnection *> clientConnectionsMap = {};
 
     void init(ServerConfig *config);
     bool checkListenAvailable();
     void acceptPlayerConnections();
-    void createNewClient(int32_t serverId);
+    void createNewClient(std::unique_ptr<sf::TcpSocket> socket);
     void scanSelector();
     void checkForSyncs();
     std::vector<std::unique_ptr<Message>> receiveDataFromClients();
-    void sendPlayerConnectMessage(int32_t serverId);
     void relayNetworkUpdates(
         const std::vector<std::unique_ptr<Message>> &networkUpdates
     );

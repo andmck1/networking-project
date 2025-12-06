@@ -30,6 +30,78 @@ bool Server::checkListenAvailable()
     return true;
 }
 
+void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
+{
+    sf::Packet packet;
+    int32_t serverId;
+    sf::Socket::Status status = tcpSocket->receive(packet);
+    while (status == sf::Socket::Status::Partial)
+        status = tcpSocket->receive(packet);
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::info(
+                "Received player connect message from {}:{}",
+                tcpSocket->getRemoteAddress()->toString(),
+                tcpSocket->getRemotePort()
+            );
+            int32_t _;
+            packet >> _;
+            std::unique_ptr<Message> message =
+                Message::deserialiseMessageFromPacket(packet);
+            serverId = message->id;
+            break;
+        }
+        default:
+        {
+            spdlog::error(
+                "Unexpected error reading player connect message, not "
+                "connecting client."
+            );
+            return;
+            break;
+        }
+    }
+
+    std::string ipAddressString = tcpSocket->getRemoteAddress()->toString();
+    unsigned int port = tcpSocket->getRemotePort();
+    this->selector.remove(*tcpSocket);
+
+    // if client exists reconnect, otherwise add new one
+    if (this->clientConnectionsMap.find(serverId) !=
+        this->clientConnectionsMap.end())
+    {
+        spdlog::info(
+            "Client {} reconnected at {}:{}", serverId, ipAddressString, port
+        );
+        ClientConnection *clientConnection =
+            this->clientConnectionsMap[serverId];
+        this->selector.remove(*clientConnection->socket);
+        clientConnection->socket = std::move(tcpSocket);
+        this->selector.add(*clientConnection->socket);
+        clientConnection->connectionState.syncing();
+        clientConnection->ipAddress = ipAddressString;
+        clientConnection->port = port;
+        clientConnection->socket->setBlocking(false);
+    }
+    else
+    {
+        spdlog::info("New client {}:{} connected", ipAddressString, port);
+        std::unique_ptr<ClientConnection> newClient =
+            std::make_unique<ClientConnection>(serverId, std::move(tcpSocket));
+
+        newClient->socket->setBlocking(false);
+        this->selector.add(*newClient->socket);
+
+        this->clientConnections.push_back(std::move(newClient));
+        this->clientConnectionsMap.insert(
+            {serverId, this->clientConnections.back().get()}
+        );
+        this->clientConnections.back()->connectionState.syncing();
+    }
+}
+
 void Server::acceptPlayerConnections()
 {
     spdlog::debug("Checking for player connections");
@@ -40,63 +112,13 @@ void Server::acceptPlayerConnections()
     {
         case (sf::Socket::Status::Done):
         {
-            // TODO - this should probs come from static function in
-            // ConnectionDetails
-            std::string ipAddressString =
-                tcpSocket->getRemoteAddress()->toString();
-            unsigned int port = tcpSocket->getRemotePort();
-            std::string clientConnectionDetails =
-                std::format("{}:{}", ipAddressString, port);
-
-            // if client exists reconnect, otherwise add new one
-            if (this->clientConnectionsMap.find(clientConnectionDetails) !=
-                this->clientConnectionsMap.end())
-            {
-                spdlog::info(
-                    "Client {} reconnected at port {}", clientConnectionDetails,
-                    port
-                );
-                this->selector.remove(
-                    *this->clientConnectionsMap[clientConnectionDetails]->socket
-                );
-                this->clientConnectionsMap[clientConnectionDetails]->socket =
-                    std::move(tcpSocket);
-                this->selector.add(
-                    *this->clientConnectionsMap[clientConnectionDetails]->socket
-                );
-                this->clientConnectionsMap[clientConnectionDetails]
-                    ->connectionState.syncing();
-                this->clientConnectionsMap[clientConnectionDetails]->port =
-                    port;
-                this->clientConnectionsMap[clientConnectionDetails]
-                    ->socket->setBlocking(false);
-                this->sendPlayerConnectMessage(
-                    this->clientConnectionsMap[clientConnectionDetails]->id
-                );
-            }
-            else
-            {
-                spdlog::info(
-                    "New client {}:{} connected", clientConnectionDetails, port
-                );
-                std::unique_ptr<ClientConnection> newClient =
-                    std::make_unique<ClientConnection>(
-                        this->clientIDCounter, std::move(tcpSocket)
-                    );
-                newClient->socket->setBlocking(false);
-                this->selector.add(*newClient->socket);
-
-                this->clientConnections.push_back(std::move(newClient));
-                this->clientConnectionsMap.insert(
-                    {clientConnectionDetails,
-                     this->clientConnections.back().get()}
-                );
-                this->clientConnections.back()->connectionState.syncing();
-
-                this->sendPlayerConnectMessage(this->clientIDCounter);
-                this->clientIDCounter++;
-                break;
-            }
+            spdlog::info(
+                "Accepted new client at {}:{}",
+                tcpSocket->getRemoteAddress()->toString(),
+                tcpSocket->getRemotePort()
+            );
+            this->connectingClientSockets.push_back(std::move(tcpSocket));
+            this->selector.add(*this->connectingClientSockets.back().get());
         }
         case (sf::Socket::Status::Disconnected):
             break;
@@ -116,57 +138,6 @@ void Server::acceptPlayerConnections()
     }
 }
 
-void Server::sendPlayerConnectMessage(int32_t serverId)
-{
-    std::unique_ptr<ClientConnection> &clientConnection =
-        this->clientConnections.at(serverId);
-    if (clientConnection->connectionState.isDisconnected())
-        return;
-
-    sf::Packet packet;
-    PlayerConnectMessage message;
-    message.id = serverId;
-    message.time = this->totalTime->asSeconds();
-    packet << message;
-    sf::Socket::Status status = clientConnection->socket->send(packet);
-    while (status == sf::Socket::Status::Partial)
-        status = clientConnection->socket->send(packet);
-    switch (status)
-    {
-        case (sf::Socket::Status::Done):
-        {
-            spdlog::debug("Sent player connect message");
-            break;
-        }
-        case (sf::Socket::Status::Disconnected):
-        {
-            spdlog::error(
-                "Disconnected from player while sending player connect message"
-            );
-            clientConnection->connectionState.disconnected();
-            break;
-        }
-        case (sf::Socket::Status::NotReady):
-        {
-            if (clientConnection->connectionState.isSyncing())
-                spdlog::info("Client syncing");
-            else
-                spdlog::error(
-                    "Client not ready to receive data while sending messages"
-                );
-            break;
-        }
-        default:
-        {
-            spdlog::error(
-                "Unexpected error while sending player connect message to "
-                "client"
-            );
-            break;
-        }
-    }
-}
-
 void Server::scanSelector()
 {
     if (this->selector.wait(sf::milliseconds(5)))
@@ -176,6 +147,26 @@ void Server::scanSelector()
         {
             if (this->selector.isReady(*clientConnection->socket))
                 clientConnection->connectionState.nextState();
+        }
+
+        for (auto iterator = this->connectingClientSockets.begin();
+             iterator != this->connectingClientSockets.end();)
+        {
+            std::unique_ptr<sf::TcpSocket> &connectingSocket = *iterator;
+            if (connectingSocket)
+            {
+                if (this->selector.isReady(*connectingSocket))
+                {
+                    std::unique_ptr<sf::TcpSocket> movedConnectingSocket =
+                        std::move(connectingSocket);
+                    iterator = this->connectingClientSockets.erase(iterator);
+                    this->createNewClient(std::move(movedConnectingSocket));
+                }
+            }
+            else
+            {
+                iterator++;
+            }
         }
     }
 }
@@ -187,7 +178,8 @@ void Server::checkForSyncs()
     {
         if (clientConnection->connectionState.isSyncing())
         {
-            // TODO - can check if out of sync and reset and ask to sync again
+            // TODO - can check if out of sync and reset and ask to sync
+            // again
             if (clientConnection->pingHistory.size() >=
                 Settings::Networking::maxPingCheckMessageHistory)
             {
@@ -217,7 +209,8 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
 {
     std::vector<std::unique_ptr<Message>> receivedMessagesFromAllClients;
 
-    // for all clients, if ready receive packet, deserialise and append messages
+    // for all clients, if ready receive packet, deserialise and append
+    // messages
     for (std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
@@ -298,8 +291,8 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
     for (std::unique_ptr<Message> &message : clientUpdates)
     {
         const int32_t clientId = message->id;
-        const std::unique_ptr<ClientConnection> &clientConnection =
-            this->clientConnections[clientId];
+        ClientConnection *clientConnection =
+            this->clientConnectionsMap[clientId];
         switch (message->type)
         {
             case (MessageType::Ship):
@@ -428,7 +421,8 @@ void Server::relayNetworkUpdates(
                 case (sf::Socket::Status::Disconnected):
                 {
                     spdlog::info(
-                        "Client disconnected when sending relay packet to {}",
+                        "Client disconnected when sending relay packet to "
+                        "{}",
                         clientConnection->id
                     );
                     clientConnection->connectionState.disconnected();

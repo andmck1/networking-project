@@ -69,7 +69,6 @@ class TextureManager
     sf::Texture projectileTexture;
     std::array<ShipTextures, 5> shipTextures;
 
-
     bool init(TextureManagerConfig *config);
     int getRandomTextureIndex();
 

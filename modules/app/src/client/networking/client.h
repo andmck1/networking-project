@@ -34,6 +34,7 @@ class Client
     void disconnectFromServer();
     void disconnectAndRestConnectionStatusWithServer();
     std::vector<std::unique_ptr<Message>> receiveNetworkUpdates();
+    int32_t generateRandomId();
 
     int32_t serverId = -1;
     float serverTime;
@@ -53,8 +54,12 @@ class Client
     sf::Time *deltaTime;
     sf::Time *totalTime;
 
+    std::random_device randomDevice;
+    std::mt19937 randomNumberGenerator;
+    std::uniform_int_distribution<int32_t> randomNumberDistribution;
+
     std::vector<std::unique_ptr<Message>>
     prepareNetworkUpdates(AppLayer *appLayer);
-    bool receivePlayerConnectMessage();
+    bool sendPlayerConnectMessage();
     void sendPingCheckMessageResponse(PingCheckMessage *receivedRequestMessage);
 };
