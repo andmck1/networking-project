@@ -88,6 +88,24 @@ void AppLayer::updateActors()
         if (ship->isEnabled)
         {
             ship->sprite->setColor(Settings::Actor::connectedMask);
+            switch (ship->currentTurnDirection)
+            {
+                case (ShipTurnDirection::LEFT):
+                {
+                    ship->createSprite(ship->shipTextures->left);
+                    break;
+                }
+                case (ShipTurnDirection::RIGHT):
+                {
+                    ship->createSprite(ship->shipTextures->right);
+                    break;
+                }
+                default:
+                {
+                    ship->createSprite(ship->shipTextures->forward);
+                    break;
+                }
+            }
             for (ProjectileActor *projectile : this->projectiles)
             {
                 if ((ship->serverId != projectile->shooterServerId) &&
