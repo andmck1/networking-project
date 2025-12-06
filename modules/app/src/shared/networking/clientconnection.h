@@ -47,9 +47,10 @@ class ClientConnection
     float interpolationTime;
     std::deque<float> pingHistory = {};
     float averagePing = 0.f;
-    float theirGameTime = 0.f;
-    float theirDeltaTime = 0.f;
-    float deltaWithServer = 0.f;
+    float lastRecordedGameTime = 0.f;
+    float lastRecordedDeltaTime = 0.f;
+    float estimatedCurrentGameTime = 0.f;
+    float lastRecordedClockDrift = 0.f;
     bool syncRequestSent = false;
 
     ShipMessage interpolateShipMessages(float deltaTime, float totalTime);

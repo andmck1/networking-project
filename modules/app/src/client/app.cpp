@@ -6,6 +6,7 @@
 #include <SFML/Network.hpp>
 #include <spdlog/spdlog.h>
 
+// TODO - tidy up
 int main()
 {
     spdlog::set_level(spdlog::level::info);
@@ -19,7 +20,7 @@ int main()
 
     ClientConfig clientConfig = ClientConfig(
         Settings::Networking::serverPort, Settings::Networking::playerPort,
-        &state.clientUpdateRate, &state.appLayer->deltaTime,
+        Settings::Networking::clientUpdateRate, &state.appLayer->deltaTime,
         &state.appLayer->totalTime, sf::IpAddress::LocalHost
     );
     Client client = Client();
@@ -27,6 +28,7 @@ int main()
 
     state.appLayer->isConnectedToServer = &client.isConnectedToServer;
     state.debugLayer->isClientConnectionEnabled = &client.isConnectionEnabled;
+    state.debugLayer->client = &client;
 
     while (!client.connectToServer())
     {
@@ -58,11 +60,6 @@ int main()
                 return 0;
         }
     }
-    state.appLayer->serverOffsetTime =
-        sf::seconds(client.serverTime + client.ping);
-    spdlog::info(
-        std::format("Synced with server time: {:.2f}", client.serverTime)
-    );
 
     sf::Vector2f playerStartingWorldPosition =
         static_cast<sf::Vector2f>(state.window.getRandomWindowPosition());
@@ -75,6 +72,7 @@ int main()
 
     while (state.window.window.isOpen())
     {
+        client.frameServerTime();
         if (!client.isConnectionEnabled)
             client.disconnectFromServer();
 
@@ -117,13 +115,6 @@ int main()
             {
                 state.eventHandler.handle();
             }
-            state.appLayer->serverOffsetTime =
-                sf::seconds(client.serverTime + client.ping);
-            spdlog::info(
-                std::format(
-                    "Synced with server time: {:.2f}", client.serverTime
-                )
-            );
             state.appLayer->clock.start();
         }
 

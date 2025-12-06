@@ -26,7 +26,7 @@ int main()
     if (!server.checkListenAvailable())
         return -1;
 
-    state.debugLayer->clients = &server.clientConnections;
+    state.debugLayer->clientConnections = &server.clientConnections;
     // server specific networking
     while (state.window.window.isOpen())
     {

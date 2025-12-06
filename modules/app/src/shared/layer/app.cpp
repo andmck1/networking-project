@@ -60,8 +60,7 @@ void AppLayer::render()
 
 void AppLayer::startFrame()
 {
-    sf::Time newTotalTime =
-        this->clock.getElapsedTime() + this->serverOffsetTime;
+    sf::Time newTotalTime = this->clock.getElapsedTime();
     this->deltaTime = newTotalTime - this->totalTime;
     this->deltaTime = this->deltaTime.asSeconds() > 0.f ? this->deltaTime
                                                         : sf::milliseconds(1.f);

@@ -5,7 +5,7 @@
 #include <spdlog/spdlog.h>
 
 ClientConfig::ClientConfig(
-    unsigned short serverPort, unsigned short clientPort, float *updateRate,
+    unsigned short serverPort, unsigned short clientPort, float updateRate,
     sf::Time *deltaTime, sf::Time *totalTime, sf::IpAddress serverIPAddress
 )
 {
@@ -51,6 +51,7 @@ bool Client::connectToServer()
             spdlog::info("Connected to server!");
             this->isConnectedToServer = true;
             this->nServerConnectTries = 0;
+            this->clientPort = tcpSocket.getLocalPort();
 
             spdlog::info("Waiting for player connect confirmation");
             this->isConnectedToServer = this->sendPlayerConnectMessage();
@@ -146,8 +147,10 @@ bool Client::syncWithServer()
                 }
                 PingCheckMessage *pingCheckMessage =
                     static_cast<PingCheckMessage *>(messages[0].get());
-                this->serverTime = pingCheckMessage->time;
+                this->lastRecordedServerTime = pingCheckMessage->time;
                 this->ping = pingCheckMessage->ping;
+                this->estimatedServerTime =
+                    pingCheckMessage->time + pingCheckMessage->ping;
                 this->sendPingCheckMessageResponse(pingCheckMessage);
                 break;
             }
@@ -195,7 +198,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
 void Client::sendNetworkUpdates(AppLayer *appLayer)
 {
     this->sendTimer += appLayer->deltaTime.asSeconds();
-    if (this->sendTimer > *this->updateRate)
+    if (this->sendTimer > this->updateRate)
     {
         spdlog::debug("Sending network updates");
 
@@ -275,9 +278,11 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
                     PingCheckMessage *pingCheckMessage =
                         static_cast<PingCheckMessage *>(message.get());
                     this->ping = pingCheckMessage->ping;
-                    this->serverDeltaTime = pingCheckMessage->deltaTime;
-                    this->serverTime =
-                        pingCheckMessage->time + pingCheckMessage->time;
+                    this->lastRecordedServerTime = pingCheckMessage->time;
+                    this->lastRecordedServerDeltaTime =
+                        pingCheckMessage->deltaTime;
+                    this->estimatedServerTime =
+                        pingCheckMessage->time + pingCheckMessage->ping;
                     this->sendPingCheckMessageResponse(pingCheckMessage);
                 }
                 else
@@ -379,4 +384,9 @@ void Client::disconnectAndRestConnectionStatusWithServer()
 int32_t Client::generateRandomId()
 {
     return this->randomNumberDistribution(this->randomNumberGenerator);
+}
+
+void Client::frameServerTime()
+{
+    this->estimatedServerTime += this->deltaTime->asSeconds();
 }

@@ -77,11 +77,8 @@ void State::initPlayer(sf::Vector2f startingPosition, int32_t serverId)
 
 void State::initDebugLayer()
 {
-    DebugLayerConfig debugLayerConfig = DebugLayerConfig(
-        &window, &this->appLayer->actors, &this->appLayer->ships,
-        &this->appLayer->projectiles, &this->appLayer->isBoundaryBoxesEnabled,
-        &this->clientUpdateRate, this->isServer, &this->appLayer->totalTime
-    );
+    DebugLayerConfig debugLayerConfig =
+        DebugLayerConfig(&window, this->appLayer.get(), this->isServer);
     std::unique_ptr<DebugLayer> debugLayer = std::make_unique<DebugLayer>();
     debugLayer->init(&debugLayerConfig);
     this->debugLayer = std::move(debugLayer);

@@ -11,20 +11,12 @@ DebugLayer::DebugLayer()
 }
 
 DebugLayerConfig::DebugLayerConfig(
-    Window *window, std::vector<std::unique_ptr<BaseActor>> *actors,
-    std::vector<ShipActor *> *ships,
-    std::vector<ProjectileActor *> *projectiles, bool *isBoundaryBoxesEnabled,
-    float *clientUpdateRate, bool isServer, sf::Time *currentGameTime
+    Window *window, AppLayer *appLayer, bool isServer
 )
 {
     this->window = window;
-    this->actors = actors;
-    this->ships = ships;
-    this->projectiles = projectiles;
-    this->isBoundaryBoxesEnabled = isBoundaryBoxesEnabled;
-    this->clientUpdateRate = clientUpdateRate;
+    this->appLayer = appLayer;
     this->isServer = isServer;
-    this->currentGameTime = currentGameTime;
 }
 
 void DebugLayer::init(BaseLayerConfig *config)
@@ -33,13 +25,8 @@ void DebugLayer::init(BaseLayerConfig *config)
 
     DebugLayerConfig *_config = static_cast<DebugLayerConfig *>(config);
     this->window = _config->window;
-    this->actors = _config->actors;
-    this->ships = _config->ships;
-    this->projectiles = _config->projectiles;
-    this->isBoundaryBoxesEnabled = _config->isBoundaryBoxesEnabled;
-    this->clientUpdateRate = _config->clientUpdateRate;
+    this->appLayer = _config->appLayer;
     this->isServer = _config->isServer;
-    this->currentGameTime = _config->currentGameTime;
 
     ImGui_ImplWin32_EnableDpiAwareness();
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(
@@ -76,18 +63,31 @@ void DebugLayer::render()
     if (this->isServer)
         ImGui::Begin("Networking Project Debug: SERVER");
     else
+    {
         ImGui::Begin("Networking Project Debug: CLIENT");
+        ImGui::TextWrapped(
+            "To control the client, enable controls below and use WASD + "
+            "Spacebar"
+        );
+    }
 
     ImGui::TextWrapped(
-        "Current Game Time: %.2fs", this->currentGameTime->asSeconds()
+        "Current Game Time: %.2fs", this->appLayer->totalTime.asSeconds()
     );
-    ImGui::TextWrapped("N Actors: %d", (int) this->actors->size());
-    ImGui::TextWrapped("N Ships: %d", (int) this->ships->size());
-    ImGui::TextWrapped("N Projectiles: %d", (int) this->projectiles->size());
-    ImGui::Checkbox("Enabled Boundary Boxes?", this->isBoundaryBoxesEnabled);
+    ImGui::TextWrapped(
+        "Delta Time: %.4fs", this->appLayer->deltaTime.asSeconds()
+    );
+    ImGui::TextWrapped("N Actors: %d", (int) this->appLayer->actors.size());
+    ImGui::TextWrapped("N Ships: %d", (int) this->appLayer->ships.size());
+    ImGui::TextWrapped(
+        "N Projectiles: %d", (int) this->appLayer->projectiles.size()
+    );
+    ImGui::Checkbox(
+        "Enabled Boundary Boxes?", &this->appLayer->isBoundaryBoxesEnabled
+    );
     if (this->player)
     {
-        ImGui::Checkbox("Enable WASD?", &this->player->isPlayerControlling);
+        ImGui::Checkbox("Enable controls?", &this->player->isPlayerControlling);
     }
     if (!this->isServer)
     {
@@ -95,7 +95,7 @@ void DebugLayer::render()
             "Enable Client Connection?", this->isClientConnectionEnabled
         );
         ImGui::SliderFloat(
-            "Client Send Rate (s/update)", this->clientUpdateRate, 0.f, 2.f
+            "Client Send Rate (s/update)", &this->client->updateRate, 0.01f, 4.f
         );
     }
     if (ImGui::BeginTable("Ship Information", 4, flags))
@@ -107,7 +107,7 @@ void DebugLayer::render()
         ImGui::TableHeadersRow();
 
         std::string cellText;
-        for (const auto &ship : *this->ships)
+        for (const auto &ship : this->appLayer->ships)
         {
             if (ship)
             {
@@ -134,52 +134,131 @@ void DebugLayer::render()
 
     ImGui::Separator();
 
-    if (this->clients)
+    if (this->clientConnections)
     {
-        if (ImGui::BeginTable("Client Information", 5, flags))
+        if (ImGui::BeginTable("Client Information", 8, flags))
         {
             ImGui::TableSetupColumn("ID");
             ImGui::TableSetupColumn("Connection Details");
-            ImGui::TableSetupColumn("Ping (ms)");
-            ImGui::TableSetupColumn("Client Time delta with Server Time");
             ImGui::TableSetupColumn("Is Connected?");
+            ImGui::TableSetupColumn("Ping (ms)");
+            ImGui::TableSetupColumn("Newest game t (s)");
+            ImGui::TableSetupColumn("Newest dt (s)");
+            ImGui::TableSetupColumn("Estimated game time (s)");
+            ImGui::TableSetupColumn("Estimated clock drift (s)");
             ImGui::TableHeadersRow();
 
             std::string cellText;
-            for (const auto &clientConnection : *this->clients)
+            for (const auto &clientConnection : *this->clientConnections)
             {
                 if (clientConnection)
                 {
                     ImGui::TableNextRow();
+                    int columnIndex = 0;
 
-                    ImGui::TableSetColumnIndex(0);
+                    ImGui::TableSetColumnIndex(columnIndex);
                     ImGui::TextWrapped("%d", clientConnection->id);
+                    columnIndex++;
 
-                    ImGui::TableSetColumnIndex(1);
+                    ImGui::TableSetColumnIndex(columnIndex);
                     ImGui::TextWrapped(
                         "%s", clientConnection->connectionDetails.c_str()
                     );
+                    columnIndex++;
 
-                    ImGui::TableSetColumnIndex(2);
-                    ImGui::TextWrapped(
-                        "%.2f", clientConnection->averagePing * 1000.f
-                    );
-
-                    ImGui::TableSetColumnIndex(3);
-                    ImGui::TextWrapped(
-                        "%.3f", clientConnection->deltaWithServer
-                    );
-
-                    ImGui::TableSetColumnIndex(4);
+                    ImGui::TableSetColumnIndex(columnIndex);
                     if (clientConnection->connectionState.connectionState ==
                         ClientConnectionState::ConnectionState::Disconnected)
                         ImGui::TextWrapped("false");
                     else
                         ImGui::TextWrapped("true");
+                    columnIndex++;
+
+                    ImGui::TableSetColumnIndex(columnIndex);
+                    ImGui::TextWrapped(
+                        "%.2f", clientConnection->averagePing * 1000.f
+                    );
+                    columnIndex++;
+
+                    ImGui::TableSetColumnIndex(columnIndex);
+                    ImGui::TextWrapped(
+                        "%.3f", clientConnection->lastRecordedGameTime
+                    );
+                    columnIndex++;
+
+                    ImGui::TableSetColumnIndex(columnIndex);
+                    ImGui::TextWrapped(
+                        "%.4f", clientConnection->lastRecordedDeltaTime
+                    );
+                    columnIndex++;
+
+                    ImGui::TableSetColumnIndex(columnIndex);
+                    ImGui::TextWrapped(
+                        "%.3f", clientConnection->estimatedCurrentGameTime
+                    );
+                    columnIndex++;
+
+                    ImGui::TableSetColumnIndex(columnIndex);
+                    ImGui::TextWrapped(
+                        "%.3f", clientConnection->lastRecordedClockDrift
+                    );
+                    columnIndex++;
                 }
             }
+            ImGui::EndTable();
         }
-        ImGui::EndTable();
+    }
+    else
+    {
+        if (ImGui::BeginTable("Client Information", 7, flags))
+        {
+            ImGui::TableSetupColumn("ID");
+            ImGui::TableSetupColumn("Local Port");
+            ImGui::TableSetupColumn("Server Details");
+            ImGui::TableSetupColumn("Ping (ms)");
+            ImGui::TableSetupColumn("Newest server t (s)");
+            ImGui::TableSetupColumn("Newest server dt (s)");
+            ImGui::TableSetupColumn("Estimated server t (s)");
+            ImGui::TableHeadersRow();
+
+            ImGui::TableNextRow();
+            int columnIndex = 0;
+
+            ImGui::TableSetColumnIndex(columnIndex);
+            ImGui::TextWrapped("%d", this->client->serverId);
+            columnIndex++;
+
+            ImGui::TableSetColumnIndex(columnIndex);
+            ImGui::TextWrapped("%d", this->client->clientPort);
+            columnIndex++;
+
+            ImGui::TableSetColumnIndex(columnIndex);
+            ImGui::TextWrapped(
+                "%s:%d", this->client->serverIPAddress.toString().c_str(),
+                this->client->serverPort
+            );
+            columnIndex++;
+
+            ImGui::TableSetColumnIndex(columnIndex);
+            ImGui::TextWrapped("%.2f", this->client->ping);
+            columnIndex++;
+
+            ImGui::TableSetColumnIndex(columnIndex);
+            ImGui::TextWrapped("%.2f", this->client->lastRecordedServerTime);
+            columnIndex++;
+
+            ImGui::TableSetColumnIndex(columnIndex);
+            ImGui::TextWrapped(
+                "%.4f", this->client->lastRecordedServerDeltaTime
+            );
+            columnIndex++;
+
+            ImGui::TableSetColumnIndex(columnIndex);
+            ImGui::TextWrapped("%.4f", this->client->estimatedServerTime);
+            columnIndex++;
+
+            ImGui::EndTable();
+        }
     }
     ImGui::End();
     ImGui::Render();

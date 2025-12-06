@@ -41,7 +41,7 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
     sf::Socket::Status status = tcpSocket->receive(packet);
     while (status == sf::Socket::Status::Partial)
         status = tcpSocket->receive(packet);
-    
+
     spdlog::debug("Status available");
     switch (status)
     {
@@ -336,18 +336,20 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
                      pingCheckMessage->echoTime) /
                     2.f
                 );
-                clientConnection->deltaWithServer =
-                    this->totalTime->asSeconds() -
-                    clientConnection->theirGameTime;
                 if (clientConnection->pingHistory.size() >
                     Settings::Networking::maxPingCheckMessageHistory)
                 {
                     clientConnection->pingHistory.pop_back();
                 }
                 clientConnection->updateAveragePing();
-                clientConnection->theirGameTime =
+                clientConnection->lastRecordedGameTime = pingCheckMessage->time;
+                clientConnection->lastRecordedDeltaTime =
+                    pingCheckMessage->deltaTime;
+                clientConnection->estimatedCurrentGameTime =
                     pingCheckMessage->time + clientConnection->averagePing;
-                clientConnection->theirDeltaTime = pingCheckMessage->deltaTime;
+                clientConnection->lastRecordedClockDrift =
+                    this->totalTime->asSeconds() -
+                    clientConnection->estimatedCurrentGameTime;
                 break;
             }
             default:
@@ -523,7 +525,8 @@ void Server::frameClientConnections()
     for (const std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
-        clientConnection->theirGameTime += this->deltaTime->asSeconds();
+        clientConnection->estimatedCurrentGameTime +=
+            this->deltaTime->asSeconds();
     }
 }
 

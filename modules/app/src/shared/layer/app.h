@@ -64,7 +64,6 @@ class AppLayer : public BaseLayer
     bool isBoundaryBoxesEnabled = false;
     sf::Time deltaTime;
     sf::Time totalTime;
-    sf::Time serverOffsetTime = sf::seconds(0.f);
     ShipActor *player = nullptr;
     bool *isConnectedToServer;
     sf::Clock clock = sf::Clock();
