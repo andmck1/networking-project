@@ -126,8 +126,9 @@ sf::Vector2f ClientConnection::predictVectorWithLinearVelocity(
     return predictedVector;
 }
 
-ShipMessage
-ClientConnection::predictShipMessage(float deltaTime, float totalTime)
+ShipMessage ClientConnection::predictShipMessage(
+    float totalTime, bool isInterpolationEnabled, bool isPredictionEnabled
+)
 {
     ShipMessage newShipMessage;
     const ShipMessage newestMessage = this->shipMessageHistory[0];
@@ -154,7 +155,7 @@ ClientConnection::predictShipMessage(float deltaTime, float totalTime)
         // otherwise if prediction time ahead of the newest message we need
         // to predict
         if ((predictionTime <= newestMessage.time) &&
-            (predictionTime > previousMessage.time))
+            (predictionTime > previousMessage.time) && isInterpolationEnabled)
         {
             interpolationStep =
                 (predictionTime - previousMessage.time) / messageTimeDelta;
@@ -168,7 +169,7 @@ ClientConnection::predictShipMessage(float deltaTime, float totalTime)
                 interpolationTime
             );
         }
-        else if (predictionTime > newestMessage.time)
+        else if ((predictionTime > newestMessage.time) && isPredictionEnabled)
         {
             predictedPosition = this->predictVectorWithLinearVelocity(
                 newestMessage.position, previousMessage.position,

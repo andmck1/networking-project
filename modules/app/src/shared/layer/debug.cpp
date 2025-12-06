@@ -89,7 +89,16 @@ void DebugLayer::render()
     {
         ImGui::Checkbox("Enable controls?", &this->player->isPlayerControlling);
     }
-    if (!this->isServer)
+    if (this->isServer)
+    {
+        ImGui::Checkbox(
+            "Enable Interpolation?", &this->server->isInterpolationEnabled
+        );
+        ImGui::Checkbox(
+            "Enable Prediction?", &this->server->isPredictionEnabled
+        );
+    }
+    else
     {
         ImGui::Checkbox(
             "Enable Client Connection?", this->isClientConnectionEnabled

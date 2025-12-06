@@ -43,6 +43,9 @@ class Server
     void frameClientConnections();
     std::vector<std::unique_ptr<Message>>
     prepareGameUpdates(AppLayer *appLayer);
+    
+    bool isInterpolationEnabled = true;
+    bool isPredictionEnabled = true;
 
     private:
     unsigned short port;

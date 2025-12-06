@@ -55,7 +55,9 @@ class ClientConnection
     sf::Vector2f previousPredictedShipPosition = {};
     sf::Vector2f previousPredictedShipForwardVector = {};
 
-    ShipMessage predictShipMessage(float deltaTime, float totalTime);
+    ShipMessage predictShipMessage(
+        float totalTime, bool isInterpolationEnabled, bool isPredictionEnabled
+    );
     void updateAveragePing();
 
     private:
@@ -64,6 +66,6 @@ class ClientConnection
         float currentVectorTime, float previousVectorTime, float predictionTime
     );
     static sf::Vector2f interpolateVectorLinear(
-        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationFactor 
+        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationFactor
     );
 };

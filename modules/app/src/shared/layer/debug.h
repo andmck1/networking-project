@@ -4,6 +4,7 @@
 #include "core_game/window/window.h"
 #include "../../shared/networking/clientconnection.h"
 #include "../../client/networking/client.h"
+#include "../../server/networking/server.h"
 
 struct DebugLayerConfig : BaseLayerConfig
 {
@@ -24,6 +25,7 @@ class DebugLayer : public BaseLayer
     void render() override;
     std::vector<std::unique_ptr<ClientConnection>> *clientConnections = nullptr;
     Client *client = nullptr;
+    Server *server = nullptr;
     ShipActor *player = nullptr;
     bool *isClientConnectionEnabled = nullptr;
 
