@@ -367,7 +367,7 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
         {
             processedMessages.push_back(
                 std::make_unique<ShipMessage>(
-                    clientConnection->interpolateShipMessages(
+                    clientConnection->predictShipMessage(
                         this->deltaTime->asSeconds(),
                         this->totalTime->asSeconds()
                     )

@@ -52,12 +52,18 @@ class ClientConnection
     float estimatedCurrentGameTime = 0.f;
     float lastRecordedClockDrift = 0.f;
     bool syncRequestSent = false;
+    sf::Vector2f previousPredictedShipPosition = {};
+    sf::Vector2f previousPredictedShipForwardVector = {};
 
-    ShipMessage interpolateShipMessages(float deltaTime, float totalTime);
+    ShipMessage predictShipMessage(float deltaTime, float totalTime);
     void updateAveragePing();
 
     private:
+    static sf::Vector2f predictVectorWithLinearVelocity(
+        sf::Vector2f currentVector, sf::Vector2f previousVector,
+        float currentVectorTime, float previousVectorTime, float predictionTime
+    );
     static sf::Vector2f interpolateVectorLinear(
-        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
+        sf::Vector2f vector0, sf::Vector2f vector1, float interpolationFactor 
     );
 };

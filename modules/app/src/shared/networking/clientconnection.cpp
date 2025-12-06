@@ -105,51 +105,110 @@ ClientConnection::ClientConnection(
 }
 
 sf::Vector2f ClientConnection::interpolateVectorLinear(
-    sf::Vector2f vector0, sf::Vector2f vector1, float interpolationTime
+    sf::Vector2f vector0, sf::Vector2f vector1, float interpolationFactor
 )
 {
-    return ((vector1 - vector0) * interpolationTime) + vector0;
+    return ((vector1 - vector0) * interpolationFactor) + vector0;
+}
+
+sf::Vector2f ClientConnection::predictVectorWithLinearVelocity(
+    sf::Vector2f currentVector, sf::Vector2f previousVector,
+    float currentVectorTime, float previousVectorTime, float predictionTime
+)
+{
+    sf::Vector2f predictedVector;
+    sf::Vector2f deltaVector = currentVector - previousVector;
+    float deltaTime = currentVectorTime - previousVectorTime;
+    sf::Vector2f velocity = deltaVector / deltaTime;
+    float forwardTimeStep = predictionTime - currentVectorTime;
+
+    predictedVector = velocity * forwardTimeStep + currentVector;
+    return predictedVector;
 }
 
 ShipMessage
-ClientConnection::interpolateShipMessages(float deltaTime, float totalTime)
+ClientConnection::predictShipMessage(float deltaTime, float totalTime)
 {
-    ShipMessage interpolatedShipMessage;
+    ShipMessage newShipMessage;
+    const ShipMessage newestMessage = this->shipMessageHistory[0];
+    float interpolationDelay = 0.1f;
+    float correctionLerp = 0.15f;
 
-    ShipMessage message0 = this->shipMessageHistory[0];
-    sf::Vector2f interpolatedPosition = this->shipMessageHistory[0].position;
-    sf::Vector2f interpolatedForwardVector =
-        this->shipMessageHistory[0].forwardVector;
-    int32_t interpolatedTurnDirection =
-        this->shipMessageHistory[0].turnDirection;
+    float predictionTime = this->estimatedCurrentGameTime - interpolationDelay;
+    sf::Vector2f predictedPosition = newestMessage.position;
+    sf::Vector2f predictedForwardVector = newestMessage.forwardVector;
 
-    // Some lab code here (linear interpolation)
+    // TODO - what happens if previous message very old?
+    // Using TCP so guaranteed to have the messages in order and longer
+    // history not useful unless averaging out or using non-linear stuff
+    // TODO - (non-linear could be useful if previously turning)
     if (this->shipMessageHistory.size() > 1)
     {
-        ShipMessage message1 = this->shipMessageHistory[1];
-        // TODO - Could calculate using ping and deltaTime as well
-        float step =
-            1.f / (((float) message0.time - (float) message1.time) / deltaTime);
-        this->interpolationTime += step;
-        this->interpolationTime = std::clamp(interpolationTime, 0.f, 1.f);
+        const ShipMessage previousMessage = shipMessageHistory[1];
+        float messageTimeDelta = newestMessage.time - previousMessage.time;
+        float interpolationStep;
 
-        interpolatedPosition = this->interpolateVectorLinear(
-            message1.position, message0.position, interpolationTime
-        );
-        interpolatedForwardVector = this->interpolateVectorLinear(
-            message1.forwardVector, message0.forwardVector, interpolationTime
-        );
-        interpolatedForwardVector /= interpolatedForwardVector.length();
-        interpolatedTurnDirection = this->shipMessageHistory[1].turnDirection;
+        // if prediction time is between the previous two messages
+        // scale interpolation step with estimated game time and message delta
+        // https://www.reddit.com/r/gamedev/comments/mnfxze/networkingclientside_interpolation_how_do_compute/
+        // otherwise if prediction time ahead of the newest message we need
+        // to predict
+        if ((predictionTime <= newestMessage.time) &&
+            (predictionTime > previousMessage.time))
+        {
+            interpolationStep =
+                (predictionTime - previousMessage.time) / messageTimeDelta;
+            interpolationStep = std::clamp(interpolationStep, 0.f, 1.f);
+            predictedPosition = this->interpolateVectorLinear(
+                previousMessage.position, newestMessage.position,
+                interpolationStep
+            );
+            predictedForwardVector = this->interpolateVectorLinear(
+                previousMessage.forwardVector, newestMessage.forwardVector,
+                interpolationTime
+            );
+        }
+        else if (predictionTime > newestMessage.time)
+        {
+            predictedPosition = this->predictVectorWithLinearVelocity(
+                newestMessage.position, previousMessage.position,
+                newestMessage.time, previousMessage.time, predictionTime
+            );
+        }
     }
 
-    interpolatedShipMessage.id = message0.id;
-    interpolatedShipMessage.time = totalTime;
-    interpolatedShipMessage.position = interpolatedPosition;
-    interpolatedShipMessage.forwardVector = interpolatedForwardVector;
-    interpolatedShipMessage.turnDirection = interpolatedTurnDirection;
+    // Smooth from new predicted position and previous position
+    // by lerping using a fixed factor, vv important for smooth motion
+    sf::Vector2f smoothedPosition = predictedPosition;
+    sf::Vector2f smoothedForwardVector = predictedForwardVector;
+    if (this->previousPredictedShipPosition == sf::Vector2f{})
+    {
+        this->previousPredictedShipPosition = predictedPosition;
+        this->previousPredictedShipForwardVector = predictedForwardVector;
+    }
+    else
+    {
+        smoothedPosition = this->interpolateVectorLinear(
+            this->previousPredictedShipPosition, predictedPosition,
+            correctionLerp
+        );
 
-    return interpolatedShipMessage;
+        smoothedForwardVector = this->interpolateVectorLinear(
+            this->previousPredictedShipForwardVector, predictedForwardVector,
+            correctionLerp
+        );
+    }
+
+    this->previousPredictedShipPosition = smoothedPosition;
+    this->previousPredictedShipForwardVector = smoothedForwardVector;
+
+    newShipMessage.id = newestMessage.id;
+    newShipMessage.time = this->estimatedCurrentGameTime;
+    newShipMessage.position = smoothedPosition;
+    newShipMessage.forwardVector = smoothedForwardVector;
+    newShipMessage.turnDirection = newestMessage.turnDirection;
+
+    return newShipMessage;
 }
 
 void ClientConnection::updateAveragePing()
