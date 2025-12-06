@@ -156,7 +156,8 @@ bool Client::syncWithServer()
             }
             default:
             {
-                spdlog::error("Unexpected error receivng sync message");
+                spdlog::error("Unexpected error receiving sync message");
+                this->nServerConnectTries++;
                 return false;
                 break;
             }
