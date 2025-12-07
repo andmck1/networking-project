@@ -17,7 +17,6 @@ struct NonBlockingTCPPingCheckPacket : NonBlockingTCPPacket
 {
     NonBlockingTCPPacketSendStatus
     statusHandler(sf::Socket::Status status) override;
-    int nNetworkUpdates = 0;
 };
 
 struct ServerConfig

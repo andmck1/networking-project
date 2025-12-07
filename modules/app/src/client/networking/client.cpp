@@ -43,6 +43,50 @@ NonBlockingTCPNetworkUpdatePacket::statusHandler(sf::Socket::Status status)
     return this->sendStatus;
 }
 
+NonBlockingTCPPacketSendStatus
+NonBlockingTCPPingCheckResponsePacket::statusHandler(sf::Socket::Status status)
+{
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::debug("Ping check message sent");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Done;
+            break;
+        }
+        case (sf::Socket::Status::NotReady):
+        {
+            spdlog::error(
+                "Server not ready while sending ping check message response"
+            );
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::Partial):
+        {
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::Disconnected):
+        {
+            spdlog::error(
+                "Server disconnected while sending ping check message response"
+            );
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+        default:
+        {
+            spdlog::error(
+                "Unexpected error sending ping check message to server"
+            );
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+    }
+    return this->sendStatus;
+}
+
 ClientConfig::ClientConfig(
     unsigned short serverPort, unsigned short clientPort, float updateRate,
     sf::Time *deltaTime, sf::Time *totalTime, sf::IpAddress serverIPAddress
@@ -333,7 +377,7 @@ void Client::sendPingCheckMessageResponse(
     PingCheckMessage *receivedRequestMessage
 )
 {
-    sf::Packet packet;
+    NonBlockingTCPPingCheckResponsePacket pingCheckPacket;
     PingCheckMessage responseMessage = PingCheckMessage();
     responseMessage.id = this->serverId;
     responseMessage.time = this->totalTime->asSeconds();
@@ -341,43 +385,12 @@ void Client::sendPingCheckMessageResponse(
     responseMessage.deltaTime = this->deltaTime->asSeconds();
     responseMessage.ping = this->ping;
 
-    packet << (int32_t) 1;
-    packet << responseMessage;
+    pingCheckPacket.packet << (int32_t) 1;
+    pingCheckPacket.packet << responseMessage;
 
-    sf::Socket::Status status = this->tcpSocket.send(packet);
-    while (status == sf::Socket::Status::Partial)
-        status = this->tcpSocket.send(packet);
-    switch (status)
-    {
-        case (sf::Socket::Status::Done):
-        {
-            spdlog::debug("Packet sent to server");
-            break;
-        }
-        case (sf::Socket::Status::Disconnected):
-        {
-            this->isConnectedToServer = false;
-            spdlog::error(
-                "Server disconnected while sending ping check message response"
-            );
-            break;
-        }
-        case (sf::Socket::Status::NotReady):
-        {
-            spdlog::error(
-                "Server not ready while sending ping check message response"
-            );
-            break;
-        }
-        default:
-        {
-            spdlog::error(
-                "Unexpected error sending ping check message to server"
-            );
-            this->isConnectedToServer = false;
-            break;
-        }
-    }
+    this->nonBlockingSendPackets.push_back(
+        std::make_unique<NonBlockingTCPPingCheckResponsePacket>(pingCheckPacket)
+    );
 }
 
 void Client::sendNonBlockingPackets()
@@ -410,6 +423,7 @@ void Client::sendNonBlockingPackets()
             default:
             {
                 spdlog::warn("Non blocking send status not handled");
+                iterator = this->nonBlockingSendPackets.erase(iterator);
                 this->isConnectedToServer = false;
             }
         }

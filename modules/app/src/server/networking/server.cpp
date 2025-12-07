@@ -205,13 +205,6 @@ void Server::acceptPlayerConnections()
             break;
         case (sf::Socket::Status::NotReady):
             break;
-        case (sf::Socket::Status::Partial):
-            break;
-        case (sf::Socket::Status::Error):
-        {
-            spdlog::warn("Unexpected error connecting to players");
-            break;
-        }
         default:
         {
             spdlog::error("Not implemented socket status");

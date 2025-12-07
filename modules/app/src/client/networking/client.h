@@ -11,6 +11,12 @@ struct NonBlockingTCPNetworkUpdatePacket : NonBlockingTCPPacket
     statusHandler(sf::Socket::Status status) override;
 };
 
+struct NonBlockingTCPPingCheckResponsePacket : NonBlockingTCPPacket
+{
+    NonBlockingTCPPacketSendStatus
+    statusHandler(sf::Socket::Status status) override;
+};
+
 struct ClientConfig
 {
     ClientConfig(
