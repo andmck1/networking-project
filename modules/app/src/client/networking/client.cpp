@@ -4,6 +4,45 @@
 #include <format>
 #include <spdlog/spdlog.h>
 
+NonBlockingTCPPacketSendStatus
+NonBlockingTCPNetworkUpdatePacket::statusHandler(sf::Socket::Status status)
+{
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::debug("Packet sent to server");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Done;
+            break;
+        }
+        case (sf::Socket::Status::Partial):
+        {
+            spdlog::error("Server not able to send/receive data");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::NotReady):
+        {
+            spdlog::error("Server connection unable to receive data.");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::Disconnected):
+        {
+            spdlog::error("Server disconnected while sending packet");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+        default:
+        {
+            spdlog::warn("Unexpected error sending packet to server");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+    }
+    return this->sendStatus;
+}
+
 ClientConfig::ClientConfig(
     unsigned short serverPort, unsigned short clientPort, float updateRate,
     sf::Time *deltaTime, sf::Time *totalTime, sf::IpAddress serverIPAddress
@@ -206,54 +245,23 @@ void Client::sendNetworkUpdates(AppLayer *appLayer)
     {
         spdlog::debug("Sending network updates");
 
-        sf::Packet packet;
+        NonBlockingTCPNetworkUpdatePacket networkUpdatePacket;
         std::vector<std::unique_ptr<Message>> networkUpdates =
             this->prepareNetworkUpdates(appLayer);
         int32_t nNetworkUpdates = networkUpdates.size();
 
         // serialise packet with all network updates
-        packet << nNetworkUpdates;
+        networkUpdatePacket.packet << nNetworkUpdates;
         for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
         {
-            packet << *networkUpdate;
+            networkUpdatePacket.packet << *networkUpdate;
         }
-
-        // send packet
-        spdlog::debug(
-            "Sending " + std::to_string(nNetworkUpdates) +
-            " messages in one packet"
+        this->nonBlockingSendPackets.push_back(
+            std::make_unique<NonBlockingTCPNetworkUpdatePacket>(
+                networkUpdatePacket
+            )
         );
-        sf::Socket::Status status = this->tcpSocket.send(packet);
-        switch (status)
-        {
-            case (sf::Socket::Status::Done):
-            {
-                spdlog::debug("Packet sent to server");
-                break;
-            }
-            case (sf::Socket::Status::Disconnected):
-            {
-                this->isConnectedToServer = false;
-                spdlog::error("Server disconnected while sending packet");
-                break;
-            }
-            case (sf::Socket::Status::NotReady):
-            {
-                spdlog::error("Server not able to send/receive data");
-                break;
-            }
-            default:
-            {
-                this->isConnectedToServer = false;
-                spdlog::warn("Unexpected error sending packet to server");
-                break;
-            }
-        }
 
-        spdlog::debug(
-            "Sent " + std::to_string(nNetworkUpdates) +
-            " messages in one packet"
-        );
         this->sendTimer = 0.f;
     }
 }
@@ -368,6 +376,42 @@ void Client::sendPingCheckMessageResponse(
             );
             this->isConnectedToServer = false;
             break;
+        }
+    }
+}
+
+void Client::sendNonBlockingPackets()
+{
+    for (auto iterator = this->nonBlockingSendPackets.begin();
+         iterator != this->nonBlockingSendPackets.end();)
+    {
+        std::unique_ptr<NonBlockingTCPPacket> &packet = *iterator;
+        sf::Socket::Status status = this->tcpSocket.send(packet->packet);
+        NonBlockingTCPPacketSendStatus sendStatus =
+            packet->statusHandler(status);
+        switch (sendStatus)
+        {
+            case (NonBlockingTCPPacketSendStatus::Done):
+            {
+                iterator = this->nonBlockingSendPackets.erase(iterator);
+                break;
+            }
+            case (NonBlockingTCPPacketSendStatus::Sending):
+            {
+                iterator++;
+                break;
+            }
+            case (NonBlockingTCPPacketSendStatus::Error):
+            {
+                iterator = this->nonBlockingSendPackets.erase(iterator);
+                this->isConnectedToServer = false;
+                break;
+            }
+            default:
+            {
+                spdlog::warn("Non blocking send status not handled");
+                this->isConnectedToServer = false;
+            }
         }
     }
 }

@@ -6,6 +6,20 @@
 
 #include <SFML/Network.hpp>
 
+struct NonBlockingTCPRelayPacket : NonBlockingTCPPacket
+{
+    NonBlockingTCPPacketSendStatus
+    statusHandler(sf::Socket::Status status) override;
+    int nNetworkUpdates = 0;
+};
+
+struct NonBlockingTCPPingCheckPacket : NonBlockingTCPPacket
+{
+    NonBlockingTCPPacketSendStatus
+    statusHandler(sf::Socket::Status status) override;
+    int nNetworkUpdates = 0;
+};
+
 struct ServerConfig
 {
     ServerConfig(unsigned short port, sf::Time *deltaTime, sf::Time *totalTime);
@@ -27,23 +41,28 @@ class Server
     std::unordered_map<int32_t, ClientConnection *> clientConnectionsMap = {};
 
     void init(ServerConfig *config);
+
     bool checkListenAvailable();
     void acceptPlayerConnections();
     void createNewClient(std::unique_ptr<sf::TcpSocket> socket);
     void scanSelector();
     void checkForSyncs();
+
     std::vector<std::unique_ptr<Message>> receiveDataFromClients();
-    void relayNetworkUpdates(
+
+    void sendRelayNetworkUpdates(
         const std::vector<std::unique_ptr<Message>> &networkUpdates
     );
-    std::vector<std::unique_ptr<Message>>
-    processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);
     void sendPlayerPingCheckMessages();
     void sendPingCheckMessage(ClientConnection *clientConnection);
+    void sendNonBlockingPackets();
+
+    std::vector<std::unique_ptr<Message>>
+    processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);
     void frameClientConnections();
     std::vector<std::unique_ptr<Message>>
     prepareGameUpdates(AppLayer *appLayer);
-    
+
     bool isInterpolationEnabled = true;
     bool isPredictionEnabled = true;
 

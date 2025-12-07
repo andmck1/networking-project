@@ -3,6 +3,82 @@
 #include "../../shared/config/settings.h"
 #include <spdlog/spdlog.h>
 
+NonBlockingTCPPacketSendStatus
+NonBlockingTCPRelayPacket::statusHandler(sf::Socket::Status status)
+{
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::debug(
+                "{} messages relayed", std::to_string(this->nNetworkUpdates)
+            );
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Done;
+            break;
+        }
+        case (sf::Socket::Status::NotReady):
+        {
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::Partial):
+        {
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::Disconnected):
+        {
+            spdlog::info("Client disconnected when sending relay packet");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+        default:
+        {
+            spdlog::error("Unexpected error when sending relay packet");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+    }
+    return this->sendStatus;
+}
+
+NonBlockingTCPPacketSendStatus
+NonBlockingTCPPingCheckPacket::statusHandler(sf::Socket::Status status)
+{
+    switch (status)
+    {
+        case (sf::Socket::Status::Done):
+        {
+            spdlog::debug("Ping check message sent");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Done;
+            break;
+        }
+        case (sf::Socket::Status::NotReady):
+        {
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::Partial):
+        {
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Sending;
+            break;
+        }
+        case (sf::Socket::Status::Disconnected):
+        {
+            spdlog::info("Client disconnected when sending ping check");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+        default:
+        {
+            spdlog::error("Unexpected error when sending ping check to");
+            this->sendStatus = NonBlockingTCPPacketSendStatus::Error;
+            break;
+        }
+    }
+    return this->sendStatus;
+}
+
 ServerConfig::ServerConfig(
     unsigned short port, sf::Time *deltaTime, sf::Time *totalTime
 )
@@ -39,8 +115,6 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
 
     spdlog::debug("Receiving from tcp socket");
     sf::Socket::Status status = tcpSocket->receive(packet);
-    while (status == sf::Socket::Status::Partial)
-        status = tcpSocket->receive(packet);
 
     spdlog::debug("Status available");
     switch (status)
@@ -379,7 +453,7 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
     return processedMessages;
 }
 
-void Server::relayNetworkUpdates(
+void Server::sendRelayNetworkUpdates(
     const std::vector<std::unique_ptr<Message>> &networkUpdates
 )
 {
@@ -392,7 +466,7 @@ void Server::relayNetworkUpdates(
         // TODO - use iterator with filter instead
         if (clientConnection->connectionState.isDisconnected())
             continue;
-        sf::Packet packet;
+        NonBlockingTCPRelayPacket relayPacket;
         sf::Packet packetMessages;
         int32_t nNetworkUpdates = 0;
         for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
@@ -405,102 +479,31 @@ void Server::relayNetworkUpdates(
         }
         if (nNetworkUpdates > 0)
         {
-            packet << nNetworkUpdates;
-            packet.append(
+            relayPacket.packet << nNetworkUpdates;
+            relayPacket.nNetworkUpdates = nNetworkUpdates;
+            relayPacket.packet.append(
                 packetMessages.getData(), packetMessages.getDataSize()
             );
-
-            // TODO - get rid of these loops, keep in queue and try again if
-            // any left in queue
-            sf::Socket::Status status = clientConnection->socket->send(packet);
-            while (status == sf::Socket::Status::Partial)
-                status = clientConnection->socket->send(packet);
-            switch (status)
-            {
-                case (sf::Socket::Status::Done):
-                {
-                    spdlog::debug(
-                        "{} messages relayed to {}",
-                        std::to_string(nNetworkUpdates), clientConnection->id
-                    );
-                    break;
-                }
-                case (sf::Socket::Status::NotReady):
-                {
-                    break;
-                }
-                case (sf::Socket::Status::Partial):
-                {
-                    break;
-                }
-                case (sf::Socket::Status::Disconnected):
-                {
-                    spdlog::info(
-                        "Client disconnected when sending relay packet to "
-                        "{}",
-                        clientConnection->id
-                    );
-                    clientConnection->connectionState.disconnected();
-                    break;
-                }
-                default:
-                {
-                    spdlog::error(
-                        "Unexpected error when sending relay packet to {}",
-                        clientConnection->id
-                    );
-                    break;
-                }
-            }
+            clientConnection->nonBlockingSendPackets.push_back(
+                std::make_unique<NonBlockingTCPRelayPacket>(relayPacket)
+            );
         }
     }
 }
 
 void Server::sendPingCheckMessage(ClientConnection *clientConnection)
 {
-    sf::Packet packet;
+    NonBlockingTCPPingCheckPacket pingCheckPacket;
     PingCheckMessage message = PingCheckMessage();
     message.id = clientConnection->id;
     message.time = this->totalTime->asSeconds();
     message.ping = clientConnection->averagePing;
     message.deltaTime = this->deltaTime->asSeconds();
-    packet << (int32_t) 1;
-    packet << message;
-
-    sf::Socket::Status status = clientConnection->socket->send(packet);
-    while (status == sf::Socket::Status::Partial)
-        status = clientConnection->socket->send(packet);
-    switch (status)
-    {
-        case (sf::Socket::Status::Done):
-        {
-            spdlog::debug(
-                "Ping check message sent to {}", clientConnection->id
-            );
-            break;
-        }
-        case (sf::Socket::Status::NotReady):
-        {
-            break;
-        }
-        case (sf::Socket::Status::Disconnected):
-        {
-            spdlog::info(
-                "Client disconnected when sending ping check to {}",
-                clientConnection->id
-            );
-            clientConnection->connectionState.disconnected();
-            break;
-        }
-        default:
-        {
-            spdlog::error(
-                "Unexpected error when sending ping check to {}",
-                clientConnection->id
-            );
-            break;
-        }
-    }
+    pingCheckPacket.packet << (int32_t) 1;
+    pingCheckPacket.packet << message;
+    clientConnection->nonBlockingSendPackets.push_back(
+        std::make_unique<NonBlockingTCPPingCheckPacket>(pingCheckPacket)
+    );
 }
 
 void Server::sendPlayerPingCheckMessages()
@@ -516,6 +519,50 @@ void Server::sendPlayerPingCheckMessages()
             if (clientConnection->connectionState.isDisconnected())
                 continue;
             this->sendPingCheckMessage(clientConnection.get());
+        }
+    }
+}
+
+void Server::sendNonBlockingPackets()
+{
+    for (std::unique_ptr<ClientConnection> &clientConnection :
+         this->clientConnections)
+    {
+        for (auto iterator = clientConnection->nonBlockingSendPackets.begin();
+             iterator != clientConnection->nonBlockingSendPackets.end();)
+        {
+            std::unique_ptr<NonBlockingTCPPacket> &packet = *iterator;
+            sf::Socket::Status status =
+                clientConnection->socket->send(packet->packet);
+            NonBlockingTCPPacketSendStatus sendStatus =
+                packet->statusHandler(status);
+            switch (sendStatus)
+            {
+                case (NonBlockingTCPPacketSendStatus::Done):
+                {
+                    iterator = clientConnection->nonBlockingSendPackets.erase(
+                        iterator
+                    );
+                    break;
+                }
+                case (NonBlockingTCPPacketSendStatus::Sending):
+                {
+                    iterator++;
+                    break;
+                }
+                case (NonBlockingTCPPacketSendStatus::Error):
+                {
+                    iterator = clientConnection->nonBlockingSendPackets.erase(
+                        iterator
+                    );
+                    clientConnection->connectionState.disconnected();
+                    break;
+                }
+                default:
+                {
+                    spdlog::warn("Non blocking send status not handled");
+                }
+            }
         }
     }
 }

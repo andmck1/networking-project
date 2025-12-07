@@ -87,6 +87,7 @@ int main()
         {
             // TODO - have client.frame function
             client.sendNetworkUpdates(state.appLayer.get());
+            client.sendNonBlockingPackets();
             std::vector<std::unique_ptr<Message>> networkUpdates =
                 client.receiveNetworkUpdates();
             state.appLayer->networkUpdate(networkUpdates);

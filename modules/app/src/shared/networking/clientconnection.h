@@ -6,6 +6,26 @@
 #include <deque>
 #include <memory>
 
+enum class NonBlockingTCPPacketSendStatus
+{
+    Sending,
+    Done,
+    Error
+};
+
+struct NonBlockingTCPPacket
+{
+    NonBlockingTCPPacket() = default;
+    virtual ~NonBlockingTCPPacket() = default;
+
+    sf::Packet packet;
+    NonBlockingTCPPacketSendStatus sendStatus =
+        NonBlockingTCPPacketSendStatus::Sending;
+
+    virtual NonBlockingTCPPacketSendStatus
+    statusHandler(sf::Socket::Status status) = 0;
+};
+
 struct ClientConnectionState
 {
     enum class ConnectionState
@@ -54,6 +74,8 @@ class ClientConnection
     bool syncRequestSent = false;
     sf::Vector2f previousPredictedShipPosition = {};
     sf::Vector2f previousPredictedShipForwardVector = {};
+    std::vector<std::unique_ptr<NonBlockingTCPPacket>> nonBlockingSendPackets =
+        {};
 
     ShipMessage predictShipMessage(
         float totalTime, bool isInterpolationEnabled, bool isPredictionEnabled

@@ -50,7 +50,8 @@ int main()
         {
             clientUpdates.push_back(std::move(gameUpdate));
         }
-        server.relayNetworkUpdates(clientUpdates);
+        server.sendRelayNetworkUpdates(clientUpdates);
+        server.sendNonBlockingPackets();
 
         // app
         // TODO - consolidate as state.frame

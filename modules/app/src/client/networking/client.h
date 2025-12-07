@@ -2,7 +2,14 @@
 
 #include "../../shared/layer/app.h"
 #include "../../shared/networking/messages.h"
+#include "../../shared/networking/clientconnection.h"
 #include <SFML/Network.hpp>
+
+struct NonBlockingTCPNetworkUpdatePacket : NonBlockingTCPPacket
+{
+    NonBlockingTCPPacketSendStatus
+    statusHandler(sf::Socket::Status status) override;
+};
 
 struct ClientConfig
 {
@@ -36,6 +43,7 @@ class Client
     std::vector<std::unique_ptr<Message>> receiveNetworkUpdates();
     int32_t generateRandomId();
     void frameServerTime();
+    void sendNonBlockingPackets();
 
     int32_t serverId = -1;
     float lastRecordedServerTime = 0.f;
@@ -55,6 +63,8 @@ class Client
     float sendTimer = 0.f;
     sf::Time *deltaTime;
     sf::Time *totalTime;
+    std::vector<std::unique_ptr<NonBlockingTCPPacket>> nonBlockingSendPackets =
+        {};
 
     std::random_device randomDevice;
     std::mt19937 randomNumberGenerator;
