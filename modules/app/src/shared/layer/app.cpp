@@ -88,6 +88,7 @@ void AppLayer::updateActors()
     {
         if (ship->isEnabled)
         {
+            // Sprite updates
             ship->sprite->setColor(Settings::Actor::connectedMask);
             switch (ship->currentTurnDirection)
             {
@@ -107,6 +108,8 @@ void AppLayer::updateActors()
                     break;
                 }
             }
+
+            // Projectile collisions
             for (ProjectileActor *projectile : this->projectiles)
             {
                 if ((ship->serverId != projectile->shooterServerId) &&
@@ -118,17 +121,47 @@ void AppLayer::updateActors()
                     {
                         if (this->isServer)
                         {
-                            ship->health -= 5.f;
+                            ship->health -= Settings::Game::projectileDamage;
                             std::unique_ptr<HitMessage> hitEvent =
                                 std::make_unique<HitMessage>();
                             hitEvent->hitShipId = ship->serverId;
                             hitEvent->time = this->totalTime.asSeconds();
+                            hitEvent->newHealth = ship->health;
                             this->hitEvents.push_back(std::move(hitEvent));
                         }
                         // TODO if the projectile doesn't hit on the server this
                         // could be strange
                         projectile->isDeleted = true;
                         break;
+                    }
+                }
+            }
+
+            // Ship collisions
+            for (ShipActor *otherShip : this->ships)
+            {
+                if (otherShip != ship)
+                {
+                    if (ship->sprite->getGlobalBounds().findIntersection(
+                            otherShip->sprite->getGlobalBounds()
+                        ))
+                    {
+                        // TODO - This will double up ship hits but fine for now
+                        ship->health = 0.f;
+                        otherShip->health = 0.f;
+                        std::unique_ptr<HitMessage> shipHitEvent =
+                            std::make_unique<HitMessage>();
+                        shipHitEvent->hitShipId = ship->serverId;
+                        shipHitEvent->time = this->totalTime.asSeconds();
+                        shipHitEvent->newHealth = ship->health;
+                        this->hitEvents.push_back(std::move(shipHitEvent));
+
+                        std::unique_ptr<HitMessage> otherShipHitEvent =
+                            std::make_unique<HitMessage>();
+                        otherShipHitEvent->hitShipId = otherShip->serverId;
+                        otherShipHitEvent->time = this->totalTime.asSeconds();
+                        otherShipHitEvent->newHealth = otherShip->health;
+                        this->hitEvents.push_back(std::move(otherShipHitEvent));
                     }
                 }
             }
@@ -272,7 +305,7 @@ void AppLayer::networkUpdate(
                         this->totalTime.asSeconds() - networkUpdate->time;
                     estimatedPosition = shootMessage->position +
                                         shootMessage->forwardVector *
-                                            (Settings::Actor::projectileSpeed *
+                                            (Settings::Game::projectileSpeed *
                                              estimatedLifetime);
                     ProjectileActorBuilderContext projectileBuilderContext =
                         ProjectileActorBuilderContext(
@@ -298,7 +331,9 @@ void AppLayer::networkUpdate(
                 if (this->shipActorMap.find(hitShipId) !=
                     this->shipActorMap.end())
                 {
-                    this->shipActorMap[hitShipId]->health -= 5;
+                    spdlog::info("Health received: {}", hitMessage->newHealth);
+                    this->shipActorMap[hitShipId]->health =
+                        hitMessage->newHealth;
                 }
                 break;
             }

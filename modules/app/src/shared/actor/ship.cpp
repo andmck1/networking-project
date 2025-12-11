@@ -16,7 +16,7 @@ ShipActorBuilderContext::ShipActorBuilderContext(
     this->initialScaling = Settings::Actor::shipScaling;
     this->initialPosition = initialPosition;
     this->initialForwardVector = initialForwardVector;
-    this->initialSpeed = Settings::Actor::shipSpeed;
+    this->initialSpeed = Settings::Game::shipSpeed;
     this->initialRotation = initialForwardVector.angle().asRadians();
     this->initialTurnDirection = initialTurnDirection;
     this->initialTurningCircleRadius = Settings::Actor::shipTurningRadius;

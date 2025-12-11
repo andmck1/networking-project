@@ -1,6 +1,5 @@
 #include "eventhandler.h"
 
-#include "core_game/util/constants.h"
 #include "imgui.h"
 
 #include "../config/settings.h"
@@ -92,7 +91,7 @@ bool EventHandler::handleInput()
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space))
             {
-                if (this->fireTimer > Settings::Actor::shipFirerate)
+                if (this->fireTimer > Settings::Game::shipFirerate)
                 {
                     ProjectileActorBuilderContext projectileBuilderContext =
                         this->appLayer->createProjecileBuildContext(

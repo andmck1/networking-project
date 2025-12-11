@@ -152,10 +152,10 @@ HitMessage::HitMessage()
 
 void HitMessage::serialise(sf::Packet &packet) const
 {
-    packet << this->hitShipId;
+    packet << this->hitShipId << this->newHealth;
 }
 
 void HitMessage::deserialise(sf::Packet &packet)
 {
-    packet >> this->hitShipId;
+    packet >> this->hitShipId >> this->newHealth;
 }

@@ -586,6 +586,8 @@ Server::prepareGameUpdates(AppLayer *appLayer)
             gameUpdate.time = hitEvent->time;
             gameUpdate.hitShipId = hitEvent->hitShipId;
             gameUpdate.ping = clientConnection->averagePing;
+            spdlog::info("Game update health: {}", hitEvent->newHealth);
+            gameUpdate.newHealth = hitEvent->newHealth;
             gameUpdates.push_back(std::make_unique<HitMessage>(gameUpdate));
         }
         appLayer->hitEvents.pop_back();

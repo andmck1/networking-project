@@ -28,13 +28,9 @@ namespace Settings
 
     namespace Actor
     {
-        static float shipSpeed = 90.f;
         static sf::Vector2 shipScaling = {4.f, 4.f};
         static float shipTurningRadius = 10.f;
-        static float shipFirerate = 0.5f;
-        static float projectileSpeed = 500.f;
         static sf::Vector2f projectileScaling = {4.f, 4.f};
-        static float projectileLifetime = .5f;
         static sf::Color connectedMask = sf::Color(255, 255, 255, 255);
         static sf::Color disconnectedMask = sf::Color(255, 255, 255, 100);
     } // namespace Actor
@@ -53,5 +49,13 @@ namespace Settings
         static float clientConnectToServerWaitTime = 0.2f;
         static float clientReconnectToServerWaitTime = 1.f;
     } // namespace Networking
+    namespace Game
+    {
+        static float shipSpeed = 90.f;
+        static float shipFirerate = 0.5f;
+        static float projectileDamage = 50.f;
+        static float projectileSpeed = 500.f;
+        static float projectileLifetime = .5f;
+    }
 
 }; // namespace Settings

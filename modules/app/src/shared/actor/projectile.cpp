@@ -13,7 +13,7 @@ ProjectileActorBuilderContext::ProjectileActorBuilderContext(
     this->initialScaling = Settings::Actor::projectileScaling;
     this->initialPosition = initialPosition;
     this->initialForwardVector = initialForwardVector;
-    this->initialSpeed = Settings::Actor::projectileSpeed;
+    this->initialSpeed = Settings::Game::projectileSpeed;
     this->initialRotation = initialForwardVector.angle().asRadians();
     this->shooterServerId = shooterServerId;
     this->lifetime = lifetime;
@@ -39,7 +39,7 @@ void ProjectileActor::update(float deltaTime)
     sf::Vector2f positionDelta = this->forwardVector * this->speed * deltaTime;
     this->moveBy(positionDelta);
     this->lifetime += deltaTime;
-    if (this->lifetime > Settings::Actor::projectileLifetime)
+    if (this->lifetime > Settings::Game::projectileLifetime)
     {
         this->isDeleted = true;
     }

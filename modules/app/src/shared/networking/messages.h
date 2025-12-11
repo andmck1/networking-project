@@ -98,6 +98,7 @@ struct HitMessage : public Message
     ~HitMessage() = default;
 
     int32_t hitShipId;
+    int32_t newHealth;
 
     void serialise(sf::Packet &packet) const override;
 
