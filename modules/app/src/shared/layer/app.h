@@ -41,6 +41,8 @@ class AppLayer : public BaseLayer
     void initPlayerCamera();
     void initServerCamera();
 
+    sf::Vector2f getRespawnPoint();
+
     void addPlayer(ShipActorBuilderContext *initialPlayerState);
     void addServerShip(
         int32_t serverId, sf::Vector2f initialPosition,

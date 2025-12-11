@@ -69,6 +69,8 @@ void State::initPlayer(sf::Vector2f startingPosition, int32_t serverId)
         {0, -1}, ShipTurnDirection::NONE, serverId
     );
     this->appLayer->addPlayer(&initialPlayerState);
+    this->appLayer->player->isSpawning = true;
+    this->appLayer->player->isEnabled = false;
     this->eventHandler.addPlayerHandle(appLayer->player);
 
     if (!isServer)

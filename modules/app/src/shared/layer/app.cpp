@@ -2,6 +2,7 @@
 
 #include "../../shared/config/settings.h"
 #include <algorithm>
+#include <cmath>
 #include <spdlog/spdlog.h>
 #include <SFML/Window.hpp>
 
@@ -79,6 +80,7 @@ void AppLayer::updateActors()
         else
             this->player->sprite->setColor(Settings::Actor::disconnectedMask);
     }
+
     for (const std::unique_ptr<BaseActor> &actor : this->actors)
     {
         actor->update(this->deltaTime.asSeconds());
@@ -138,37 +140,81 @@ void AppLayer::updateActors()
             }
 
             // Ship collisions
-            for (ShipActor *otherShip : this->ships)
+            if (this->isServer)
             {
-                if (otherShip != ship)
+                for (ShipActor *otherShip : this->ships)
                 {
-                    if (ship->sprite->getGlobalBounds().findIntersection(
-                            otherShip->sprite->getGlobalBounds()
-                        ))
+                    if (otherShip != ship)
                     {
-                        // TODO - This will double up ship hits but fine for now
-                        ship->health = 0.f;
-                        otherShip->health = 0.f;
-                        std::unique_ptr<HitMessage> shipHitEvent =
-                            std::make_unique<HitMessage>();
-                        shipHitEvent->hitShipId = ship->serverId;
-                        shipHitEvent->time = this->totalTime.asSeconds();
-                        shipHitEvent->newHealth = ship->health;
-                        this->hitEvents.push_back(std::move(shipHitEvent));
+                        if (otherShip->isEnabled)
+                        {
+                            if (ship->sprite->getGlobalBounds()
+                                    .findIntersection(
+                                        otherShip->sprite->getGlobalBounds()
+                                    ))
+                            {
+                                // TODO - This will double up ship hits but fine
+                                // for now
+                                ship->health = 0.f;
+                                ship->isEnabled = false;
+                                otherShip->health = 0.f;
+                                otherShip->isEnabled = false;
 
-                        std::unique_ptr<HitMessage> otherShipHitEvent =
-                            std::make_unique<HitMessage>();
-                        otherShipHitEvent->hitShipId = otherShip->serverId;
-                        otherShipHitEvent->time = this->totalTime.asSeconds();
-                        otherShipHitEvent->newHealth = otherShip->health;
-                        this->hitEvents.push_back(std::move(otherShipHitEvent));
+                                std::unique_ptr<HitMessage> shipHitEvent =
+                                    std::make_unique<HitMessage>();
+                                shipHitEvent->hitShipId = ship->serverId;
+                                shipHitEvent->time =
+                                    this->totalTime.asSeconds();
+                                shipHitEvent->newHealth = ship->health;
+                                this->hitEvents.push_back(
+                                    std::move(shipHitEvent)
+                                );
+
+                                std::unique_ptr<HitMessage> otherShipHitEvent =
+                                    std::make_unique<HitMessage>();
+                                otherShipHitEvent->hitShipId =
+                                    otherShip->serverId;
+                                otherShipHitEvent->time =
+                                    this->totalTime.asSeconds();
+                                otherShipHitEvent->newHealth =
+                                    otherShip->health;
+                                this->hitEvents.push_back(
+                                    std::move(otherShipHitEvent)
+                                );
+                            }
+                        }
                     }
+                    if (!ship->isEnabled)
+                        break;
                 }
             }
         }
         else
         {
             ship->sprite->setColor(Settings::Actor::disconnectedMask);
+        }
+
+        // Respawn
+        if (ship->health <= 0.f)
+        {
+            ship->isEnabled = false;
+            ship->isSpawning = true;
+            if (ship == this->player)
+                // Chance the player can respawn on another player but very
+                // small and they have invincibility
+                this->player->position = this->getRespawnPoint();
+        }
+
+        if (ship->isSpawning)
+        {
+            ship->spawnTimer += this->deltaTime.asSeconds();
+            ship->health = 100.f;
+            if (ship->spawnTimer > Settings::Game::respawnTime)
+            {
+                ship->spawnTimer = 0.f;
+                ship->isSpawning = false;
+                ship->isEnabled = true;
+            }
         }
     }
 }
@@ -260,6 +306,8 @@ void AppLayer::addServerShip(
     this->addActor<ShipActor>(&initialShipState);
     ShipActor *newServerShip =
         static_cast<ShipActor *>(this->actors.back().get());
+    newServerShip->isSpawning = true;
+    newServerShip->isEnabled = false;
     this->shipActorMap.insert({serverId, newServerShip});
     this->ships.push_back(static_cast<ShipActor *>(this->actors.back().get()));
 }
@@ -331,7 +379,6 @@ void AppLayer::networkUpdate(
                 if (this->shipActorMap.find(hitShipId) !=
                     this->shipActorMap.end())
                 {
-                    spdlog::info("Health received: {}", hitMessage->newHealth);
                     this->shipActorMap[hitShipId]->health =
                         hitMessage->newHealth;
                 }
@@ -355,7 +402,7 @@ void AppLayer::networkUpdate(
             {
                 ship->isEnabled = false;
             }
-            else
+            else if (!ship->isSpawning)
             {
                 ship->isEnabled = true;
             }
@@ -366,4 +413,71 @@ void AppLayer::networkUpdate(
 void AppLayer::resetTime(float newStartTime)
 {
     this->totalTime = sf::seconds(newStartTime);
+}
+
+sf::Vector2f AppLayer::getRespawnPoint()
+{
+    std::vector<sf::Vector2f> allowedRespawnPoints = {};
+    sf::Vector2u windowSize = this->window->getWindowSize();
+    for (unsigned int xGridIndex = 0; xGridIndex < windowSize.x;
+         xGridIndex += Settings::Game::respawnGridStep)
+    {
+        for (unsigned int yGridIndex = 0; yGridIndex < windowSize.y;
+             yGridIndex += Settings::Game::respawnGridStep)
+        {
+            sf::Vector2f respawnPoint = {
+                (float) xGridIndex, (float) yGridIndex
+            };
+            respawnPoint.x *= Settings::Camera::serverViewSize.x /
+                              Settings::Window::windowSize.x;
+            respawnPoint.y *= Settings::Camera::serverViewSize.y /
+                              Settings::Window::windowSize.y;
+
+            bool isRespawnPointFarFromOtherPlayers = true;
+            for (ShipActor *ship : this->ships)
+            {
+                if (ship != this->player)
+                {
+                    sf::Vector2f distanceVector = respawnPoint - ship->position;
+                    float distance = std::sqrt(
+                        distanceVector.x * distanceVector.x +
+                        distanceVector.y * distanceVector.y
+                    );
+                    if (distance < Settings::Game::minRespawnDistance)
+                    {
+                        isRespawnPointFarFromOtherPlayers = false;
+                    }
+                }
+                if (!isRespawnPointFarFromOtherPlayers)
+                    break;
+            }
+
+            if (isRespawnPointFarFromOtherPlayers)
+                allowedRespawnPoints.push_back(respawnPoint);
+        }
+    }
+
+    if (allowedRespawnPoints.size() == 0)
+    {
+        spdlog::warn("No safe respawn points");
+        sf::Vector2f respawnPoint =
+            static_cast<sf::Vector2f>(this->window->getRandomWindowPosition());
+        respawnPoint.x *=
+            Settings::Camera::serverViewSize.x / Settings::Window::windowSize.x;
+        respawnPoint.y *=
+            Settings::Camera::serverViewSize.y / Settings::Window::windowSize.y;
+        return respawnPoint;
+    }
+
+    std::random_device randomDevice;
+    std::mt19937 randomNumberGenerator = std::mt19937(randomDevice());
+    std::uniform_int_distribution<unsigned int> randomNumberDistribution =
+        std::uniform_int_distribution<unsigned int>(
+            0, allowedRespawnPoints.size() - 1
+        );
+    sf::Vector2f respawnPoint = allowedRespawnPoints.at(
+        randomNumberDistribution(randomNumberGenerator)
+    );
+
+    return respawnPoint;
 }

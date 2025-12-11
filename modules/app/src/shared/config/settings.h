@@ -51,11 +51,14 @@ namespace Settings
     } // namespace Networking
     namespace Game
     {
-        static float shipSpeed = 90.f;
-        static float shipFirerate = 0.5f;
+        static float shipSpeed = 150.f;
+        static float shipFirerate = 0.2f;
         static float projectileDamage = 50.f;
         static float projectileSpeed = 500.f;
-        static float projectileLifetime = .5f;
+        static float projectileLifetime = 1.f;
+        static unsigned int respawnGridStep = 10;
+        static float minRespawnDistance = 50.f;
+        static float respawnTime = 1.f;
     }
 
 }; // namespace Settings
