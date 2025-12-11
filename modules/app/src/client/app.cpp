@@ -115,7 +115,7 @@ int main(int, char *argv[])
                 return 0;
         }
     }
-    state.appLayer->totalTime = sf::seconds(client.estimatedServerTime);
+    spdlog::info("Starting at time: {}", state.appLayer->totalTime.asSeconds());
 
     sf::Vector2f playerStartingWorldPosition =
         state.appLayer->getRespawnPoint();
@@ -125,6 +125,7 @@ int main(int, char *argv[])
     while (state.window.window.isOpen())
     {
         client.frameServerTime();
+        state.appLayer->totalTime = sf::seconds(client.estimatedServerTime);
         if (!client.isConnectionEnabled)
             client.disconnectFromServer();
 

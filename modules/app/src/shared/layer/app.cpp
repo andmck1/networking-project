@@ -329,7 +329,9 @@ void AppLayer::networkUpdate(
                 if (this->shipActorMap.find(clientHandle) !=
                     this->shipActorMap.end())
                 {
-                    this->shipActorMap[clientHandle]->networkUpdate(shipMessage);
+                    this->shipActorMap[clientHandle]->networkUpdate(
+                        shipMessage
+                    );
                 }
                 else
                 {
@@ -375,7 +377,7 @@ void AppLayer::networkUpdate(
             {
                 HitMessage *hitMessage =
                     static_cast<HitMessage *>(networkUpdate.get());
-                std::string hitShipHandle= hitMessage->hitShipHandle;
+                std::string hitShipHandle = hitMessage->hitShipHandle;
                 if (this->shipActorMap.find(hitShipHandle) !=
                     this->shipActorMap.end())
                 {

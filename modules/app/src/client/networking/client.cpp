@@ -146,20 +146,12 @@ bool Client::connectToServer()
             break;
         }
         case (sf::Socket::Status::NotReady):
-            spdlog::info(
-                "Waiting for connectiong to server. Try {}/{}",
-                this->nServerConnectTries + 1,
-                Settings::Networking::maxClientConnectToServerTries
-            );
+            spdlog::info("Waiting for connection to server");
             this->nServerConnectTries += 1;
             break;
         default:
         {
-            spdlog::error(
-                "Unexpected error connecting to server, try {}/{}",
-                this->nServerConnectTries + 1,
-                Settings::Networking::maxClientConnectToServerTries
-            );
+            spdlog::error("Unexpected error connecting to server");
             this->nServerConnectTries += 1;
             this->disconnectAndRestConnectionStatusWithServer();
             break;
