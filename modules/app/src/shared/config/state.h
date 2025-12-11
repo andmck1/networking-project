@@ -33,7 +33,9 @@ class State
     std::unique_ptr<DebugLayer> debugLayer;
 
     void init(StateConfig *config);
-    void initPlayer(sf::Vector2f startingPosition, std::string handle);
+    void initPlayer(
+        sf::Vector2f startingPosition, std::string handle, int32_t textureIndex
+    );
 
     private:
     void initWindow();

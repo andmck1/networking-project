@@ -46,7 +46,7 @@ class AppLayer : public BaseLayer
     void addPlayer(ShipActorBuilderContext *initialPlayerState);
     void addServerShip(
         std::string handle, sf::Vector2f initialPosition,
-        sf::Vector2f intialForwardVector
+        sf::Vector2f intialForwardVector, int32_t textureIndex
     );
     void addProjectile(ProjectileActorBuilderContext *initialProjectileContext);
     ProjectileActorBuilderContext createProjecileBuildContext(ShipActor *ship);

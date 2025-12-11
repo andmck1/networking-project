@@ -293,15 +293,14 @@ void AppLayer::addShootEvent(sf::Vector2f position, sf::Vector2f forwardVector)
 
 void AppLayer::addServerShip(
     std::string handle, sf::Vector2f initialPosition,
-    sf::Vector2f initialForwardVector
+    sf::Vector2f initialForwardVector, int32_t textureIndex
 )
 {
     spdlog::debug("Adding ship");
 
-    int randomTextureIndex = this->textureManager->getRandomTextureIndex();
     ShipActorBuilderContext initialShipState = ShipActorBuilderContext(
-        &this->textureManager->shipTextures[randomTextureIndex],
-        initialPosition, initialForwardVector, ShipTurnDirection::NONE, handle
+        &this->textureManager->shipTextures[textureIndex], initialPosition,
+        initialForwardVector, ShipTurnDirection::NONE, handle
     );
     this->addActor<ShipActor>(&initialShipState);
     ShipActor *newServerShip =
@@ -337,7 +336,7 @@ void AppLayer::networkUpdate(
                 {
                     this->addServerShip(
                         clientHandle, shipMessage->position,
-                        shipMessage->forwardVector
+                        shipMessage->forwardVector, shipMessage->skinIndex
                     );
                 }
                 break;

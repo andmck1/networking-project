@@ -256,6 +256,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
     shipUpdateMessage.position = appLayer->player->position;
     shipUpdateMessage.forwardVector = appLayer->player->forwardVector;
     shipUpdateMessage.turnDirection = appLayer->player->currentTurnDirection;
+    shipUpdateMessage.skinIndex = this->skinIndex;
     networkUpdates.push_back(std::make_unique<ShipMessage>(shipUpdateMessage));
 
     // projectiles

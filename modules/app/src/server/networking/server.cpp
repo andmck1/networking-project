@@ -152,17 +152,29 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
     if (this->clientConnectionsMap.find(handle) !=
         this->clientConnectionsMap.end())
     {
-        spdlog::info(
-            "Client {} reconnected at {}:{}", handle, ipAddressString, port
-        );
         ClientConnection *clientConnection = this->clientConnectionsMap[handle];
-        this->selector.remove(*clientConnection->socket);
-        clientConnection->socket = std::move(tcpSocket);
-        this->selector.add(*clientConnection->socket);
-        clientConnection->connectionState.syncing();
-        clientConnection->ipAddress = ipAddressString;
-        clientConnection->port = port;
-        clientConnection->socket->setBlocking(false);
+        if (clientConnection->connectionState.isDisconnected())
+        {
+            spdlog::info(
+                "Client {} reconnected at {}:{}", handle, ipAddressString, port
+            );
+            this->selector.remove(*clientConnection->socket);
+            clientConnection->socket = std::move(tcpSocket);
+            this->selector.add(*clientConnection->socket);
+            clientConnection->connectionState.syncing();
+            clientConnection->ipAddress = ipAddressString;
+            clientConnection->port = port;
+            clientConnection->socket->setBlocking(false);
+        }
+        else
+        {
+            spdlog::info(
+                "Client at {}:{} tried to connect with existing handle {}, "
+                "disconnecting",
+                ipAddressString, port, handle
+            );
+            tcpSocket->disconnect();
+        }
     }
     else
     {

@@ -208,6 +208,7 @@ ShipMessage ClientConnection::predictShipMessage(
     newShipMessage.position = smoothedPosition;
     newShipMessage.forwardVector = smoothedForwardVector;
     newShipMessage.turnDirection = newestMessage.turnDirection;
+    newShipMessage.skinIndex = newestMessage.skinIndex;
 
     return newShipMessage;
 }

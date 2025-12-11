@@ -119,7 +119,9 @@ int main(int, char *argv[])
 
     sf::Vector2f playerStartingWorldPosition =
         state.appLayer->getRespawnPoint();
-    state.initPlayer(playerStartingWorldPosition, client.handle);
+    state.initPlayer(
+        playerStartingWorldPosition, client.handle, client.skinIndex
+    );
     state.debugLayer->player = state.appLayer->player;
 
     while (state.window.window.isOpen())
