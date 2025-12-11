@@ -107,12 +107,14 @@ void DebugLayer::render()
             "Client Send Rate (s/update)", &this->client->updateRate, 0.01f, 4.f
         );
     }
-    if (ImGui::BeginTable("Ship Information", 4, flags))
+    if (ImGui::BeginTable("Ship Information", 6, flags))
     {
         ImGui::TableSetupColumn("Ship Handle");
         ImGui::TableSetupColumn("Position");
         ImGui::TableSetupColumn("Forward Vector");
         ImGui::TableSetupColumn("Health");
+        ImGui::TableSetupColumn("Kills");
+        ImGui::TableSetupColumn("Deaths");
         ImGui::TableHeadersRow();
 
         std::string cellText;
@@ -136,6 +138,12 @@ void DebugLayer::render()
 
                 ImGui::TableSetColumnIndex(3);
                 ImGui::TextWrapped("%d", ship->health);
+
+                ImGui::TableSetColumnIndex(4);
+                ImGui::TextWrapped("%d", ship->kills);
+
+                ImGui::TableSetColumnIndex(5);
+                ImGui::TextWrapped("%d", ship->deaths);
             }
         }
         ImGui::EndTable();

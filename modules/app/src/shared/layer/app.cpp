@@ -124,6 +124,11 @@ void AppLayer::updateActors()
                         if (this->isServer)
                         {
                             ship->health -= Settings::Game::projectileDamage;
+                            if (ship->health <= 0.f)
+                            {
+                                this->shipActorMap[projectile->shooterHandle]
+                                    ->kills += 1;
+                            }
                             std::unique_ptr<HitMessage> hitEvent =
                                 std::make_unique<HitMessage>();
                             hitEvent->hitShipHandle = ship->handle;
@@ -197,6 +202,7 @@ void AppLayer::updateActors()
         // Respawn
         if (ship->health <= 0.f)
         {
+            ship->deaths += 1;
             ship->isEnabled = false;
             ship->isSpawning = true;
             if (ship == this->player)

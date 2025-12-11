@@ -45,6 +45,8 @@ class ShipActor : public BaseActor
     bool isSpawning = true;
     float spawnTimer = 0.f;
     TextureManager::ShipTextures *shipTextures;
+    int32_t kills = 0;
+    int32_t deaths = 0;
 
     private:
     float turningCircleRadius;
