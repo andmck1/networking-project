@@ -91,10 +91,10 @@ bool ClientConnectionState::isDisconnected()
 }
 
 ClientConnection::ClientConnection(
-    int id, std::unique_ptr<sf::TcpSocket> socket
+    std::string handle, std::unique_ptr<sf::TcpSocket> socket
 )
 {
-    this->id = id;
+    this->handle= handle;
     this->socket = std::move(socket);
     this->ipAddress = this->socket->getRemoteAddress().value().toString();
     this->port = this->socket->getRemotePort();
@@ -203,7 +203,7 @@ ShipMessage ClientConnection::predictShipMessage(
     this->previousPredictedShipPosition = smoothedPosition;
     this->previousPredictedShipForwardVector = smoothedForwardVector;
 
-    newShipMessage.id = newestMessage.id;
+    newShipMessage.handle = newestMessage.handle;
     newShipMessage.time = this->estimatedCurrentGameTime;
     newShipMessage.position = smoothedPosition;
     newShipMessage.forwardVector = smoothedForwardVector;

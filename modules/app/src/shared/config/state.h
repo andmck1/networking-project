@@ -33,7 +33,7 @@ class State
     std::unique_ptr<DebugLayer> debugLayer;
 
     void init(StateConfig *config);
-    void initPlayer(sf::Vector2f startingPosition, int32_t serverId);
+    void initPlayer(sf::Vector2f startingPosition, std::string handle);
 
     private:
     void initWindow();

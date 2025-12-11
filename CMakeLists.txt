@@ -21,7 +21,6 @@ FetchContent_Declare(
   GIT_TAG 3.0.1
   GIT_SHALLOW ON
   EXCLUDE_FROM_ALL SYSTEM)
-FetchContent_MakeAvailable(sfml)
 
 # spdlog
 FetchContent_Declare(
@@ -30,7 +29,6 @@ FetchContent_Declare(
   GIT_TAG v1.15.3
   GIT_SHALLOW ON
   EXCLUDE_FROM_ALL SYSTEM)
-FetchContent_MakeAvailable(spdlog)
 
 # imgui
 FetchContent_Declare(
@@ -39,7 +37,8 @@ FetchContent_Declare(
   GIT_TAG v1.91.9
   GIT_SHALLOW ON
   EXCLUDE_FROM_ALL SYSTEM)
-FetchContent_MakeAvailable(imgui)
+
+FetchContent_MakeAvailable(sfml spdlog imgui)
 
 add_library(
   imgui STATIC
@@ -50,5 +49,6 @@ add_library(
   ${imgui_SOURCE_DIR}/backends/imgui_impl_win32.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
 
+add_subdirectory(modules/dependencies)
 add_subdirectory(modules/core)
 add_subdirectory(modules/app)

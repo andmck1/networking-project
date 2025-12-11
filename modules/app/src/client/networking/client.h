@@ -21,7 +21,8 @@ struct ClientConfig
 {
     ClientConfig(
         unsigned short serverPort, unsigned short clientPort, float updateRate,
-        sf::Time *deltaTime, sf::Time *totalTime,
+        sf::Time *deltaTime, sf::Time *totalTime, std::string handle,
+        int32_t skinIndex,
         sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost
     );
     ~ClientConfig() = default;
@@ -32,6 +33,8 @@ struct ClientConfig
     float updateRate;
     sf::Time *deltaTime;
     sf::Time *totalTime;
+    std::string handle;
+    int32_t skinIndex;
 };
 
 class Client
@@ -51,7 +54,6 @@ class Client
     void frameServerTime();
     void sendNonBlockingPackets();
 
-    int32_t serverId = -1;
     float lastRecordedServerTime = 0.f;
     float lastRecordedServerDeltaTime = 0.f;
     float estimatedServerTime = 0.f;
@@ -64,6 +66,8 @@ class Client
     unsigned short clientPort = 0;
     unsigned short serverPort = 0;
     sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost;
+    std::string handle;
+    int32_t skinIndex;
 
     private:
     float sendTimer = 0.f;

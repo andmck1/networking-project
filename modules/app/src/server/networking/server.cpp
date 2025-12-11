@@ -111,7 +111,7 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
     spdlog::info("Creating new client");
 
     sf::Packet packet;
-    int32_t serverId;
+    std::string handle;
 
     spdlog::debug("Receiving from tcp socket");
     sf::Socket::Status status = tcpSocket->receive(packet);
@@ -130,7 +130,7 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
             packet >> _;
             std::unique_ptr<Message> message =
                 Message::deserialiseMessageFromPacket(packet);
-            serverId = message->id;
+            handle = message->handle;
             break;
         }
         default:
@@ -149,14 +149,13 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
     this->selector.remove(*tcpSocket);
 
     // if client exists reconnect, otherwise add new one
-    if (this->clientConnectionsMap.find(serverId) !=
+    if (this->clientConnectionsMap.find(handle) !=
         this->clientConnectionsMap.end())
     {
         spdlog::info(
-            "Client {} reconnected at {}:{}", serverId, ipAddressString, port
+            "Client {} reconnected at {}:{}", handle, ipAddressString, port
         );
-        ClientConnection *clientConnection =
-            this->clientConnectionsMap[serverId];
+        ClientConnection *clientConnection = this->clientConnectionsMap[handle];
         this->selector.remove(*clientConnection->socket);
         clientConnection->socket = std::move(tcpSocket);
         this->selector.add(*clientConnection->socket);
@@ -167,16 +166,18 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
     }
     else
     {
-        spdlog::info("New client {}:{} connected", ipAddressString, port);
+        spdlog::info(
+            "New client {} at {}:{} connected", handle, ipAddressString, port
+        );
         std::unique_ptr<ClientConnection> newClient =
-            std::make_unique<ClientConnection>(serverId, std::move(tcpSocket));
+            std::make_unique<ClientConnection>(handle, std::move(tcpSocket));
 
         newClient->socket->setBlocking(false);
         this->selector.add(*newClient->socket);
 
         this->clientConnections.push_back(std::move(newClient));
         this->clientConnectionsMap.insert(
-            {serverId, this->clientConnections.back().get()}
+            {handle, this->clientConnections.back().get()}
         );
         this->clientConnections.back()->connectionState.syncing();
     }
@@ -273,7 +274,7 @@ void Server::checkForSyncs()
                 spdlog::info(
                     std::format(
                         "Sending ping check messages to {}",
-                        clientConnection->id
+                        clientConnection->handle
                     )
                 );
                 for (int _ = 0;
@@ -323,7 +324,7 @@ std::vector<std::unique_ptr<Message>> Server::receiveDataFromClients()
                 {
                     spdlog::info(
                         "Client {} disconnected while sending packet",
-                        clientConnection->id
+                        clientConnection->handle
                     );
                     clientConnection->connectionState.disconnected();
                     break;
@@ -370,9 +371,9 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
 
     for (std::unique_ptr<Message> &message : clientUpdates)
     {
-        const int32_t clientId = message->id;
+        const std::string clientHandle = message->handle;
         ClientConnection *clientConnection =
-            this->clientConnectionsMap[clientId];
+            this->clientConnectionsMap[clientHandle];
         switch (message->type)
         {
             case (MessageType::Ship):
@@ -464,7 +465,7 @@ void Server::sendRelayNetworkUpdates(
         int32_t nNetworkUpdates = 0;
         for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
         {
-            if (networkUpdate->id != clientConnection->id)
+            if (networkUpdate->handle != clientConnection->handle)
             {
                 packetMessages << *networkUpdate;
                 nNetworkUpdates++;
@@ -488,7 +489,7 @@ void Server::sendPingCheckMessage(ClientConnection *clientConnection)
 {
     NonBlockingTCPPingCheckPacket pingCheckPacket;
     PingCheckMessage message = PingCheckMessage();
-    message.id = clientConnection->id;
+    message.handle = clientConnection->handle;
     message.time = this->totalTime->asSeconds();
     message.ping = clientConnection->averagePing;
     message.deltaTime = this->deltaTime->asSeconds();
@@ -582,9 +583,9 @@ Server::prepareGameUpdates(AppLayer *appLayer)
              this->clientConnections)
         {
             HitMessage gameUpdate = HitMessage();
-            gameUpdate.id = clientConnection->id;
+            gameUpdate.handle = clientConnection->handle;
             gameUpdate.time = hitEvent->time;
-            gameUpdate.hitShipId = hitEvent->hitShipId;
+            gameUpdate.hitShipHandle = hitEvent->hitShipHandle;
             gameUpdate.ping = clientConnection->averagePing;
             gameUpdate.newHealth = hitEvent->newHealth;
             gameUpdates.push_back(std::make_unique<HitMessage>(gameUpdate));

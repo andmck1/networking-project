@@ -54,10 +54,10 @@ struct ClientConnectionState
 class ClientConnection
 {
     public:
-    ClientConnection(int id, std::unique_ptr<sf::TcpSocket> socket);
+    ClientConnection(std::string handle, std::unique_ptr<sf::TcpSocket> socket);
     ~ClientConnection() = default;
 
-    int id;
+    std::string handle;
     std::unique_ptr<sf::TcpSocket> socket;
     std::string connectionDetails;
     std::string ipAddress;

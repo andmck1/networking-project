@@ -59,14 +59,14 @@ void State::initAppLayer()
     this->appLayer = std::move(appLayer);
 }
 
-void State::initPlayer(sf::Vector2f startingPosition, int32_t serverId)
+void State::initPlayer(sf::Vector2f startingPosition, std::string handle)
 {
 
     int randomTextureIndex = this->textureManager.getRandomTextureIndex();
 
     ShipActorBuilderContext initialPlayerState = ShipActorBuilderContext(
         &textureManager.shipTextures[randomTextureIndex], startingPosition,
-        {0, -1}, ShipTurnDirection::NONE, serverId
+        {0, -1}, ShipTurnDirection::NONE, handle 
     );
     this->appLayer->addPlayer(&initialPlayerState);
     this->appLayer->player->isSpawning = true;

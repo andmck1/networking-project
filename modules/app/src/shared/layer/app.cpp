@@ -114,7 +114,7 @@ void AppLayer::updateActors()
             // Projectile collisions
             for (ProjectileActor *projectile : this->projectiles)
             {
-                if ((ship->serverId != projectile->shooterServerId) &&
+                if ((ship->handle != projectile->shooterHandle) &&
                     (!projectile->isDeleted))
                 {
                     if (ship->sprite->getGlobalBounds().findIntersection(
@@ -126,7 +126,7 @@ void AppLayer::updateActors()
                             ship->health -= Settings::Game::projectileDamage;
                             std::unique_ptr<HitMessage> hitEvent =
                                 std::make_unique<HitMessage>();
-                            hitEvent->hitShipId = ship->serverId;
+                            hitEvent->hitShipHandle = ship->handle;
                             hitEvent->time = this->totalTime.asSeconds();
                             hitEvent->newHealth = ship->health;
                             this->hitEvents.push_back(std::move(hitEvent));
@@ -162,7 +162,7 @@ void AppLayer::updateActors()
 
                                 std::unique_ptr<HitMessage> shipHitEvent =
                                     std::make_unique<HitMessage>();
-                                shipHitEvent->hitShipId = ship->serverId;
+                                shipHitEvent->hitShipHandle = ship->handle;
                                 shipHitEvent->time =
                                     this->totalTime.asSeconds();
                                 shipHitEvent->newHealth = ship->health;
@@ -172,8 +172,8 @@ void AppLayer::updateActors()
 
                                 std::unique_ptr<HitMessage> otherShipHitEvent =
                                     std::make_unique<HitMessage>();
-                                otherShipHitEvent->hitShipId =
-                                    otherShip->serverId;
+                                otherShipHitEvent->hitShipHandle =
+                                    otherShip->handle;
                                 otherShipHitEvent->time =
                                     this->totalTime.asSeconds();
                                 otherShipHitEvent->newHealth =
@@ -261,7 +261,7 @@ void AppLayer::addPlayer(ShipActorBuilderContext *initalPlayerState)
     this->player = dynamic_cast<ShipActor *>(this->actors.back().get());
     // TODO - add ship should be a function to handle map updates
     this->ships.push_back(this->player);
-    this->shipActorMap.insert({initalPlayerState->serverId, this->player});
+    this->shipActorMap.insert({initalPlayerState->handle, this->player});
 }
 
 void AppLayer::addProjectile(
@@ -279,7 +279,7 @@ AppLayer::createProjecileBuildContext(ShipActor *ship)
 {
     return ProjectileActorBuilderContext(
         &this->textureManager->projectileTexture, ship->position,
-        ship->forwardVector, ship->serverId
+        ship->forwardVector, ship->handle
     );
 }
 
@@ -292,7 +292,7 @@ void AppLayer::addShootEvent(sf::Vector2f position, sf::Vector2f forwardVector)
 }
 
 void AppLayer::addServerShip(
-    int32_t serverId, sf::Vector2f initialPosition,
+    std::string handle, sf::Vector2f initialPosition,
     sf::Vector2f initialForwardVector
 )
 {
@@ -301,14 +301,14 @@ void AppLayer::addServerShip(
     int randomTextureIndex = this->textureManager->getRandomTextureIndex();
     ShipActorBuilderContext initialShipState = ShipActorBuilderContext(
         &this->textureManager->shipTextures[randomTextureIndex],
-        initialPosition, initialForwardVector, ShipTurnDirection::NONE, serverId
+        initialPosition, initialForwardVector, ShipTurnDirection::NONE, handle
     );
     this->addActor<ShipActor>(&initialShipState);
     ShipActor *newServerShip =
         static_cast<ShipActor *>(this->actors.back().get());
     newServerShip->isSpawning = true;
     newServerShip->isEnabled = false;
-    this->shipActorMap.insert({serverId, newServerShip});
+    this->shipActorMap.insert({handle, newServerShip});
     this->ships.push_back(static_cast<ShipActor *>(this->actors.back().get()));
 }
 
@@ -319,22 +319,22 @@ void AppLayer::networkUpdate(
 {
     for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
     {
-        int32_t clientId = networkUpdate->id;
+        std::string clientHandle = networkUpdate->handle;
         switch (networkUpdate->type)
         {
             case (MessageType::Ship):
             {
                 ShipMessage *shipMessage =
                     static_cast<ShipMessage *>(networkUpdate.get());
-                if (this->shipActorMap.find(clientId) !=
+                if (this->shipActorMap.find(clientHandle) !=
                     this->shipActorMap.end())
                 {
-                    this->shipActorMap[clientId]->networkUpdate(shipMessage);
+                    this->shipActorMap[clientHandle]->networkUpdate(shipMessage);
                 }
                 else
                 {
                     this->addServerShip(
-                        clientId, shipMessage->position,
+                        clientHandle, shipMessage->position,
                         shipMessage->forwardVector
                     );
                 }
@@ -345,7 +345,7 @@ void AppLayer::networkUpdate(
                 ShootMessage *shootMessage =
                     static_cast<ShootMessage *>(networkUpdate.get());
 
-                if (this->shipActorMap.find(clientId) !=
+                if (this->shipActorMap.find(clientHandle) !=
                     this->shipActorMap.end())
                 {
                     sf::Vector2f estimatedPosition;
@@ -359,7 +359,7 @@ void AppLayer::networkUpdate(
                         ProjectileActorBuilderContext(
                             &this->textureManager->projectileTexture,
                             estimatedPosition, shootMessage->forwardVector,
-                            clientId, estimatedLifetime
+                            clientHandle, estimatedLifetime
                         );
                     this->addProjectile(&projectileBuilderContext);
                 }
@@ -375,11 +375,11 @@ void AppLayer::networkUpdate(
             {
                 HitMessage *hitMessage =
                     static_cast<HitMessage *>(networkUpdate.get());
-                int32_t hitShipId = hitMessage->hitShipId;
-                if (this->shipActorMap.find(hitShipId) !=
+                std::string hitShipHandle= hitMessage->hitShipHandle;
+                if (this->shipActorMap.find(hitShipHandle) !=
                     this->shipActorMap.end())
                 {
-                    this->shipActorMap[hitShipId]->health =
+                    this->shipActorMap[hitShipHandle]->health =
                         hitMessage->newHealth;
                 }
                 break;
@@ -394,10 +394,10 @@ void AppLayer::networkUpdate(
 
     for (const std::unique_ptr<ClientConnection> &client : clients)
     {
-        int32_t clientId = client->id;
-        if (this->shipActorMap.find(clientId) != this->shipActorMap.end())
+        std::string clientHandle = client->handle;
+        if (this->shipActorMap.find(clientHandle) != this->shipActorMap.end())
         {
-            ShipActor *ship = shipActorMap[clientId];
+            ShipActor *ship = shipActorMap[clientHandle];
             if (client->connectionState.isDisconnected())
             {
                 ship->isEnabled = false;

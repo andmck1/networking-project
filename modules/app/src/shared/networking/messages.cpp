@@ -11,13 +11,13 @@ sf::Packet &operator<<(sf::Packet &packet, const Message &message)
 
 void Message::baseSerialise(sf::Packet &packet) const
 {
-    packet << this->type << this->time << this->id << this->ping;
+    packet << this->type << this->time << this->handle << this->ping;
 }
 
 void Message::baseDeserialise(sf::Packet &packet)
 {
     // Assume you get type before this
-    packet >> this->time >> this->id >> this->ping;
+    packet >> this->time >> this->handle >> this->ping;
 }
 
 std::unique_ptr<Message>
@@ -107,10 +107,12 @@ PlayerConnectMessage::PlayerConnectMessage()
 
 void PlayerConnectMessage::serialise(sf::Packet &packet) const
 {
+    packet << this->skinIndex;
 }
 
 void PlayerConnectMessage::deserialise(sf::Packet &packet)
 {
+    packet >> this->skinIndex;
 }
 
 ShootMessage::ShootMessage()
@@ -152,10 +154,10 @@ HitMessage::HitMessage()
 
 void HitMessage::serialise(sf::Packet &packet) const
 {
-    packet << this->hitShipId << this->newHealth;
+    packet << this->hitShipHandle << this->newHealth;
 }
 
 void HitMessage::deserialise(sf::Packet &packet)
 {
-    packet >> this->hitShipId >> this->newHealth;
+    packet >> this->hitShipHandle >> this->newHealth;
 }

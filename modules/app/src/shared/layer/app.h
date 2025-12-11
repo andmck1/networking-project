@@ -45,7 +45,7 @@ class AppLayer : public BaseLayer
 
     void addPlayer(ShipActorBuilderContext *initialPlayerState);
     void addServerShip(
-        int32_t serverId, sf::Vector2f initialPosition,
+        std::string handle, sf::Vector2f initialPosition,
         sf::Vector2f intialForwardVector
     );
     void addProjectile(ProjectileActorBuilderContext *initialProjectileContext);
@@ -73,7 +73,7 @@ class AppLayer : public BaseLayer
     sf::Clock clock = sf::Clock();
 
     private:
-    std::unordered_map<int32_t, ShipActor *> shipActorMap;
+    std::unordered_map<std::string, ShipActor *> shipActorMap;
     Window *window;
     std::optional<sf::View> playerView;
     std::optional<sf::View> serverView;

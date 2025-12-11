@@ -18,7 +18,7 @@ struct Message
 {
     int32_t type;
     float_t time = 0.f;
-    int32_t id = 0;
+    std::string handle;
     float_t ping = 0.f;
 
     virtual ~Message() = default;
@@ -57,6 +57,8 @@ struct PlayerConnectMessage : public Message
 {
     PlayerConnectMessage();
     ~PlayerConnectMessage() = default;
+    
+    int32_t skinIndex = 0;
 
     void serialise(sf::Packet &packet) const override;
 
@@ -97,7 +99,7 @@ struct HitMessage : public Message
     HitMessage();
     ~HitMessage() = default;
 
-    int32_t hitShipId;
+    std::string hitShipHandle;
     int32_t newHealth;
 
     void serialise(sf::Packet &packet) const override;

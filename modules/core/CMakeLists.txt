@@ -1,6 +1,7 @@
 add_library(
-  core STATIC src/core_game/texturemanager/texturemanager.cpp
-              src/core_game/window/window.cpp src/core_game/util/constants.cpp)
+  core STATIC
+  src/core_game/texturemanager/texturemanager.cpp
+  src/core_game/window/window.cpp src/core_game/util/constants.cpp)
 target_link_libraries(core PRIVATE spdlog imgui sfml-graphics sfml-window
                                    sfml-system sfml-network)
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)

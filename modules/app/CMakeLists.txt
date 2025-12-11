@@ -46,4 +46,5 @@ target_link_libraries(
           sfml-window
           spdlog
           imgui
+          dependencies
           core)

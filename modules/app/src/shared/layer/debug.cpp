@@ -109,7 +109,7 @@ void DebugLayer::render()
     }
     if (ImGui::BeginTable("Ship Information", 4, flags))
     {
-        ImGui::TableSetupColumn("Ship Server ID");
+        ImGui::TableSetupColumn("Ship Handle");
         ImGui::TableSetupColumn("Position");
         ImGui::TableSetupColumn("Forward Vector");
         ImGui::TableSetupColumn("Health");
@@ -122,7 +122,7 @@ void DebugLayer::render()
             {
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                ImGui::TextWrapped("%d", ship->serverId);
+                ImGui::TextWrapped("%s", ship->handle.c_str());
 
                 ImGui::TableSetColumnIndex(1);
                 ImGui::TextWrapped(
@@ -147,7 +147,7 @@ void DebugLayer::render()
     {
         if (ImGui::BeginTable("Client Information", 8, flags))
         {
-            ImGui::TableSetupColumn("ID");
+            ImGui::TableSetupColumn("Handle");
             ImGui::TableSetupColumn("Connection Details");
             ImGui::TableSetupColumn("Is Connected?");
             ImGui::TableSetupColumn("Ping (ms)");
@@ -166,7 +166,7 @@ void DebugLayer::render()
                     int columnIndex = 0;
 
                     ImGui::TableSetColumnIndex(columnIndex);
-                    ImGui::TextWrapped("%d", clientConnection->id);
+                    ImGui::TextWrapped("%s", clientConnection->handle.c_str());
                     columnIndex++;
 
                     ImGui::TableSetColumnIndex(columnIndex);
@@ -221,7 +221,7 @@ void DebugLayer::render()
     {
         if (ImGui::BeginTable("Client Information", 7, flags))
         {
-            ImGui::TableSetupColumn("ID");
+            ImGui::TableSetupColumn("Handle");
             ImGui::TableSetupColumn("Local Port");
             ImGui::TableSetupColumn("Server Details");
             ImGui::TableSetupColumn("Ping (ms)");
@@ -234,7 +234,7 @@ void DebugLayer::render()
             int columnIndex = 0;
 
             ImGui::TableSetColumnIndex(columnIndex);
-            ImGui::TextWrapped("%d", this->client->serverId);
+            ImGui::TextWrapped("%s", this->client->handle.c_str());
             columnIndex++;
 
             ImGui::TableSetColumnIndex(columnIndex);

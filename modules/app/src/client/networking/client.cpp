@@ -89,7 +89,8 @@ NonBlockingTCPPingCheckResponsePacket::statusHandler(sf::Socket::Status status)
 
 ClientConfig::ClientConfig(
     unsigned short serverPort, unsigned short clientPort, float updateRate,
-    sf::Time *deltaTime, sf::Time *totalTime, sf::IpAddress serverIPAddress
+    sf::Time *deltaTime, sf::Time *totalTime, std::string handle,
+    int32_t skinIndex, sf::IpAddress serverIPAddress
 )
 {
     this->serverPort = serverPort;
@@ -98,6 +99,8 @@ ClientConfig::ClientConfig(
     this->updateRate = updateRate;
     this->deltaTime = deltaTime;
     this->totalTime = totalTime;
+    this->handle = handle;
+    this->skinIndex = skinIndex;
 }
 
 void Client::init(ClientConfig *config)
@@ -108,6 +111,8 @@ void Client::init(ClientConfig *config)
     this->updateRate = config->updateRate;
     this->deltaTime = config->deltaTime;
     this->totalTime = config->totalTime;
+    this->handle = config->handle;
+    this->skinIndex = config->skinIndex;
 
     this->isConnectedToServer = false;
     this->tcpSocket = sf::TcpSocket();
@@ -168,14 +173,11 @@ bool Client::sendPlayerConnectMessage()
 {
     sf::Packet packet;
     PlayerConnectMessage message = PlayerConnectMessage();
-    int32_t id;
-    if (this->serverId < 0)
-        id = this->generateRandomId();
-    else
-        id = this->serverId;
-    message.id = id;
     message.time = this->totalTime->asSeconds();
     message.ping = this->ping;
+    message.handle = this->handle;
+    spdlog::info("Send handle: {}", this->handle);
+    message.skinIndex = this->skinIndex;
     packet << (int32_t) 1;
     packet << message;
 
@@ -186,8 +188,6 @@ bool Client::sendPlayerConnectMessage()
         case (sf::Socket::Status::Done):
         {
             spdlog::info("Sent player connect message");
-            this->serverId = id;
-            spdlog::info("ID {} assigned", id);
             return true;
         }
         default:
@@ -258,7 +258,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
 
     // ship
     ShipMessage shipUpdateMessage;
-    shipUpdateMessage.id = this->serverId;
+    shipUpdateMessage.handle = this->handle;
     shipUpdateMessage.time = appLayer->totalTime.asSeconds();
     shipUpdateMessage.ping = this->ping;
     shipUpdateMessage.position = appLayer->player->position;
@@ -271,7 +271,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
     {
         std::unique_ptr<ShootMessage> &shootEvent =
             appLayer->shootEvents.back();
-        shootEvent->id = this->serverId;
+        shootEvent->handle = this->handle;
         shootEvent->time = appLayer->totalTime.asSeconds();
         shootEvent->ping = this->ping;
         networkUpdates.push_back(std::move(shootEvent));
@@ -379,7 +379,7 @@ void Client::sendPingCheckMessageResponse(
 {
     NonBlockingTCPPingCheckResponsePacket pingCheckPacket;
     PingCheckMessage responseMessage = PingCheckMessage();
-    responseMessage.id = this->serverId;
+    responseMessage.handle = this->handle;
     responseMessage.time = this->totalTime->asSeconds();
     responseMessage.echoTime = receivedRequestMessage->time;
     responseMessage.deltaTime = this->deltaTime->asSeconds();
@@ -442,11 +442,6 @@ void Client::disconnectAndRestConnectionStatusWithServer()
     this->tcpSocket.setBlocking(false);
     this->disconnectFromServer();
     this->isConnectedToServer = false;
-}
-
-int32_t Client::generateRandomId()
-{
-    return this->randomNumberDistribution(this->randomNumberGenerator);
 }
 
 void Client::frameServerTime()

@@ -37,7 +37,8 @@ class Server
 
     std::vector<std::unique_ptr<ClientConnection>> clientConnections;
     std::vector<std::unique_ptr<sf::TcpSocket>> connectingClientSockets;
-    std::unordered_map<int32_t, ClientConnection *> clientConnectionsMap = {};
+    std::unordered_map<std::string, ClientConnection *> clientConnectionsMap =
+        {};
 
     void init(ServerConfig *config);
 

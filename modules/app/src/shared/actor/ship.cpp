@@ -9,7 +9,7 @@
 ShipActorBuilderContext::ShipActorBuilderContext(
     TextureManager::ShipTextures *shipTextures, sf::Vector2f initialPosition,
     sf::Vector2f initialForwardVector, int32_t initialTurnDirection,
-    int32_t serverId
+    std::string handle
 )
 {
     this->initialTexture = &shipTextures->forward;
@@ -20,7 +20,7 @@ ShipActorBuilderContext::ShipActorBuilderContext(
     this->initialRotation = initialForwardVector.angle().asRadians();
     this->initialTurnDirection = initialTurnDirection;
     this->initialTurningCircleRadius = Settings::Actor::shipTurningRadius;
-    this->serverId = serverId;
+    this->handle = handle;
     this->shipTextures = shipTextures;
 }
 
@@ -36,7 +36,7 @@ void ShipActor::init(BaseActorBuilderContext *context)
     this->spriteScaling = _context->initialScaling;
     this->currentTurnDirection = _context->initialTurnDirection;
     this->turningCircleRadius = _context->initialTurningCircleRadius;
-    this->serverId = _context->serverId;
+    this->handle = _context->handle;
     this->shipTextures = _context->shipTextures;
     this->createSprite(*_context->initialTexture);
 }

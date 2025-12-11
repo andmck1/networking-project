@@ -1,15 +1,63 @@
 #include "networking/client.h"
 #include "../shared/config/settings.h"
 #include "../shared/config/state.h"
+#include "argh/argh.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <spdlog/spdlog.h>
 
+struct Arguments
+{
+    std::string handle;
+    int32_t skinIndex;
+
+    bool init(char *argv[])
+    {
+        argh::parser cmdl(argv);
+        if (!cmdl(2))
+        {
+            this->printHelpString();
+            return false;
+        }
+        else if (cmdl(3))
+        {
+            this->printHelpString();
+            return false;
+        }
+
+        cmdl(1) >> this->handle;
+        spdlog::info("Handle: {}", this->handle);
+        cmdl(2) >> this->skinIndex;
+        if (this->skinIndex < 0 || this->skinIndex > 4)
+        {
+            this->printHelpString();
+            return false;
+        }
+        spdlog::info("Skin Index: {}", this->skinIndex);
+        return true;
+    }
+
+    private:
+    std::string helpString =
+        "To start the application you must run client.exe "
+        "<HANDLE> <SKIN_INDEX>, where <HANDLE> is a string and <SKIN_INDEX> is "
+        "an integer between 0-4";
+    void printHelpString()
+    {
+        spdlog::error(this->helpString);
+    }
+};
+
 // TODO - tidy up
-int main()
+int main(int, char *argv[])
 {
     spdlog::set_level(spdlog::level::info);
+
+    Arguments arguments = Arguments();
+    if (!arguments.init(argv))
+        return -1;
+
     bool isServer = false;
 
     spdlog::info("Running " + Settings::App::appName);
@@ -21,7 +69,8 @@ int main()
     ClientConfig clientConfig = ClientConfig(
         Settings::Networking::serverPort, Settings::Networking::playerPort,
         Settings::Networking::clientUpdateRate, &state.appLayer->deltaTime,
-        &state.appLayer->totalTime, sf::IpAddress::LocalHost
+        &state.appLayer->totalTime, arguments.handle, arguments.skinIndex,
+        sf::IpAddress::LocalHost
     );
     Client client = Client();
     client.init(&clientConfig);
@@ -70,9 +119,7 @@ int main()
 
     sf::Vector2f playerStartingWorldPosition =
         state.appLayer->getRespawnPoint();
-    state.initPlayer(
-        playerStartingWorldPosition, client.serverId
-    );
+    state.initPlayer(playerStartingWorldPosition, client.handle);
     state.debugLayer->player = state.appLayer->player;
 
     while (state.window.window.isOpen())
