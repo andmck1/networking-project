@@ -3,6 +3,7 @@
 #include "../../shared/layer/app.h"
 #include "../../shared/networking/messages.h"
 #include "../../shared/networking/clientconnection.h"
+#include "../../shared/eventhandler/eventhandler.h"
 #include <SFML/Network.hpp>
 
 struct NonBlockingTCPNetworkUpdatePacket : NonBlockingTCPPacket
@@ -44,8 +45,10 @@ class Client
     ~Client() = default;
 
     void init(ClientConfig *config);
-    bool connectToServer();
-    bool syncWithServer();
+    bool connectAndSync(
+        EventHandler *eventHandler, unsigned int maxConnectToServerTries,
+        float connectToServerWaitTime
+    );
     void sendNetworkUpdates(AppLayer *appLayer);
     void disconnectFromServer();
     void disconnectAndRestConnectionStatusWithServer();
@@ -80,6 +83,8 @@ class Client
     std::mt19937 randomNumberGenerator;
     std::uniform_int_distribution<int32_t> randomNumberDistribution;
 
+    bool connectToServer();
+    bool syncWithServer();
     std::vector<std::unique_ptr<Message>>
     prepareNetworkUpdates(AppLayer *appLayer);
     bool sendPlayerConnectMessage();

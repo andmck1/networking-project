@@ -7,7 +7,6 @@
 #include <SFML/Network.hpp>
 #include <spdlog/spdlog.h>
 
-
 // TODO - tidy up
 int main(int, char *argv[])
 {
@@ -38,42 +37,12 @@ int main(int, char *argv[])
     state.debugLayer->isClientConnectionEnabled = &client.isConnectionEnabled;
     state.debugLayer->client = &client;
 
-    while (!client.connectToServer())
-    {
-        state.eventHandler.handle();
-        if (client.nServerConnectTries >
-            Settings::Networking::maxClientConnectToServerTries)
-        {
-            spdlog::error("Failed to connect to server, max retries reached");
-            return -1;
-        }
-        sf::Clock connectionTimer = sf::Clock();
-        connectionTimer.start();
-        while (connectionTimer.getElapsedTime().asSeconds() <
-               Settings::Networking::clientConnectToServerWaitTime)
-        {
-            if (!state.eventHandler.handle())
-                return 0;
-        }
-    }
-    while (!client.syncWithServer())
-    {
-        state.eventHandler.handle();
-        if (client.nServerConnectTries >
-            Settings::Networking::maxClientConnectToServerTries)
-        {
-            spdlog::error("Failed to connect to server, max retries reached");
-            return -1;
-        }
-        sf::Clock connectionTimer = sf::Clock();
-        connectionTimer.start();
-        while (connectionTimer.getElapsedTime().asSeconds() <
-               Settings::Networking::clientConnectToServerWaitTime)
-        {
-            if (!state.eventHandler.handle())
-                return 0;
-        }
-    }
+    client.connectAndSync(
+        &state.eventHandler,
+        Settings::Networking::maxClientConnectToServerTries,
+        Settings::Networking::clientConnectToServerWaitTime
+    );
+
     spdlog::info("Starting at time: {}", state.appLayer->totalTime.asSeconds());
 
     sf::Vector2f playerStartingWorldPosition =
@@ -105,47 +74,12 @@ int main(int, char *argv[])
         }
         if (client.isConnectionEnabled && !client.isConnectedToServer)
         {
-            // TODO - repeated code
-            while (!client.connectToServer())
-            {
-                state.eventHandler.handle();
-                if (client.nServerConnectTries >
-                    Settings::Networking::maxClientReconnectToServerTries)
-                {
-                    spdlog::error(
-                        "Failed to connect to server, max retries reached"
-                    );
-                    return -1;
-                }
-                sf::Clock connectionTimer = sf::Clock();
-                connectionTimer.start();
-                while (connectionTimer.getElapsedTime().asSeconds() <
-                       Settings::Networking::clientReconnectToServerWaitTime)
-                {
-                    if (!state.eventHandler.handle())
-                        return 0;
-                }
-            }
-            while (!client.syncWithServer())
-            {
-                state.eventHandler.handle();
-                if (client.nServerConnectTries >
-                    Settings::Networking::maxClientConnectToServerTries)
-                {
-                    spdlog::error(
-                        "Failed to connect to server, max retries reached"
-                    );
-                    return -1;
-                }
-                sf::Clock connectionTimer = sf::Clock();
-                connectionTimer.start();
-                while (connectionTimer.getElapsedTime().asSeconds() <
-                       Settings::Networking::clientConnectToServerWaitTime)
-                {
-                    if (!state.eventHandler.handle())
-                        return 0;
-                }
-            }
+
+            client.connectAndSync(
+                &state.eventHandler,
+                Settings::Networking::maxClientReconnectToServerTries,
+                Settings::Networking::clientReconnectToServerWaitTime
+            );
             state.appLayer->clock.restart();
             state.appLayer->totalTime = sf::seconds(client.estimatedServerTime);
         }

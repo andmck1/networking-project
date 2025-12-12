@@ -442,3 +442,45 @@ void Client::frameServerTime()
 {
     this->estimatedServerTime += this->deltaTime->asSeconds();
 }
+
+bool Client::connectAndSync(
+    EventHandler *eventHandler, unsigned int maxConnectToServerTries,
+    float connectToServerWaitTime
+)
+{
+    while (!this->connectToServer())
+    {
+        eventHandler->handle();
+        if (this->nServerConnectTries > maxConnectToServerTries)
+        {
+            spdlog::error("Failed to connect to server, max retries reached");
+            return false;
+        }
+        sf::Clock connectionTimer = sf::Clock();
+        connectionTimer.start();
+        while (connectionTimer.getElapsedTime().asSeconds() <
+               connectToServerWaitTime)
+        {
+            if (!eventHandler->handle())
+                return false;
+        }
+    }
+    while (!this->syncWithServer())
+    {
+        eventHandler->handle();
+        if (this->nServerConnectTries > maxConnectToServerTries)
+        {
+            spdlog::error("Failed to connect to server, max retries reached");
+            return false;
+        }
+        sf::Clock connectionTimer = sf::Clock();
+        connectionTimer.start();
+        while (connectionTimer.getElapsedTime().asSeconds() <
+               connectToServerWaitTime)
+        {
+            if (!eventHandler->handle())
+                return false;
+        }
+    }
+    return true;
+}
