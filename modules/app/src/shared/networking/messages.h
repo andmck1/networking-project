@@ -48,7 +48,7 @@ struct ShipMessage : public Message
     sf::Vector2f forwardVector = {0.f, -1.f};
     int32_t turnDirection = 0;
     int32_t skinIndex = 0;
-    bool isConnected = true;
+    bool isConnected = false;
 
     void serialise(sf::Packet &packet) const override;
 
