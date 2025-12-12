@@ -19,7 +19,7 @@ StateConfig::StateConfig(bool isServer)
 void State::init(StateConfig *config)
 {
     this->isServer = config->isServer;
-    this->clientUpdateRate = Settings::Networking::clientUpdateRate;
+    this->clientUpdateInterval = Settings::Networking::clientUpdateInterval;
 
     this->initTextureManager();
     this->initWindow();

@@ -104,7 +104,8 @@ void DebugLayer::render()
             "Enable Client Connection?", this->isClientConnectionEnabled
         );
         ImGui::SliderFloat(
-            "Client Send Rate (s/update)", &this->client->updateRate, 0.01f, 4.f
+            "Client Send Interval (s/update)", &this->client->updateInterval,
+            0.01f, 4.f
         );
     }
     if (ImGui::BeginTable("Ship Information", 6, flags))

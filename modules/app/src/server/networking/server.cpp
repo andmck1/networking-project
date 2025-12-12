@@ -523,7 +523,7 @@ void Server::sendPingCheckMessage(ClientConnection *clientConnection)
 void Server::sendPlayerPingCheckMessages()
 {
     this->pingCheckTimer += this->appLayer->deltaTime.asSeconds();
-    if (this->pingCheckTimer > Settings::Networking::serverPingCheckRate)
+    if (this->pingCheckTimer > Settings::Networking::serverPingCheckInterval)
     {
         this->pingCheckTimer = 0.f;
         for (const std::unique_ptr<ClientConnection> &clientConnection :

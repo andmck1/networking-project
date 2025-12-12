@@ -68,7 +68,7 @@ int main(int, char *argv[])
 
     ClientConfig clientConfig = ClientConfig(
         Settings::Networking::serverPort, Settings::Networking::playerPort,
-        Settings::Networking::clientUpdateRate, &state.appLayer->deltaTime,
+        Settings::Networking::clientUpdateInterval, &state.appLayer->deltaTime,
         &state.appLayer->totalTime, arguments.handle, arguments.skinIndex,
         sf::IpAddress::LocalHost
     );

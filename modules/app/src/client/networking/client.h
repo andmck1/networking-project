@@ -20,9 +20,9 @@ struct NonBlockingTCPPingCheckResponsePacket : NonBlockingTCPPacket
 struct ClientConfig
 {
     ClientConfig(
-        unsigned short serverPort, unsigned short clientPort, float updateRate,
-        sf::Time *deltaTime, sf::Time *totalTime, std::string handle,
-        int32_t skinIndex,
+        unsigned short serverPort, unsigned short clientPort,
+        float updateInterval, sf::Time *deltaTime, sf::Time *totalTime,
+        std::string handle, int32_t skinIndex,
         sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost
     );
     ~ClientConfig() = default;
@@ -30,7 +30,7 @@ struct ClientConfig
     unsigned short serverPort;
     unsigned short clientPort;
     sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost;
-    float updateRate;
+    float updateInterval;
     sf::Time *deltaTime;
     sf::Time *totalTime;
     std::string handle;
@@ -62,7 +62,7 @@ class Client
     bool isConnectionEnabled = true;
     sf::TcpSocket tcpSocket;
     int nServerConnectTries = 0;
-    float updateRate;
+    float updateInterval;
     unsigned short clientPort = 0;
     unsigned short serverPort = 0;
     sf::IpAddress serverIPAddress = sf::IpAddress::LocalHost;

@@ -22,7 +22,7 @@ class State
     State() = default;
     ~State() = default;
     bool isServer;
-    float clientUpdateRate;
+    float clientUpdateInterval;
     bool isClientConnectionEnabled = true;
     std::vector<ClientConnection *> *clients = nullptr;
 

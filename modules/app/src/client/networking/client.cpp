@@ -88,7 +88,7 @@ NonBlockingTCPPingCheckResponsePacket::statusHandler(sf::Socket::Status status)
 }
 
 ClientConfig::ClientConfig(
-    unsigned short serverPort, unsigned short clientPort, float updateRate,
+    unsigned short serverPort, unsigned short clientPort, float updateInterval,
     sf::Time *deltaTime, sf::Time *totalTime, std::string handle,
     int32_t skinIndex, sf::IpAddress serverIPAddress
 )
@@ -96,7 +96,7 @@ ClientConfig::ClientConfig(
     this->serverPort = serverPort;
     this->clientPort = clientPort;
     this->serverIPAddress = serverIPAddress;
-    this->updateRate = updateRate;
+    this->updateInterval = updateInterval;
     this->deltaTime = deltaTime;
     this->totalTime = totalTime;
     this->handle = handle;
@@ -108,7 +108,7 @@ void Client::init(ClientConfig *config)
     this->serverPort = config->serverPort;
     this->clientPort = config->clientPort;
     this->serverIPAddress = config->serverIPAddress;
-    this->updateRate = config->updateRate;
+    this->updateInterval = config->updateInterval;
     this->deltaTime = config->deltaTime;
     this->totalTime = config->totalTime;
     this->handle = config->handle;
@@ -279,7 +279,7 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
 void Client::sendNetworkUpdates(AppLayer *appLayer)
 {
     this->sendTimer += appLayer->deltaTime.asSeconds();
-    if (this->sendTimer > this->updateRate)
+    if (this->sendTimer > this->updateInterval)
     {
         spdlog::debug("Sending network updates");
 
