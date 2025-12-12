@@ -94,7 +94,7 @@ ClientConnection::ClientConnection(
     std::string handle, std::unique_ptr<sf::TcpSocket> socket
 )
 {
-    this->handle= handle;
+    this->handle = handle;
     this->socket = std::move(socket);
     this->ipAddress = this->socket->getRemoteAddress().value().toString();
     this->port = this->socket->getRemotePort();
@@ -182,22 +182,25 @@ ShipMessage ClientConnection::predictShipMessage(
     // by lerping using a fixed factor, vv important for smooth motion
     sf::Vector2f smoothedPosition = predictedPosition;
     sf::Vector2f smoothedForwardVector = predictedForwardVector;
-    if (this->previousPredictedShipPosition == sf::Vector2f{})
+    if (isInterpolationEnabled)
     {
-        this->previousPredictedShipPosition = predictedPosition;
-        this->previousPredictedShipForwardVector = predictedForwardVector;
-    }
-    else
-    {
-        smoothedPosition = this->interpolateVectorLinear(
-            this->previousPredictedShipPosition, predictedPosition,
-            correctionLerp
-        );
+        if (this->previousPredictedShipPosition == sf::Vector2f{})
+        {
+            this->previousPredictedShipPosition = predictedPosition;
+            this->previousPredictedShipForwardVector = predictedForwardVector;
+        }
+        else
+        {
+            smoothedPosition = this->interpolateVectorLinear(
+                this->previousPredictedShipPosition, predictedPosition,
+                correctionLerp
+            );
 
-        smoothedForwardVector = this->interpolateVectorLinear(
-            this->previousPredictedShipForwardVector, predictedForwardVector,
-            correctionLerp
-        );
+            smoothedForwardVector = this->interpolateVectorLinear(
+                this->previousPredictedShipForwardVector,
+                predictedForwardVector, correctionLerp
+            );
+        }
     }
 
     this->previousPredictedShipPosition = smoothedPosition;
