@@ -77,14 +77,6 @@ void AppLayer::startFrame()
 
 void AppLayer::updateActors()
 {
-    if (this->player)
-    {
-        if (this->isConnectedToServer)
-            this->player->sprite->setColor(Settings::Actor::connectedMask);
-        else
-            this->player->sprite->setColor(Settings::Actor::disconnectedMask);
-    }
-
     for (const std::unique_ptr<BaseActor> &actor : this->actors)
     {
         actor->update(this->deltaTime.asSeconds());
@@ -227,7 +219,6 @@ void AppLayer::updateActors()
             {
                 ship->spawnTimer = 0.f;
                 ship->isSpawning = false;
-                ship->isEnabled = true;
             }
         }
     }
@@ -342,6 +333,14 @@ void AppLayer::networkUpdate(
                 if (this->shipActorMap.find(clientHandle) !=
                     this->shipActorMap.end())
                 {
+                    if (!this->isServer)
+                    {
+                        if (clientHandle == this->player->handle)
+                        {
+                            this->player->isEnabled = shipMessage->isConnected;
+                            break;
+                        }
+                    }
                     this->shipActorMap[clientHandle]->networkUpdate(
                         shipMessage
                     );
@@ -430,6 +429,11 @@ void AppLayer::networkUpdate(
         {
             ShipActor *ship = shipActorMap[clientHandle];
             if (client->connectionState.isDisconnected())
+            {
+                ship->isEnabled = false;
+            }
+            else if (std::abs(client->lastRecordedClockDrift) >
+                     Settings::Networking::maximumAllowedClockDrift)
             {
                 ship->isEnabled = false;
             }

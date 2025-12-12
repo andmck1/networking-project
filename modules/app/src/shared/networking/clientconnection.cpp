@@ -1,5 +1,7 @@
 #include "clientconnection.h"
 
+#include "../config/settings.h"
+#include <cstdlib>
 #include <spdlog/spdlog.h>
 
 void ClientConnectionState::nextState()
@@ -143,73 +145,97 @@ ShipMessage ClientConnection::predictShipMessage(
     // Using TCP so guaranteed to have the messages in order and longer
     // history not useful unless averaging out or using non-linear stuff
     // TODO - (non-linear could be useful if previously turning)
-    if (this->shipMessageHistory.size() > 1)
+    if (!this->connectionState.isConnectedAndNotSyncing())
     {
-        const ShipMessage previousMessage = shipMessageHistory[1];
-        float messageTimeDelta = newestMessage.time - previousMessage.time;
-        float interpolationStep;
-
-        // if prediction time is between the previous two messages
-        // scale interpolation step with estimated game time and message delta
-        // https://www.reddit.com/r/gamedev/comments/mnfxze/networkingclientside_interpolation_how_do_compute/
-        // otherwise if prediction time ahead of the newest message we need
-        // to predict
-        if ((predictionTime <= newestMessage.time) &&
-            (predictionTime > previousMessage.time) && isInterpolationEnabled)
-        {
-            interpolationStep =
-                (predictionTime - previousMessage.time) / messageTimeDelta;
-            interpolationStep = std::clamp(interpolationStep, 0.f, 1.f);
-            predictedPosition = this->interpolateVectorLinear(
-                previousMessage.position, newestMessage.position,
-                interpolationStep
-            );
-            predictedForwardVector = this->interpolateVectorLinear(
-                previousMessage.forwardVector, newestMessage.forwardVector,
-                interpolationTime
-            );
-        }
-        else if ((predictionTime > newestMessage.time) && isPredictionEnabled)
-        {
-            predictedPosition = this->predictVectorWithLinearVelocity(
-                newestMessage.position, previousMessage.position,
-                newestMessage.time, previousMessage.time, predictionTime
-            );
-        }
+        newShipMessage.position = newestMessage.position;
+        newShipMessage.forwardVector = newestMessage.forwardVector;
+        this->previousPredictedShipPosition = predictedPosition;
+        this->previousPredictedShipForwardVector = predictedForwardVector;
     }
-
-    // Smooth from new predicted position and previous position
-    // by lerping using a fixed factor, vv important for smooth motion
-    sf::Vector2f smoothedPosition = predictedPosition;
-    sf::Vector2f smoothedForwardVector = predictedForwardVector;
-    if (isInterpolationEnabled)
+    else
     {
-        if (this->previousPredictedShipPosition == sf::Vector2f{})
+        if (this->shipMessageHistory.size() > 1)
         {
-            this->previousPredictedShipPosition = predictedPosition;
-            this->previousPredictedShipForwardVector = predictedForwardVector;
-        }
-        else
-        {
-            smoothedPosition = this->interpolateVectorLinear(
-                this->previousPredictedShipPosition, predictedPosition,
-                correctionLerp
-            );
+            const ShipMessage previousMessage = shipMessageHistory[1];
+            float messageTimeDelta = newestMessage.time - previousMessage.time;
+            float interpolationStep;
 
-            smoothedForwardVector = this->interpolateVectorLinear(
-                this->previousPredictedShipForwardVector,
-                predictedForwardVector, correctionLerp
-            );
+            // if prediction time is between the previous two messages
+            // scale interpolation step with estimated game time and message
+            // delta
+            // https://www.reddit.com/r/gamedev/comments/mnfxze/networkingclientside_interpolation_how_do_compute/
+            // otherwise if prediction time ahead of the newest message we need
+            // to predict
+            if ((predictionTime <= newestMessage.time) &&
+                (predictionTime > previousMessage.time) &&
+                isInterpolationEnabled)
+            {
+                interpolationStep =
+                    (predictionTime - previousMessage.time) / messageTimeDelta;
+                interpolationStep = std::clamp(interpolationStep, 0.f, 1.f);
+                predictedPosition = this->interpolateVectorLinear(
+                    previousMessage.position, newestMessage.position,
+                    interpolationStep
+                );
+                predictedForwardVector = this->interpolateVectorLinear(
+                    previousMessage.forwardVector, newestMessage.forwardVector,
+                    interpolationTime
+                );
+            }
+            else if ((predictionTime > newestMessage.time) &&
+                     isPredictionEnabled)
+            {
+                if (std::abs(this->lastRecordedClockDrift) >
+                    Settings::Networking::maximumAllowedClockDrift)
+                {
+                    spdlog::warn(
+                        "{} is too out of sync to predict position",
+                        this->handle
+                    );
+                }
+                else
+                {
+                    predictedPosition = this->predictVectorWithLinearVelocity(
+                        newestMessage.position, previousMessage.position,
+                        newestMessage.time, previousMessage.time, predictionTime
+                    );
+                }
+            }
         }
+
+        // Smooth from new predicted position and previous position
+        // by lerping using a fixed factor, vv important for smooth motion
+        sf::Vector2f smoothedPosition = predictedPosition;
+        sf::Vector2f smoothedForwardVector = predictedForwardVector;
+        if (isInterpolationEnabled)
+        {
+            if (this->previousPredictedShipPosition == sf::Vector2f{})
+            {
+                this->previousPredictedShipPosition = predictedPosition;
+                this->previousPredictedShipForwardVector =
+                    predictedForwardVector;
+            }
+            else
+            {
+                smoothedPosition = this->interpolateVectorLinear(
+                    this->previousPredictedShipPosition, predictedPosition,
+                    correctionLerp
+                );
+
+                smoothedForwardVector = this->interpolateVectorLinear(
+                    this->previousPredictedShipForwardVector,
+                    predictedForwardVector, correctionLerp
+                );
+            }
+        }
+        this->previousPredictedShipPosition = smoothedPosition;
+        this->previousPredictedShipForwardVector = smoothedForwardVector;
+
+        newShipMessage.position = smoothedPosition;
+        newShipMessage.forwardVector = smoothedForwardVector;
     }
-
-    this->previousPredictedShipPosition = smoothedPosition;
-    this->previousPredictedShipForwardVector = smoothedForwardVector;
-
     newShipMessage.handle = newestMessage.handle;
     newShipMessage.time = this->estimatedCurrentGameTime;
-    newShipMessage.position = smoothedPosition;
-    newShipMessage.forwardVector = smoothedForwardVector;
     newShipMessage.turnDirection = newestMessage.turnDirection;
     newShipMessage.skinIndex = newestMessage.skinIndex;
 

@@ -48,6 +48,7 @@ namespace Settings
         static unsigned short maxClientReconnectToServerTries = 10;
         static float clientConnectToServerWaitTime = 0.2f;
         static float clientReconnectToServerWaitTime = 1.f;
+        static float maximumAllowedClockDrift = .1f;
     } // namespace Networking
     namespace Game
     {

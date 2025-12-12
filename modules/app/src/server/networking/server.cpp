@@ -79,20 +79,16 @@ NonBlockingTCPPingCheckPacket::statusHandler(sf::Socket::Status status)
     return this->sendStatus;
 }
 
-ServerConfig::ServerConfig(
-    unsigned short port, sf::Time *deltaTime, sf::Time *totalTime
-)
+ServerConfig::ServerConfig(unsigned short port, AppLayer *appLayer)
 {
     this->port = port;
-    this->deltaTime = deltaTime;
-    this->totalTime = totalTime;
+    this->appLayer = appLayer;
 }
 
 void Server::init(ServerConfig *config)
 {
     this->port = config->port;
-    this->deltaTime = config->deltaTime;
-    this->totalTime = config->totalTime;
+    this->appLayer = config->appLayer;
     this->listener.setBlocking(false);
 }
 
@@ -165,6 +161,8 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
             clientConnection->ipAddress = ipAddressString;
             clientConnection->port = port;
             clientConnection->socket->setBlocking(false);
+            clientConnection->pingHistory.clear();
+            clientConnection->shipMessageHistory.clear();
         }
         else
         {
@@ -278,6 +276,7 @@ void Server::checkForSyncs()
             {
                 clientConnection->connectionState.finishedSyncing();
                 clientConnection->syncRequestSent = false;
+                this->sendScoreUpdateMessages(true);
                 spdlog::info("Client synced");
             }
             else if (!clientConnection->syncRequestSent)
@@ -412,7 +411,7 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
                 const PingCheckMessage *pingCheckMessage =
                     static_cast<PingCheckMessage *>(message.get());
                 clientConnection->pingHistory.push_front(
-                    (this->totalTime->asSeconds() -
+                    (this->appLayer->totalTime.asSeconds() -
                      pingCheckMessage->echoTime) /
                     2.f
                 );
@@ -428,7 +427,7 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
                 clientConnection->estimatedCurrentGameTime =
                     pingCheckMessage->time + clientConnection->averagePing;
                 clientConnection->lastRecordedClockDrift =
-                    this->totalTime->asSeconds() -
+                    this->appLayer->totalTime.asSeconds() -
                     clientConnection->estimatedCurrentGameTime;
                 break;
             }
@@ -445,13 +444,21 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
     {
         if (!clientConnection->shipMessageHistory.empty())
         {
+            ShipMessage shipMessage = clientConnection->predictShipMessage(
+                this->appLayer->totalTime.asSeconds(),
+                this->isInterpolationEnabled, this->isPredictionEnabled
+            );
+            if (this->appLayer->shipActorMap.find(clientConnection->handle) !=
+                this->appLayer->shipActorMap.end())
+            {
+                ShipActor *ship =
+                    this->appLayer->shipActorMap[clientConnection->handle];
+                shipMessage.isConnected = ship->isEnabled;
+            }
+            else
+                shipMessage.isConnected = false;
             processedMessages.push_back(
-                std::make_unique<ShipMessage>(
-                    clientConnection->predictShipMessage(
-                        this->totalTime->asSeconds(),
-                        this->isInterpolationEnabled, this->isPredictionEnabled
-                    )
-                )
+                std::make_unique<ShipMessage>(shipMessage)
             );
         }
     }
@@ -477,7 +484,8 @@ void Server::sendRelayNetworkUpdates(
         int32_t nNetworkUpdates = 0;
         for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
         {
-            if (networkUpdate->handle != clientConnection->handle)
+            if ((networkUpdate->handle != clientConnection->handle) ||
+                (networkUpdate->type == MessageType::Ship))
             {
                 packetMessages << *networkUpdate;
                 nNetworkUpdates++;
@@ -502,9 +510,9 @@ void Server::sendPingCheckMessage(ClientConnection *clientConnection)
     NonBlockingTCPPingCheckPacket pingCheckPacket;
     PingCheckMessage message = PingCheckMessage();
     message.handle = clientConnection->handle;
-    message.time = this->totalTime->asSeconds();
+    message.time = this->appLayer->totalTime.asSeconds();
     message.ping = clientConnection->averagePing;
-    message.deltaTime = this->deltaTime->asSeconds();
+    message.deltaTime = this->appLayer->deltaTime.asSeconds();
     pingCheckPacket.packet << (int32_t) 1;
     pingCheckPacket.packet << message;
     clientConnection->nonBlockingSendPackets.push_back(
@@ -514,7 +522,7 @@ void Server::sendPingCheckMessage(ClientConnection *clientConnection)
 
 void Server::sendPlayerPingCheckMessages()
 {
-    this->pingCheckTimer += this->deltaTime->asSeconds();
+    this->pingCheckTimer += this->appLayer->deltaTime.asSeconds();
     if (this->pingCheckTimer > Settings::Networking::serverPingCheckRate)
     {
         this->pingCheckTimer = 0.f;
@@ -536,7 +544,7 @@ void Server::sendScoreUpdateMessage(
     NonBlockingTCPPingCheckPacket pingCheckPacket;
     ScoreUpdateMessage message = ScoreUpdateMessage();
     message.handle = clientConnection->handle;
-    message.time = this->totalTime->asSeconds();
+    message.time = this->appLayer->totalTime.asSeconds();
     message.ping = clientConnection->averagePing;
     message.updateShipHandle = ship->handle;
     message.kills = ship->kills;
@@ -548,12 +556,12 @@ void Server::sendScoreUpdateMessage(
     );
 }
 
-void Server::sendScoreUpdateMessages(AppLayer *appLayer)
+void Server::sendScoreUpdateMessages(bool isForceEnabled)
 {
-    for (const ShipActor *ship : appLayer->ships)
+    for (const ShipActor *ship : this->appLayer->ships)
     {
         // Only send data if stats updated
-        if (!ship->statsUpdated)
+        if (!ship->statsUpdated && !isForceEnabled)
             continue;
 
         if (this->clientConnectionsMap.find(ship->handle) ==
@@ -565,7 +573,7 @@ void Server::sendScoreUpdateMessages(AppLayer *appLayer)
         if (shipClient->connectionState.isDisconnected())
             continue;
 
-        for (const ShipActor *otherShip : appLayer->ships)
+        for (const ShipActor *otherShip : this->appLayer->ships)
         {
             if (this->clientConnectionsMap.find(otherShip->handle) ==
                 this->clientConnectionsMap.end())
@@ -631,16 +639,15 @@ void Server::frameClientConnections()
          this->clientConnections)
     {
         clientConnection->estimatedCurrentGameTime +=
-            this->deltaTime->asSeconds();
+            this->appLayer->deltaTime.asSeconds();
     }
 }
 
-std::vector<std::unique_ptr<Message>>
-Server::prepareGameUpdates(AppLayer *appLayer)
+std::vector<std::unique_ptr<Message>> Server::prepareGameUpdates()
 {
     std::vector<std::unique_ptr<Message>> gameUpdates = {};
     // hits
-    while (!appLayer->hitEvents.empty())
+    while (!this->appLayer->hitEvents.empty())
     {
         std::unique_ptr<HitMessage> &hitEvent = appLayer->hitEvents.back();
         for (const std::unique_ptr<ClientConnection> &clientConnection :

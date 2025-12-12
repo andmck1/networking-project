@@ -64,6 +64,7 @@ class AppLayer : public BaseLayer
     std::vector<std::unique_ptr<BaseActor>> actors;
     // TODO - shouldn't use raw refs here
     std::vector<ShipActor *> ships;
+    std::unordered_map<std::string, ShipActor *> shipActorMap;
     std::vector<ProjectileActor *> projectiles;
     bool isBoundaryBoxesEnabled = false;
     sf::Time deltaTime;
@@ -74,7 +75,6 @@ class AppLayer : public BaseLayer
     sf::Font font;
 
     private:
-    std::unordered_map<std::string, ShipActor *> shipActorMap;
     Window *window;
     std::optional<sf::View> playerView;
     std::optional<sf::View> serverView;

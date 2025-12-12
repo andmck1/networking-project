@@ -80,6 +80,7 @@ void ShipActor::networkUpdate(ShipMessage *networkMessage)
     this->rotation =
         this->rotation < 0 ? this->rotation + Constants::PI2 : this->rotation;
     this->currentTurnDirection = networkMessage->turnDirection;
+    this->isEnabled = networkMessage->isConnected;
 }
 
 void ShipActor::drawInfo(Window *window)

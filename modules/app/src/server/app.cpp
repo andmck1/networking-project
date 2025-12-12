@@ -17,10 +17,8 @@ int main()
     State state = State();
     state.init(&stateConfig);
 
-    ServerConfig serverConfig = ServerConfig(
-        Settings::Networking::serverPort, &state.appLayer->deltaTime,
-        &state.appLayer->totalTime
-    );
+    ServerConfig serverConfig =
+        ServerConfig(Settings::Networking::serverPort, state.appLayer.get());
     Server server = Server();
     server.init(&serverConfig);
     if (!server.checkListenAvailable())
@@ -38,7 +36,7 @@ int main()
         server.frameClientConnections();
         server.acceptPlayerConnections();
         server.sendPlayerPingCheckMessages();
-        server.sendScoreUpdateMessages(state.appLayer.get());
+        server.sendScoreUpdateMessages();
         server.scanSelector();
         server.checkForSyncs();
 
@@ -48,7 +46,7 @@ int main()
         state.appLayer->networkUpdate(clientUpdates, server.clientConnections);
 
         std::vector<std::unique_ptr<Message>> gameUpdates =
-            server.prepareGameUpdates(state.appLayer.get());
+            server.prepareGameUpdates();
         for (std::unique_ptr<Message> &gameUpdate : gameUpdates)
         {
             clientUpdates.push_back(std::move(gameUpdate));

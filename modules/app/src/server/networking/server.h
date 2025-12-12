@@ -21,12 +21,11 @@ struct NonBlockingTCPPingCheckPacket : NonBlockingTCPPacket
 
 struct ServerConfig
 {
-    ServerConfig(unsigned short port, sf::Time *deltaTime, sf::Time *totalTime);
+    ServerConfig(unsigned short port, AppLayer *appLayer);
     ~ServerConfig() = default;
 
     unsigned short port;
-    sf::Time *deltaTime;
-    sf::Time *totalTime;
+    AppLayer *appLayer;
 };
 
 class Server
@@ -54,7 +53,7 @@ class Server
         const std::vector<std::unique_ptr<Message>> &networkUpdates
     );
     void sendPlayerPingCheckMessages();
-    void sendScoreUpdateMessages(AppLayer *appLayer);
+    void sendScoreUpdateMessages(bool isForceEnabled = false);
     void sendPingCheckMessage(ClientConnection *clientConnection);
     void sendScoreUpdateMessage(
         const ShipActor *ship, ClientConnection *receivingClient
@@ -65,7 +64,7 @@ class Server
     processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);
     void frameClientConnections();
     std::vector<std::unique_ptr<Message>>
-    prepareGameUpdates(AppLayer *appLayer);
+    prepareGameUpdates();
 
     bool isInterpolationEnabled = true;
     bool isPredictionEnabled = true;
@@ -75,7 +74,7 @@ class Server
     sf::TcpListener listener;
     sf::SocketSelector selector;
     int clientIDCounter = 0;
-    sf::Time *deltaTime;
-    sf::Time *totalTime;
+    AppLayer *appLayer;
+
     float pingCheckTimer = 0.f;
 };
