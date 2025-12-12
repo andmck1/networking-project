@@ -15,7 +15,7 @@ set(SHARED_FILES
 set(SERVER_FILES src/server/app.cpp ${SHARED_FILES}
                  src/server/networking/server.cpp)
 
-set(CLIENT_FILES src/client/app.cpp src/client/networking/client.cpp
+set(CLIENT_FILES src/client/app.cpp src/client/networking/client.cpp src/client/utils/cli.cpp
                  ${SHARED_FILES})
 
 # server
