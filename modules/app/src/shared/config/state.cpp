@@ -65,7 +65,7 @@ void State::initPlayer(
 {
     ShipActorBuilderContext initialPlayerState = ShipActorBuilderContext(
         &textureManager.shipTextures[textureIndex], startingPosition, {0, -1},
-        ShipTurnDirection::NONE, handle
+        ShipTurnDirection::NONE, handle, &this->appLayer->font
     );
     this->appLayer->addPlayer(&initialPlayerState);
     this->appLayer->player->isSpawning = true;

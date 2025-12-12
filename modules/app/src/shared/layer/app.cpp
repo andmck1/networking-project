@@ -21,6 +21,7 @@ void AppLayer::init(BaseLayerConfig *config)
     this->window = _config->window;
     this->textureManager = _config->textureManager;
     this->isServer = _config->isServer;
+    this->font = sf::Font("./assets/font.ttf");
 }
 
 void AppLayer::initPlayerCamera()
@@ -248,9 +249,9 @@ void AppLayer::cleanUpActors()
 void AppLayer::drawActors()
 {
     for (const std::unique_ptr<BaseActor> &actor : this->actors)
-    {
         actor->draw(this->window, this->isBoundaryBoxesEnabled);
-    }
+    for (ShipActor *ship : this->ships)
+        ship->drawInfo(this->window);
 }
 
 void AppLayer::updatePlayerCamera()
@@ -313,7 +314,7 @@ void AppLayer::addServerShip(
 
     ShipActorBuilderContext initialShipState = ShipActorBuilderContext(
         &this->textureManager->shipTextures[textureIndex], initialPosition,
-        initialForwardVector, ShipTurnDirection::NONE, handle
+        initialForwardVector, ShipTurnDirection::NONE, handle, &this->font
     );
     this->addActor<ShipActor>(&initialShipState);
     ShipActor *newServerShip =

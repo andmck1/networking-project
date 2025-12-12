@@ -71,6 +71,7 @@ class AppLayer : public BaseLayer
     ShipActor *player = nullptr;
     bool *isConnectedToServer;
     sf::Clock clock = sf::Clock();
+    sf::Font font;
 
     private:
     std::unordered_map<std::string, ShipActor *> shipActorMap;
