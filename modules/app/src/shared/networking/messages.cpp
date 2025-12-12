@@ -54,6 +54,11 @@ Message::deserialiseMessageFromPacket(sf::Packet &packet)
             message = std::make_unique<HitMessage>();
             break;
         }
+        case (MessageType::ScoreUpdate):
+        {
+            message = std::make_unique<ScoreUpdateMessage>();
+            break;
+        }
         default:
         {
             spdlog::error("Unhandled message type, will error");
@@ -160,4 +165,19 @@ void HitMessage::serialise(sf::Packet &packet) const
 void HitMessage::deserialise(sf::Packet &packet)
 {
     packet >> this->hitShipHandle >> this->newHealth;
+}
+
+ScoreUpdateMessage::ScoreUpdateMessage()
+{
+    this->type = MessageType::ScoreUpdate;
+}
+
+void ScoreUpdateMessage::serialise(sf::Packet &packet) const
+{
+    packet << this->updateShipHandle << this->kills << this->deaths;
+}
+
+void ScoreUpdateMessage::deserialise(sf::Packet &packet)
+{
+    packet >> this->updateShipHandle >> this->kills >> this->deaths;
 }

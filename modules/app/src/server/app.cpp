@@ -33,9 +33,12 @@ int main()
     {
         // network
         // TODO - consolidate as server.frame
+        // TODO - server should have handle to app layer, or ships should have
+        // client connections
         server.frameClientConnections();
         server.acceptPlayerConnections();
         server.sendPlayerPingCheckMessages();
+        server.sendScoreUpdateMessages(state.appLayer.get());
         server.scanSelector();
         server.checkForSyncs();
 

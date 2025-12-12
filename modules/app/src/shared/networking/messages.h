@@ -11,6 +11,7 @@ enum MessageType : int32_t
     Shoot,
     PingCheck,
     Hit,
+    ScoreUpdate,
     END
 };
 
@@ -102,6 +103,21 @@ struct HitMessage : public Message
 
     std::string hitShipHandle;
     int32_t newHealth;
+
+    void serialise(sf::Packet &packet) const override;
+
+    private:
+    void deserialise(sf::Packet &packet) override;
+};
+
+struct ScoreUpdateMessage : public Message
+{
+    ScoreUpdateMessage();
+    ~ScoreUpdateMessage() = default;
+    
+    std::string updateShipHandle;
+    int32_t kills;
+    int32_t deaths;
 
     void serialise(sf::Packet &packet) const override;
 

@@ -69,6 +69,9 @@ void AppLayer::startFrame()
                                                         : sf::milliseconds(1.f);
     this->deltaTime =
         this->deltaTime.asSeconds() > 1.f ? sf::seconds(1.f) : this->deltaTime;
+
+    for (ShipActor *ship : this->ships)
+        ship->statsUpdated = false;
 }
 
 void AppLayer::updateActors()
@@ -128,6 +131,8 @@ void AppLayer::updateActors()
                             {
                                 this->shipActorMap[projectile->shooterHandle]
                                     ->kills += 1;
+                                this->shipActorMap[projectile->shooterHandle]
+                                    ->statsUpdated = true;
                             }
                             std::unique_ptr<HitMessage> hitEvent =
                                 std::make_unique<HitMessage>();
@@ -202,7 +207,9 @@ void AppLayer::updateActors()
         // Respawn
         if (ship->health <= 0.f)
         {
-            ship->deaths += 1;
+            if (this->isServer)
+                ship->deaths += 1;
+            ship->statsUpdated = true;
             ship->isEnabled = false;
             ship->isSpawning = true;
             if (ship == this->player)
@@ -388,6 +395,22 @@ void AppLayer::networkUpdate(
                 {
                     this->shipActorMap[hitShipHandle]->health =
                         hitMessage->newHealth;
+                }
+                break;
+            }
+            case (MessageType::ScoreUpdate):
+            {
+                ScoreUpdateMessage *scoreUpdateMessage =
+                    static_cast<ScoreUpdateMessage *>(networkUpdate.get());
+                std::string shipToUpdateHandle =
+                    scoreUpdateMessage->updateShipHandle;
+                if (this->shipActorMap.find(shipToUpdateHandle) !=
+                    this->shipActorMap.end())
+                {
+                    this->shipActorMap[shipToUpdateHandle]->kills =
+                        scoreUpdateMessage->kills;
+                    this->shipActorMap[shipToUpdateHandle]->deaths =
+                        scoreUpdateMessage->deaths;
                 }
                 break;
             }

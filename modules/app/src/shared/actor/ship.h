@@ -47,6 +47,7 @@ class ShipActor : public BaseActor
     TextureManager::ShipTextures *shipTextures;
     int32_t kills = 0;
     int32_t deaths = 0;
+    bool statsUpdated = false;
 
     private:
     float turningCircleRadius;

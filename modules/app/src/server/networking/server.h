@@ -54,7 +54,11 @@ class Server
         const std::vector<std::unique_ptr<Message>> &networkUpdates
     );
     void sendPlayerPingCheckMessages();
+    void sendScoreUpdateMessages(AppLayer *appLayer);
     void sendPingCheckMessage(ClientConnection *clientConnection);
+    void sendScoreUpdateMessage(
+        const ShipActor *ship, ClientConnection *receivingClient
+    );
     void sendNonBlockingPackets();
 
     std::vector<std::unique_ptr<Message>>

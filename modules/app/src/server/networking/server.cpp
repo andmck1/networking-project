@@ -529,6 +529,58 @@ void Server::sendPlayerPingCheckMessages()
     }
 }
 
+void Server::sendScoreUpdateMessage(
+    const ShipActor *ship, ClientConnection *clientConnection
+)
+{
+    NonBlockingTCPPingCheckPacket pingCheckPacket;
+    ScoreUpdateMessage message = ScoreUpdateMessage();
+    message.handle = clientConnection->handle;
+    message.time = this->totalTime->asSeconds();
+    message.ping = clientConnection->averagePing;
+    message.updateShipHandle = ship->handle;
+    message.kills = ship->kills;
+    message.deaths = ship->deaths;
+    pingCheckPacket.packet << (int32_t) 1;
+    pingCheckPacket.packet << message;
+    clientConnection->nonBlockingSendPackets.push_back(
+        std::make_unique<NonBlockingTCPPingCheckPacket>(pingCheckPacket)
+    );
+}
+
+void Server::sendScoreUpdateMessages(AppLayer *appLayer)
+{
+    for (const ShipActor *ship : appLayer->ships)
+    {
+        // Only send data if stats updated
+        if (!ship->statsUpdated)
+            continue;
+
+        if (this->clientConnectionsMap.find(ship->handle) ==
+            this->clientConnectionsMap.end())
+            continue;
+        ClientConnection *shipClient = this->clientConnectionsMap[ship->handle];
+
+        // Don't send data about disconnected ship
+        if (shipClient->connectionState.isDisconnected())
+            continue;
+
+        for (const ShipActor *otherShip : appLayer->ships)
+        {
+            if (this->clientConnectionsMap.find(otherShip->handle) ==
+                this->clientConnectionsMap.end())
+                continue;
+
+            // Don't send data to disconnected client
+            ClientConnection *otherShipClient =
+                this->clientConnectionsMap[otherShip->handle];
+            if (otherShipClient->connectionState.isDisconnected())
+                continue;
+            this->sendScoreUpdateMessage(ship, otherShipClient);
+        }
+    }
+}
+
 void Server::sendNonBlockingPackets()
 {
     for (std::unique_ptr<ClientConnection> &clientConnection :
