@@ -49,6 +49,8 @@ namespace Settings
         static float clientConnectToServerWaitTime = 0.2f;
         static float clientReconnectToServerWaitTime = 1.f;
         static float maximumAllowedClockDrift = .1f;
+        static float interpolationDelay = 0.1f;
+        static float correctionLerp = 0.15f;
     } // namespace Networking
     namespace Game
     {
@@ -62,7 +64,7 @@ namespace Settings
         static float respawnTime = 1.f;
         static unsigned int shipHealth = 100;
     } // namespace Game
-    namespace ShipInfo 
+    namespace ShipInfo
     {
         static sf::Color fontColour = sf::Color::White;
         static unsigned int fontSize = 12;
@@ -70,6 +72,6 @@ namespace Settings
         static int healthBarWidth = 75;
         static int healthBarYOffset = 25;
         static int healthBarHeight = 5;
-    }
+    } // namespace ShipInfo
 
 }; // namespace Settings

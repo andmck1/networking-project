@@ -278,6 +278,8 @@ Client::prepareNetworkUpdates(AppLayer *appLayer)
 
 void Client::sendNetworkUpdates(AppLayer *appLayer)
 {
+    // If at send interval get network updates from app and add them all
+    // to the send list
     this->sendTimer += appLayer->deltaTime.asSeconds();
     if (this->sendTimer > this->updateInterval)
     {
@@ -306,10 +308,11 @@ void Client::sendNetworkUpdates(AppLayer *appLayer)
 
 std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
 {
+    // Receive a packet, deserialising and looping through all included messages
+    // and update depending on received message type
+
     // TODO - copied code from server, should share?
     sf::Packet packet;
-
-    // TODO - single receive, should loop until not ready?
     std::vector<std::unique_ptr<Message>> allReceivedMessages = {};
     sf::Socket::Status status = this->tcpSocket.receive(packet);
     switch (status)
@@ -323,6 +326,7 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
 
             for (std::unique_ptr<Message> &message : receivedMessages)
             {
+                // If ping check from server then send response with time data
                 if (message->type == MessageType::PingCheck)
                 {
                     PingCheckMessage *pingCheckMessage =
@@ -335,6 +339,7 @@ std::vector<std::unique_ptr<Message>> Client::receiveNetworkUpdates()
                         pingCheckMessage->time + pingCheckMessage->ping;
                     this->sendPingCheckMessageResponse(pingCheckMessage);
                 }
+                // Else a game update and add to list
                 else
                     allReceivedMessages.push_back(std::move(message));
             }
@@ -389,6 +394,8 @@ void Client::sendPingCheckMessageResponse(
 
 void Client::sendNonBlockingPackets()
 {
+    // Run send through all send packets. If packet sent, or failed to send,
+    // erase it and move on
     for (auto iterator = this->nonBlockingSendPackets.begin();
          iterator != this->nonBlockingSendPackets.end();)
     {

@@ -59,6 +59,7 @@ class Server
         const ShipActor *ship, ClientConnection *receivingClient
     );
     void sendNonBlockingPackets();
+    void updateShipStatesBasedOnConnectionStatus();
 
     std::vector<std::unique_ptr<Message>>
     processClientUpdates(std::vector<std::unique_ptr<Message>> clientUpdates);

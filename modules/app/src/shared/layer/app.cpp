@@ -77,6 +77,7 @@ void AppLayer::startFrame()
 
 void AppLayer::updateActors()
 {
+    // Update position
     for (const std::unique_ptr<BaseActor> &actor : this->actors)
     {
         actor->update(this->deltaTime.asSeconds());
@@ -117,6 +118,10 @@ void AppLayer::updateActors()
                             projectile->sprite->getGlobalBounds()
                         ))
                     {
+                        // Only update health and stats on server, broadcasting
+                        // a hit message to other ships but always delete the
+                        // projectile if a hit (TODO - hit message should delete
+                        // projectile instead)
                         if (this->isServer)
                         {
                             ship->health -= Settings::Game::projectileDamage;
@@ -134,8 +139,6 @@ void AppLayer::updateActors()
                             hitEvent->newHealth = ship->health;
                             this->hitEvents.push_back(std::move(hitEvent));
                         }
-                        // TODO if the projectile doesn't hit on the server this
-                        // could be strange
                         projectile->isDeleted = true;
                         break;
                     }
@@ -143,6 +146,8 @@ void AppLayer::updateActors()
             }
 
             // Ship collisions
+            // Only check for ship collisions on server and broadcast hit
+            // message if needed
             if (this->isServer)
             {
                 for (ShipActor *otherShip : this->ships)
@@ -198,6 +203,8 @@ void AppLayer::updateActors()
         }
 
         // Respawn
+        // Check for death. If server update stats, if ship is player then
+        // respawn
         if (ship->health <= 0.f)
         {
             if (this->isServer)
@@ -210,7 +217,8 @@ void AppLayer::updateActors()
                 // small and they have invincibility
                 this->player->position = this->getRespawnPoint();
         }
-
+        
+        // Add spawn protection
         if (ship->isSpawning)
         {
             ship->spawnTimer += this->deltaTime.asSeconds();
@@ -317,15 +325,17 @@ void AppLayer::addServerShip(
 }
 
 void AppLayer::networkUpdate(
-    const std::vector<std::unique_ptr<Message>> &networkUpdates,
-    const std::vector<std::unique_ptr<ClientConnection>> &clients
+    const std::vector<std::unique_ptr<Message>> &networkUpdates
 )
 {
+    // Loop through all messages and update game based on network update type
     for (const std::unique_ptr<Message> &networkUpdate : networkUpdates)
     {
         std::string clientHandle = networkUpdate->handle;
         switch (networkUpdate->type)
         {
+            // If ship update then update relevant, adding it if no updates
+            // received about ship before
             case (MessageType::Ship):
             {
                 ShipMessage *shipMessage =
@@ -335,6 +345,7 @@ void AppLayer::networkUpdate(
                 {
                     if (!this->isServer)
                     {
+                        // Receive enabled status from server
                         if (clientHandle == this->player->handle)
                         {
                             this->player->isEnabled = shipMessage->isConnected;
@@ -354,6 +365,9 @@ void AppLayer::networkUpdate(
                 }
                 break;
             }
+
+            // If shoot message, then create projectile at estimated position
+            // (dependant on synced clocks) and shorten lifetime
             case (MessageType::Shoot):
             {
                 ShootMessage *shootMessage =
@@ -385,6 +399,8 @@ void AppLayer::networkUpdate(
                 }
                 break;
             }
+
+            // If hit message then update relevant player health
             case (MessageType::Hit):
             {
                 HitMessage *hitMessage =
@@ -398,6 +414,8 @@ void AppLayer::networkUpdate(
                 }
                 break;
             }
+
+            // If score update then simply update relevant ship's stats
             case (MessageType::ScoreUpdate):
             {
                 ScoreUpdateMessage *scoreUpdateMessage =
@@ -421,28 +439,6 @@ void AppLayer::networkUpdate(
             }
         }
     }
-
-    for (const std::unique_ptr<ClientConnection> &client : clients)
-    {
-        std::string clientHandle = client->handle;
-        if (this->shipActorMap.find(clientHandle) != this->shipActorMap.end())
-        {
-            ShipActor *ship = shipActorMap[clientHandle];
-            if (client->connectionState.isDisconnected())
-            {
-                ship->isEnabled = false;
-            }
-            else if (std::abs(client->lastRecordedClockDrift) >
-                     Settings::Networking::maximumAllowedClockDrift)
-            {
-                ship->isEnabled = false;
-            }
-            else if (!ship->isSpawning)
-            {
-                ship->isEnabled = true;
-            }
-        }
-    }
 }
 
 void AppLayer::resetTime(float newStartTime)
@@ -452,6 +448,9 @@ void AppLayer::resetTime(float newStartTime)
 
 sf::Vector2f AppLayer::getRespawnPoint()
 {
+    // Try and find safe respawn point, randomly selecting one
+    // within a uniform grid of points in the window. If none available
+    // choose any point at random
     std::vector<sf::Vector2f> allowedRespawnPoints = {};
     sf::Vector2u windowSize = this->window->getWindowSize();
     for (unsigned int xGridIndex = 0; xGridIndex < windowSize.x;
@@ -504,6 +503,7 @@ sf::Vector2f AppLayer::getRespawnPoint()
         return respawnPoint;
     }
 
+    // Random number generation
     std::random_device randomDevice;
     std::mt19937 randomNumberGenerator = std::mt19937(randomDevice());
     std::uniform_int_distribution<unsigned int> randomNumberDistribution =

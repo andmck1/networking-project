@@ -11,14 +11,15 @@
 int main(int, char *argv[])
 {
     spdlog::set_level(spdlog::level::info);
+    spdlog::info("Running " + Settings::App::appName);
 
+    // CLI
     Arguments arguments = Arguments();
     if (!arguments.init(argv))
         return -1;
 
+    // Init
     bool isServer = false;
-
-    spdlog::info("Running " + Settings::App::appName);
 
     StateConfig stateConfig = StateConfig(isServer);
     State state = State();
@@ -37,6 +38,7 @@ int main(int, char *argv[])
     state.debugLayer->isClientConnectionEnabled = &client.isConnectionEnabled;
     state.debugLayer->client = &client;
 
+    // Connect to server
     client.connectAndSync(
         &state.eventHandler,
         Settings::Networking::maxClientConnectToServerTries,
@@ -45,6 +47,7 @@ int main(int, char *argv[])
 
     spdlog::info("Starting at time: {}", state.appLayer->totalTime.asSeconds());
 
+    // Init player
     sf::Vector2f playerStartingWorldPosition =
         state.appLayer->getRespawnPoint();
     state.initPlayer(
@@ -52,13 +55,19 @@ int main(int, char *argv[])
     );
     state.debugLayer->player = state.appLayer->player;
 
+    // Main loop
     while (state.window.window.isOpen())
     {
+        // Update time
         client.frameServerTime();
         state.appLayer->totalTime = sf::seconds(client.estimatedServerTime);
+
+        // Disconnection debug flag
         if (!client.isConnectionEnabled)
             client.disconnectFromServer();
 
+        // If connected to server, run network update, otherwise stop running
+        // time
         if (client.isConnectedToServer)
         {
             // TODO - have client.frame function
@@ -72,6 +81,8 @@ int main(int, char *argv[])
         {
             state.appLayer->clock.stop();
         }
+
+        // If expect to be connected but aren't, try and reconnect
         if (client.isConnectionEnabled && !client.isConnectedToServer)
         {
 
@@ -84,6 +95,8 @@ int main(int, char *argv[])
             state.appLayer->totalTime = sf::seconds(client.estimatedServerTime);
         }
 
+        // Only draw and update if connected to server, but
+        // always handle keyboard input, draw debug layer and present window
         if (client.isConnectedToServer)
         {
             state.window.clear();

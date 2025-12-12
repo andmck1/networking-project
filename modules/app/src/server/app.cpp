@@ -8,11 +8,11 @@
 
 int main()
 {
+    // Init
     spdlog::set_level(spdlog::level::info);
-    bool isServer = true;
-
     spdlog::info("Running " + Settings::App::appName);
 
+    bool isServer = true;
     StateConfig stateConfig = StateConfig(isServer);
     State state = State();
     state.init(&stateConfig);
@@ -24,15 +24,14 @@ int main()
     if (!server.checkListenAvailable())
         return -1;
     state.debugLayer->server = &server;
-
     state.debugLayer->clientConnections = &server.clientConnections;
-    // server specific networking
+
+    // Main loop
     while (state.window.window.isOpen())
     {
-        // network
+        // Client checks
         // TODO - consolidate as server.frame
         // TODO - server should have handle to app layer, or ships should have
-        // client connections
         server.frameClientConnections();
         server.acceptPlayerConnections();
         server.sendPlayerPingCheckMessages();
@@ -40,21 +39,24 @@ int main()
         server.scanSelector();
         server.checkForSyncs();
 
+        // Network update
         std::vector<std::unique_ptr<Message>> clientUpdates =
             server.receiveDataFromClients();
         clientUpdates = server.processClientUpdates(std::move(clientUpdates));
-        state.appLayer->networkUpdate(clientUpdates, server.clientConnections);
-
+        state.appLayer->networkUpdate(clientUpdates);
+        server.updateShipStatesBasedOnConnectionStatus();
         std::vector<std::unique_ptr<Message>> gameUpdates =
             server.prepareGameUpdates();
         for (std::unique_ptr<Message> &gameUpdate : gameUpdates)
         {
             clientUpdates.push_back(std::move(gameUpdate));
         }
+
+        // Network send
         server.sendRelayNetworkUpdates(clientUpdates);
         server.sendNonBlockingPackets();
 
-        // app
+        // App update
         // TODO - consolidate as state.frame
         state.window.clear();
         state.window.drawBackground();

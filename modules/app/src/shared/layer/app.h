@@ -54,10 +54,8 @@ class AppLayer : public BaseLayer
 
     void cleanUpActors();
 
-    void networkUpdate(
-        const std::vector<std::unique_ptr<Message>> &networkUpdates,
-        const std::vector<std::unique_ptr<ClientConnection>> &clients = {}
-    );
+    void
+    networkUpdate(const std::vector<std::unique_ptr<Message>> &networkUpdates);
 
     void resetTime(float newStartTime);
 

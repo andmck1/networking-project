@@ -6,6 +6,11 @@
 
 void ClientConnectionState::nextState()
 {
+    // Ready -> Not Ready
+    // Syncing -> Syncing (requires different method to move)
+    // Not Ready -> Ready
+    // Disconnected -> Disconnected
+    // No path -> Disconnected
     switch (this->connectionState)
     {
         case (ClientConnectionState::ConnectionState::Ready):
@@ -16,8 +21,6 @@ void ClientConnectionState::nextState()
         }
         case (ClientConnectionState::ConnectionState::Syncing):
         {
-            this->connectionState =
-                ClientConnectionState::ConnectionState::Syncing;
             break;
         }
         case (ClientConnectionState::ConnectionState::NotReady):
@@ -134,17 +137,21 @@ ShipMessage ClientConnection::predictShipMessage(
 {
     ShipMessage newShipMessage;
     const ShipMessage newestMessage = this->shipMessageHistory[0];
-    float interpolationDelay = 0.1f;
-    float correctionLerp = 0.15f;
+    float interpolationDelay = Settings::Networking::interpolationDelay;
+    float correctionLerp = Settings::Networking::correctionLerp;
 
     float predictionTime = this->estimatedCurrentGameTime - interpolationDelay;
     sf::Vector2f predictedPosition = newestMessage.position;
     sf::Vector2f predictedForwardVector = newestMessage.forwardVector;
 
-    // TODO - what happens if previous message very old?
+    // Create a predicted ship message by interpolating and/or predicting
+
     // Using TCP so guaranteed to have the messages in order and longer
     // history not useful unless averaging out or using non-linear stuff
+    // TODO - what happens if previous message very old?
     // TODO - (non-linear could be useful if previously turning)
+    
+    // If ship is still connecting then just set to last known message
     if (!this->connectionState.isConnectedAndNotSyncing())
     {
         newShipMessage.position = newestMessage.position;
@@ -154,6 +161,7 @@ ShipMessage ClientConnection::predictShipMessage(
     }
     else
     {
+        // If enough data then interpolate and predict
         if (this->shipMessageHistory.size() > 1)
         {
             const ShipMessage previousMessage = shipMessageHistory[1];

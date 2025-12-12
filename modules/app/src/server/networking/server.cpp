@@ -112,6 +112,9 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
     spdlog::debug("Receiving from tcp socket");
     sf::Socket::Status status = tcpSocket->receive(packet);
 
+    // Should always expect a player connect message from ready connecting
+    // client, if we don't they can't connect. When received get the player
+    // handle.
     spdlog::debug("Status available");
     switch (status)
     {
@@ -140,11 +143,16 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
         }
     }
 
+    // Connection details, remove socket from selector as moving to client
+    // connection as unique ptr
     std::string ipAddressString = tcpSocket->getRemoteAddress()->toString();
     unsigned int port = tcpSocket->getRemotePort();
     this->selector.remove(*tcpSocket);
 
-    // if client exists reconnect, otherwise add new one
+    // If the client handle exists in the list and is disconnected then replace
+    // the socket associated with that client. Otherwise, disconnect client TODO
+    // - should send disconnection reason message. If client doesn't exist that
+    // add new entry If client is connected, set to syncing state.
     if (this->clientConnectionsMap.find(handle) !=
         this->clientConnectionsMap.end())
     {
@@ -195,6 +203,8 @@ void Server::createNewClient(std::unique_ptr<sf::TcpSocket> tcpSocket)
 
 void Server::acceptPlayerConnections()
 {
+    // If new client connecting, add to connecting client sockets and add to
+    // selector
     spdlog::debug("Checking for player connections");
     std::unique_ptr<sf::TcpSocket> tcpSocket =
         std::make_unique<sf::TcpSocket>();
@@ -228,6 +238,8 @@ void Server::scanSelector()
     spdlog::debug("Scanning selector");
     if (this->selector.wait(sf::milliseconds(5)))
     {
+        // For all connecting clients, if they're ready then remove from
+        // connecting client list and create new client
         for (auto iterator = this->connectingClientSockets.begin();
              iterator != this->connectingClientSockets.end();)
         {
@@ -252,6 +264,7 @@ void Server::scanSelector()
             }
         }
 
+        // For all connected clients, if they're ready then progress their state
         spdlog::debug("Scanning current selector sockets");
         for (const std::unique_ptr<ClientConnection> &clientConnection :
              this->clientConnections)
@@ -264,6 +277,8 @@ void Server::scanSelector()
 
 void Server::checkForSyncs()
 {
+    // For all clients, if they're syncing then send ping check, if finished
+    // syncing then update state and update players with score updates
     for (std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
@@ -380,6 +395,13 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
 {
     std::vector<std::unique_ptr<Message>> processedMessages = {};
 
+    // For all client updates
+    // If ship update then update ship message queue for interpolation and
+    // prediction
+    // If shoot message then pass to processed messages
+    // If ping check
+    // then must be response from client. Update network stats and do not push
+    // forward.
     for (std::unique_ptr<Message> &message : clientUpdates)
     {
         const std::string clientHandle = message->handle;
@@ -439,6 +461,9 @@ std::vector<std::unique_ptr<Message>> Server::processClientUpdates(
         }
     }
 
+    // Get a predicted ship message from ship message history and add to
+    // processed messages, setting connection status to enabled status if ship
+    // is fully connected, otherwise connection status is false
     for (const std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
@@ -470,9 +495,12 @@ void Server::sendRelayNetworkUpdates(
     const std::vector<std::unique_ptr<Message>> &networkUpdates
 )
 {
-    // for all clients, create packet,
-    // for all network updates, add to packet if client didn't send update
-    // send network update to client
+    // Package up network updates per client into a single packet, including the
+    // number of network messages in packet 
+    //
+    // for all clients, create packet, 
+    // for all network updates, add to packet if client didn't send update send
+    // network update to client
     for (std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
@@ -522,6 +550,7 @@ void Server::sendPingCheckMessage(ClientConnection *clientConnection)
 
 void Server::sendPlayerPingCheckMessages()
 {
+    // If at interval, update ping data for all connected clients
     this->pingCheckTimer += this->appLayer->deltaTime.asSeconds();
     if (this->pingCheckTimer > Settings::Networking::serverPingCheckInterval)
     {
@@ -558,6 +587,7 @@ void Server::sendScoreUpdateMessage(
 
 void Server::sendScoreUpdateMessages(bool isForceEnabled)
 {
+    // For each ship send stat updates if there has been a change
     for (const ShipActor *ship : this->appLayer->ships)
     {
         // Only send data if stats updated
@@ -591,6 +621,7 @@ void Server::sendScoreUpdateMessages(bool isForceEnabled)
 
 void Server::sendNonBlockingPackets()
 {
+    // Run send on all packets in non-blocking TCP
     for (std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
@@ -635,6 +666,7 @@ void Server::sendNonBlockingPackets()
 
 void Server::frameClientConnections()
 {
+    // Update estimated client connection game time
     for (const std::unique_ptr<ClientConnection> &clientConnection :
          this->clientConnections)
     {
@@ -645,8 +677,9 @@ void Server::frameClientConnections()
 
 std::vector<std::unique_ptr<Message>> Server::prepareGameUpdates()
 {
+    // Currently only need to process hit events here, creating hit events
+    // for broadcast to all ship
     std::vector<std::unique_ptr<Message>> gameUpdates = {};
-    // hits
     while (!this->appLayer->hitEvents.empty())
     {
         std::unique_ptr<HitMessage> &hitEvent = appLayer->hitEvents.back();
@@ -664,4 +697,35 @@ std::vector<std::unique_ptr<Message>> Server::prepareGameUpdates()
         appLayer->hitEvents.pop_back();
     }
     return gameUpdates;
+}
+
+void Server::updateShipStatesBasedOnConnectionStatus()
+{
+    // For all clients
+    // Get ship if available
+    // If disconnected or clock drift too high then disable ship
+    // If it's finished (re)spawning then remove disabled state
+    for (const std::unique_ptr<ClientConnection> &client :
+         this->clientConnections)
+    {
+        std::string clientHandle = client->handle;
+        if (this->appLayer->shipActorMap.find(clientHandle) !=
+            this->appLayer->shipActorMap.end())
+        {
+            ShipActor *ship = this->appLayer->shipActorMap[clientHandle];
+            if (client->connectionState.isDisconnected())
+            {
+                ship->isEnabled = false;
+            }
+            else if (std::abs(client->lastRecordedClockDrift) >
+                     Settings::Networking::maximumAllowedClockDrift)
+            {
+                ship->isEnabled = false;
+            }
+            else if (!ship->isSpawning)
+            {
+                ship->isEnabled = true;
+            }
+        }
+    }
 }
