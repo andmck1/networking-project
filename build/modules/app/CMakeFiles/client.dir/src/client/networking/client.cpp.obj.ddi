@@ -1,0 +1,9 @@
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "modules\\app\\CMakeFiles\\client.dir\\src\\client\\networking\\client.cpp.obj"
+    }
+  ],
+  "version": 1
+}

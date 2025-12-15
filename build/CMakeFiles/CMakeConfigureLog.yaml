@@ -1,0 +1,1829 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The system is: Windows - 10.0.26100 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang++.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
+      
+      The CXX compiler identification is Clang, found in:
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/4.0.2/CompilerIdCXX/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:1322 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Detecting CXX compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:1322 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Detecting CXX compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9olrh8"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9olrh8"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-O0"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9olrh8'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_f6669
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE   -O0 -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_f6669.dir/CMakeCXXCompilerABI.cpp.obj -MF CMakeFiles\\cmTC_f6669.dir\\CMakeCXXCompilerABI.cpp.obj.d -o CMakeFiles/cmTC_f6669.dir/CMakeCXXCompilerABI.cpp.obj -c C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeCXXCompilerABI.cpp
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -v -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_f6669.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_f6669.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_f6669.lib -Xlinker /pdb:cmTC_f6669.pdb -Xlinker /version:0.0     && cd ."
+        clang version 19.1.5
+        Target: x86_64-pc-windows-msvc
+        Thread model: posix
+        InstalledDir: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\Llvm\\x64\\bin
+         "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2022\\\\BuildTools\\\\VC\\\\Tools\\\\Llvm\\\\x64\\\\bin\\\\lld-link" -out:cmTC_f6669.exe "-libpath:F:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.44.35207\\\\lib\\\\x64" "-libpath:F:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.44.35207\\\\atlmfc\\\\lib\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\ucrt\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\um\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2022\\\\BuildTools\\\\VC\\\\Tools\\\\Llvm\\\\x64\\\\lib\\\\clang\\\\19\\\\lib\\\\windows" -nologo -debug /subsystem:console CMakeFiles/cmTC_f6669.dir/CMakeCXXCompilerABI.cpp.obj /MANIFEST:EMBED /implib:cmTC_f6669.lib /pdb:cmTC_f6669.pdb /version:0.0\x0d
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:227 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:270 (cmake_determine_linker_id)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link" "-v"
+      lld-link: warning: ignoring unknown argument '-v'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:270 (cmake_determine_linker_id)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link" "-V"
+      lld-link: warning: ignoring unknown argument '-V'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:270 (cmake_determine_linker_id)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link" "--version"
+      LLD 19.1.5
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/FeatureTesting.cmake:34 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/FeatureTesting.cmake:87 (_record_compiler_features)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake:124 (_record_compiler_features_cxx)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerSupport.cmake:70 (cmake_record_cxx_compile_features)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:83 (CMAKE_DETERMINE_COMPILER_SUPPORT)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting CXX compile features"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-c2agpe"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-c2agpe"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_FEATURE_TEST"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-c2agpe'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_ad533
+        [1/4] C:\\WINDOWS\\system32\\cmd.exe /C ""C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe" -format=p1689 -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE   -O0 -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -std=c++14 -x c++ C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-c2agpe/feature_tests.cxx -c -o CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj -resource-dir "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/lib/clang/19" -MT CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj.ddi -MD -MF CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj.ddi.d > CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj.ddi.tmp && "C:/Users/alast/scoop/apps/cmake/current/bin/cmake.exe" -E rename CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj.ddi.tmp CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj.ddi"
+        [2/4] C:\\Users\\alast\\scoop\\apps\\cmake\\current\\bin\\cmake.exe -E cmake_ninja_dyndep --tdi=CMakeFiles\\cmTC_ad533.dir\\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=CMakeFiles/cmTC_ad533.dir/CXX.dd @CMakeFiles/cmTC_ad533.dir/CXX.dd.rsp
+        [3/4] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE   -O0 -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -std=c++14 -MD -MT CMakeFiles/cmTC_ad533.dir/feature_tests.cxx.obj -MF CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj.d @CMakeFiles\\cmTC_ad533.dir\\feature_tests.cxx.obj.modmap -o CMakeFiles/cmTC_ad533.dir/feature_tests.cxx.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-c2agpe/feature_tests.cxx
+        [4/4] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_ad533.dir/feature_tests.cxx.obj -o cmTC_ad533.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_ad533.lib -Xlinker /pdb:cmTC_ad533.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/FeatureTesting.cmake:34 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/FeatureTesting.cmake:87 (_record_compiler_features)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake:132 (_record_compiler_features_cxx)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerSupport.cmake:70 (cmake_record_cxx_compile_features)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCXXCompiler.cmake:83 (CMAKE_DETERMINE_COMPILER_SUPPORT)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting CXX compile features"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v0r6fd"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v0r6fd"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_FEATURE_TEST"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v0r6fd'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_769b5
+        [1/4] C:\\WINDOWS\\system32\\cmd.exe /C ""C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe" -format=p1689 -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE   -O0 -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -std=c++14 -x c++ C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v0r6fd/feature_tests.cxx -c -o CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj -resource-dir "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/lib/clang/19" -MT CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj.ddi -MD -MF CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj.ddi.d > CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj.ddi.tmp && "C:/Users/alast/scoop/apps/cmake/current/bin/cmake.exe" -E rename CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj.ddi.tmp CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj.ddi"
+        [2/4] C:\\Users\\alast\\scoop\\apps\\cmake\\current\\bin\\cmake.exe -E cmake_ninja_dyndep --tdi=CMakeFiles\\cmTC_769b5.dir\\CXXDependInfo.json --lang=CXX --modmapfmt=clang --dd=CMakeFiles/cmTC_769b5.dir/CXX.dd @CMakeFiles/cmTC_769b5.dir/CXX.dd.rsp
+        [3/4] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE   -O0 -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -std=c++14 -MD -MT CMakeFiles/cmTC_769b5.dir/feature_tests.cxx.obj -MF CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj.d @CMakeFiles\\cmTC_769b5.dir\\feature_tests.cxx.obj.modmap -o CMakeFiles/cmTC_769b5.dir/feature_tests.cxx.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v0r6fd/feature_tests.cxx
+        [4/4] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_769b5.dir/feature_tests.cxx.obj -o cmTC_769b5.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_769b5.lib -Xlinker /pdb:cmTC_769b5.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/4.0.2/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:1322 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:1322 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qzud1c"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qzud1c"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qzud1c'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_bb1fd
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_bb1fd.dir/CMakeCCompilerABI.c.obj -MF CMakeFiles\\cmTC_bb1fd.dir\\CMakeCCompilerABI.c.obj.d -o CMakeFiles/cmTC_bb1fd.dir/CMakeCCompilerABI.c.obj -c C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeCCompilerABI.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -v -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_bb1fd.dir/CMakeCCompilerABI.c.obj -o cmTC_bb1fd.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_bb1fd.lib -Xlinker /pdb:cmTC_bb1fd.pdb -Xlinker /version:0.0     && cd ."
+        clang version 19.1.5
+        Target: x86_64-pc-windows-msvc
+        Thread model: posix
+        InstalledDir: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\Llvm\\x64\\bin
+         "C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2022\\\\BuildTools\\\\VC\\\\Tools\\\\Llvm\\\\x64\\\\bin\\\\lld-link" -out:cmTC_bb1fd.exe "-libpath:F:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.44.35207\\\\lib\\\\x64" "-libpath:F:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.44.35207\\\\atlmfc\\\\lib\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\ucrt\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\um\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2022\\\\BuildTools\\\\VC\\\\Tools\\\\Llvm\\\\x64\\\\lib\\\\clang\\\\19\\\\lib\\\\windows" -nologo -debug /subsystem:console CMakeFiles/cmTC_bb1fd.dir/CMakeCCompilerABI.c.obj /MANIFEST:EMBED /implib:cmTC_bb1fd.lib /pdb:cmTC_bb1fd.pdb /version:0.0\x0d
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:227 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:270 (cmake_determine_linker_id)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link" "-v"
+      lld-link: warning: ignoring unknown argument '-v'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:270 (cmake_determine_linker_id)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link" "-V"
+      lld-link: warning: ignoring unknown argument '-V'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeDetermineCompilerABI.cmake:270 (cmake_determine_linker_id)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/sfml-src/CMakeLists.txt:32 (project)"
+    message: |
+      Running the C compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/lld-link" "--version"
+      LLD 19.1.5
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:97 (check_c_source_compiles)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "build/_deps/sfml-src/src/SFML/System/CMakeLists.txt:69 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-o1ol02"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-o1ol02"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-o1ol02'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_f2b59
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DCMAKE_HAVE_LIBC_PTHREAD  -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_f2b59.dir/src.c.obj -MF CMakeFiles\\cmTC_f2b59.dir\\src.c.obj.d -o CMakeFiles/cmTC_f2b59.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-o1ol02/src.c
+        FAILED: CMakeFiles/cmTC_f2b59.dir/src.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DCMAKE_HAVE_LIBC_PTHREAD  -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_f2b59.dir/src.c.obj -MF CMakeFiles\\cmTC_f2b59.dir\\src.c.obj.d -o CMakeFiles/cmTC_f2b59.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-o1ol02/src.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-o1ol02/src.c:1:10: fatal error: 'pthread.h' file not found\x0d
+            1 | #include <pthread.h>\x0d
+              |          ^~~~~~~~~~~\x0d
+        1 error generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckLibraryExists.cmake:112 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:112 (check_library_exists)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "build/_deps/sfml-src/src/SFML/System/CMakeLists.txt:69 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xj3ku5"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xj3ku5"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xj3ku5'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_4758c
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_4758c.dir/CheckFunctionExists.c.obj -MF CMakeFiles\\cmTC_4758c.dir\\CheckFunctionExists.c.obj.d -o CMakeFiles/cmTC_4758c.dir/CheckFunctionExists.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xj3ku5/CheckFunctionExists.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_4758c.dir/CheckFunctionExists.c.obj -o cmTC_4758c.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_4758c.lib -Xlinker /pdb:cmTC_4758c.pdb -Xlinker /version:0.0   -lpthreads.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        FAILED: cmTC_4758c.exe 
+        C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_4758c.dir/CheckFunctionExists.c.obj -o cmTC_4758c.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_4758c.lib -Xlinker /pdb:cmTC_4758c.pdb -Xlinker /version:0.0   -lpthreads.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: error: could not open 'pthreads.lib': no such file or directory\x0d
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckLibraryExists.cmake:112 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:112 (check_library_exists)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "build/_deps/sfml-src/src/SFML/System/CMakeLists.txt:69 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xwgbnv"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xwgbnv"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xwgbnv'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_9bd0b
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_9bd0b.dir/CheckFunctionExists.c.obj -MF CMakeFiles\\cmTC_9bd0b.dir\\CheckFunctionExists.c.obj.d -o CMakeFiles/cmTC_9bd0b.dir/CheckFunctionExists.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xwgbnv/CheckFunctionExists.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_9bd0b.dir/CheckFunctionExists.c.obj -o cmTC_9bd0b.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_9bd0b.lib -Xlinker /pdb:cmTC_9bd0b.pdb -Xlinker /version:0.0   -lpthread.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        FAILED: cmTC_9bd0b.exe 
+        C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_9bd0b.dir/CheckFunctionExists.c.obj -o cmTC_9bd0b.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_9bd0b.lib -Xlinker /pdb:cmTC_9bd0b.pdb -Xlinker /version:0.0   -lpthread.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: error: could not open 'pthread.lib': no such file or directory\x0d
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:136 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/FindThreads.cmake:179 (_threads_check_flag_pthread)"
+      - "build/_deps/sfml-src/src/SFML/System/CMakeLists.txt:69 (find_package)"
+    checks:
+      - "Check if compiler accepts -pthread"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-urgt0h"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-urgt0h"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "THREADS_HAVE_PTHREAD_ARG"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-urgt0h'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_6b0b6
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_6b0b6.dir/CheckForPthreads.c.obj -MF CMakeFiles\\cmTC_6b0b6.dir\\CheckForPthreads.c.obj.d -o CMakeFiles/cmTC_6b0b6.dir/CheckForPthreads.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-urgt0h/CheckForPthreads.c
+        FAILED: CMakeFiles/cmTC_6b0b6.dir/CheckForPthreads.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_6b0b6.dir/CheckForPthreads.c.obj -MF CMakeFiles\\cmTC_6b0b6.dir\\CheckForPthreads.c.obj.d -o CMakeFiles/cmTC_6b0b6.dir/CheckForPthreads.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-urgt0h/CheckForPthreads.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-urgt0h/CheckForPthreads.c:1:10: fatal error: 'pthread.h' file not found\x0d
+            1 | #include <pthread.h>\x0d
+              |          ^~~~~~~~~~~\x0d
+        1 error generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFileCXX.cmake:98 (try_compile)"
+      - "build/_deps/sfml-src/src/SFML/Window/CMakeLists.txt:317 (check_include_file_cxx)"
+    checks:
+      - "Looking for C++ include dinput.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-806xfm"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-806xfm"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -gdwarf-4 -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "DINPUT_H_FOUND"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-806xfm'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_e4e03
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE   -g -gdwarf-4 -O0 -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_e4e03.dir/CheckIncludeFile.cxx.obj -MF CMakeFiles\\cmTC_e4e03.dir\\CheckIncludeFile.cxx.obj.d -o CMakeFiles/cmTC_e4e03.dir/CheckIncludeFile.cxx.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-806xfm/CheckIncludeFile.cxx
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE -nostartfiles -nostdlib -g -gdwarf-4 -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_e4e03.dir/CheckIncludeFile.cxx.obj -o cmTC_e4e03.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_e4e03.lib -Xlinker /pdb:cmTC_e4e03.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: warning: section name .debug_abbrev is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_info is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_line is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_str is longer than 8 characters and will use a non-standard string table\x0d
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "build/_deps/ogg-src/CMakeLists.txt:57 (check_include_files)"
+    checks:
+      - "Looking for include file inttypes.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-2wuzm5"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-2wuzm5"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "INCLUDE_INTTYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-2wuzm5'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_cec98
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_cec98.dir/INCLUDE_INTTYPES_H.c.obj -MF CMakeFiles\\cmTC_cec98.dir\\INCLUDE_INTTYPES_H.c.obj.d -o CMakeFiles/cmTC_cec98.dir/INCLUDE_INTTYPES_H.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-2wuzm5/INCLUDE_INTTYPES_H.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_cec98.dir/INCLUDE_INTTYPES_H.c.obj -o cmTC_cec98.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_cec98.lib -Xlinker /pdb:cmTC_cec98.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "build/_deps/ogg-src/CMakeLists.txt:58 (check_include_files)"
+    checks:
+      - "Looking for include file stdint.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4mrwpa"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4mrwpa"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "INCLUDE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4mrwpa'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_57ca8
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_57ca8.dir/INCLUDE_STDINT_H.c.obj -MF CMakeFiles\\cmTC_57ca8.dir\\INCLUDE_STDINT_H.c.obj.d -o CMakeFiles/cmTC_57ca8.dir/INCLUDE_STDINT_H.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4mrwpa/INCLUDE_STDINT_H.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_57ca8.dir/INCLUDE_STDINT_H.c.obj -o cmTC_57ca8.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_57ca8.lib -Xlinker /pdb:cmTC_57ca8.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "build/_deps/ogg-src/CMakeLists.txt:59 (check_include_files)"
+    checks:
+      - "Looking for include file sys/types.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-siv903"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-siv903"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "INCLUDE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-siv903'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_75729
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_75729.dir/INCLUDE_SYS_TYPES_H.c.obj -MF CMakeFiles\\cmTC_75729.dir\\INCLUDE_SYS_TYPES_H.c.obj.d -o CMakeFiles/cmTC_75729.dir/INCLUDE_SYS_TYPES_H.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-siv903/INCLUDE_SYS_TYPES_H.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_75729.dir/INCLUDE_SYS_TYPES_H.c.obj -o cmTC_75729.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_75729.lib -Xlinker /pdb:cmTC_75729.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:318 (check_include_file)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:3 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Looking for sys/types.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-7yzwyv"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-7yzwyv"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-7yzwyv'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_69909
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_69909.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_69909.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_69909.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-7yzwyv/CheckIncludeFile.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_69909.dir/CheckIncludeFile.c.obj -o cmTC_69909.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_69909.lib -Xlinker /pdb:cmTC_69909.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:319 (check_include_file)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:3 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-8gao15"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-8gao15"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-8gao15'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_44980
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_44980.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_44980.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_44980.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-8gao15/CheckIncludeFile.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_44980.dir/CheckIncludeFile.c.obj -o cmTC_44980.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_44980.lib -Xlinker /pdb:cmTC_44980.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:320 (check_include_file)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:3 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Looking for stddef.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-u40set"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-u40set"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_STDDEF_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-u40set'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_8504b
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_8504b.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_8504b.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_8504b.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-u40set/CheckIncludeFile.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_8504b.dir/CheckIncludeFile.c.obj -o cmTC_8504b.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_8504b.lib -Xlinker /pdb:cmTC_8504b.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:3 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of int16_t"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v1qqdy"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v1qqdy"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_INT16_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v1qqdy'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_15ab8
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_15ab8.dir/INT16_SIZE.c.obj -MF CMakeFiles\\cmTC_15ab8.dir\\INT16_SIZE.c.obj.d -o CMakeFiles/cmTC_15ab8.dir/INT16_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v1qqdy/INT16_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_15ab8.dir/INT16_SIZE.c.obj -o cmTC_15ab8.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_15ab8.lib -Xlinker /pdb:cmTC_15ab8.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:4 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of uint16_t"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5xet98"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5xet98"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_UINT16_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5xet98'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_ecf53
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_ecf53.dir/UINT16_SIZE.c.obj -MF CMakeFiles\\cmTC_ecf53.dir\\UINT16_SIZE.c.obj.d -o CMakeFiles/cmTC_ecf53.dir/UINT16_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5xet98/UINT16_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_ecf53.dir/UINT16_SIZE.c.obj -o cmTC_ecf53.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_ecf53.lib -Xlinker /pdb:cmTC_ecf53.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:5 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of u_int16_t"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_U_INT16_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_a6e85
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_a6e85.dir/U_INT16_SIZE.c.obj -MF CMakeFiles\\cmTC_a6e85.dir\\U_INT16_SIZE.c.obj.d -o CMakeFiles/cmTC_a6e85.dir/U_INT16_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c
+        FAILED: CMakeFiles/cmTC_a6e85.dir/U_INT16_SIZE.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_a6e85.dir/U_INT16_SIZE.c.obj -MF CMakeFiles\\cmTC_a6e85.dir\\U_INT16_SIZE.c.obj.d -o CMakeFiles/cmTC_a6e85.dir/U_INT16_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:29:12: error: use of undeclared identifier 'u_int16_t'
+           29 |   ('0' + ((SIZE / 10000)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int16_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:30:12: error: use of undeclared identifier 'u_int16_t'
+           30 |   ('0' + ((SIZE / 1000)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int16_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:31:12: error: use of undeclared identifier 'u_int16_t'
+           31 |   ('0' + ((SIZE / 100)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int16_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:32:12: error: use of undeclared identifier 'u_int16_t'
+           32 |   ('0' + ((SIZE / 10)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int16_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:33:12: error: use of undeclared identifier 'u_int16_t'\x0d
+           33 |   ('0' +  (SIZE    % 10)),\x0d
+              |            ^\x0d
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-0mqe4p/U_INT16_SIZE.c:27:22: note: expanded from macro 'SIZE'\x0d
+           27 | #define SIZE (sizeof(u_int16_t))\x0d
+              |                      ^\x0d
+        5 errors generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:6 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of int32_t"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-s1ncij"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-s1ncij"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_INT32_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-s1ncij'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_8c9a0
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_8c9a0.dir/INT32_SIZE.c.obj -MF CMakeFiles\\cmTC_8c9a0.dir\\INT32_SIZE.c.obj.d -o CMakeFiles/cmTC_8c9a0.dir/INT32_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-s1ncij/INT32_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_8c9a0.dir/INT32_SIZE.c.obj -o cmTC_8c9a0.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_8c9a0.lib -Xlinker /pdb:cmTC_8c9a0.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:7 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of uint32_t"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5wops6"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5wops6"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_UINT32_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5wops6'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_3f4aa
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_3f4aa.dir/UINT32_SIZE.c.obj -MF CMakeFiles\\cmTC_3f4aa.dir\\UINT32_SIZE.c.obj.d -o CMakeFiles/cmTC_3f4aa.dir/UINT32_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-5wops6/UINT32_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_3f4aa.dir/UINT32_SIZE.c.obj -o cmTC_3f4aa.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_3f4aa.lib -Xlinker /pdb:cmTC_3f4aa.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:8 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of u_int32_t"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_U_INT32_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_6cf29
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_6cf29.dir/U_INT32_SIZE.c.obj -MF CMakeFiles\\cmTC_6cf29.dir\\U_INT32_SIZE.c.obj.d -o CMakeFiles/cmTC_6cf29.dir/U_INT32_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c
+        FAILED: CMakeFiles/cmTC_6cf29.dir/U_INT32_SIZE.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_6cf29.dir/U_INT32_SIZE.c.obj -MF CMakeFiles\\cmTC_6cf29.dir\\U_INT32_SIZE.c.obj.d -o CMakeFiles/cmTC_6cf29.dir/U_INT32_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:29:12: error: use of undeclared identifier 'u_int32_t'
+           29 |   ('0' + ((SIZE / 10000)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int32_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:30:12: error: use of undeclared identifier 'u_int32_t'
+           30 |   ('0' + ((SIZE / 1000)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int32_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:31:12: error: use of undeclared identifier 'u_int32_t'
+           31 |   ('0' + ((SIZE / 100)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int32_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:32:12: error: use of undeclared identifier 'u_int32_t'
+           32 |   ('0' + ((SIZE / 10)%10)),
+              |            ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(u_int32_t))
+              |                      ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:33:12: error: use of undeclared identifier 'u_int32_t'\x0d
+           33 |   ('0' +  (SIZE    % 10)),\x0d
+              |            ^\x0d
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-qva7b0/U_INT32_SIZE.c:27:22: note: expanded from macro 'SIZE'\x0d
+           27 | #define SIZE (sizeof(u_int32_t))\x0d
+              |                      ^\x0d
+        5 errors generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:9 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of int64_t"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-763akj"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-763akj"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_INT64_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-763akj'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_95fdf
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_95fdf.dir/INT64_SIZE.c.obj -MF CMakeFiles\\cmTC_95fdf.dir\\INT64_SIZE.c.obj.d -o CMakeFiles/cmTC_95fdf.dir/INT64_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-763akj/INT64_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_95fdf.dir/INT64_SIZE.c.obj -o cmTC_95fdf.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_95fdf.lib -Xlinker /pdb:cmTC_95fdf.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:10 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of short"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xjelt7"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xjelt7"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_SHORT_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xjelt7'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_40a3f
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_40a3f.dir/SHORT_SIZE.c.obj -MF CMakeFiles\\cmTC_40a3f.dir\\SHORT_SIZE.c.obj.d -o CMakeFiles/cmTC_40a3f.dir/SHORT_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-xjelt7/SHORT_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_40a3f.dir/SHORT_SIZE.c.obj -o cmTC_40a3f.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_40a3f.lib -Xlinker /pdb:cmTC_40a3f.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:11 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of int"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-44ook8"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-44ook8"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_INT_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-44ook8'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_c5f5b
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_c5f5b.dir/INT_SIZE.c.obj -MF CMakeFiles\\cmTC_c5f5b.dir\\INT_SIZE.c.obj.d -o CMakeFiles/cmTC_c5f5b.dir/INT_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-44ook8/INT_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_c5f5b.dir/INT_SIZE.c.obj -o cmTC_c5f5b.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_c5f5b.lib -Xlinker /pdb:cmTC_c5f5b.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:12 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of long"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-k5dfoz"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-k5dfoz"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_LONG_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-k5dfoz'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_d0b3f
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_d0b3f.dir/LONG_SIZE.c.obj -MF CMakeFiles\\cmTC_d0b3f.dir\\LONG_SIZE.c.obj.d -o CMakeFiles/cmTC_d0b3f.dir/LONG_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-k5dfoz/LONG_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_d0b3f.dir/LONG_SIZE.c.obj -o cmTC_d0b3f.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_d0b3f.lib -Xlinker /pdb:cmTC_d0b3f.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:212 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckTypeSize.cmake:339 (__check_type_size_impl)"
+      - "build/_deps/ogg-src/cmake/CheckSizes.cmake:13 (check_type_size)"
+      - "build/_deps/ogg-src/CMakeLists.txt:69 (include)"
+    checks:
+      - "Check size of long long"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-gpw563"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-gpw563"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/ogg-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_LONG_LONG_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-gpw563'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_5ae6f
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_5ae6f.dir/LONG_LONG_SIZE.c.obj -MF CMakeFiles\\cmTC_5ae6f.dir\\LONG_LONG_SIZE.c.obj.d -o CMakeFiles/cmTC_5ae6f.dir/LONG_LONG_SIZE.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-gpw563/LONG_LONG_SIZE.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_5ae6f.dir/LONG_LONG_SIZE.c.obj -o cmTC_5ae6f.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_5ae6f.lib -Xlinker /pdb:cmTC_5ae6f.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "build/_deps/flac-src/cmake/UseSystemExtensions.cmake:3 (check_c_source_compiles)"
+      - "build/_deps/flac-src/CMakeLists.txt:107 (include)"
+    checks:
+      - "Performing Test HAVE_MBSTATE"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-jmjxg1"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-jmjxg1"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_MBSTATE"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-jmjxg1'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_5448a
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_MBSTATE  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_5448a.dir/src.c.obj -MF CMakeFiles\\cmTC_5448a.dir\\src.c.obj.d -o CMakeFiles/cmTC_5448a.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-jmjxg1/src.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-jmjxg1/src.c:4:13: warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]\x0d
+            4 |     int main() { return 0; }\x0d
+              |             ^\x0d
+              |              void\x0d
+        1 warning generated.\x0d
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_5448a.dir/src.c.obj -o cmTC_5448a.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_5448a.lib -Xlinker /pdb:cmTC_5448a.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "build/_deps/flac-src/cmake/UseSystemExtensions.cmake:16 (check_c_source_compiles)"
+      - "build/_deps/flac-src/CMakeLists.txt:107 (include)"
+    checks:
+      - "Performing Test DODEFINE_EXTENSIONS"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-3ak1s2"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-3ak1s2"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "DODEFINE_EXTENSIONS"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-3ak1s2'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_e3895
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DDODEFINE_EXTENSIONS  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_e3895.dir/src.c.obj -MF CMakeFiles\\cmTC_e3895.dir\\src.c.obj.d -o CMakeFiles/cmTC_e3895.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-3ak1s2/src.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-3ak1s2/src.c:36:13: warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]\x0d
+           36 |     int main() { return 0; }\x0d
+              |             ^\x0d
+              |              void\x0d
+        1 warning generated.\x0d
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_e3895.dir/src.c.obj -o cmTC_e3895.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_e3895.lib -Xlinker /pdb:cmTC_e3895.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "build/_deps/flac-src/CMakeLists.txt:111 (check_include_file)"
+    checks:
+      - "Looking for byteswap.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v2bqce"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v2bqce"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_BYTESWAP_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v2bqce'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_5cffc
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_5cffc.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_5cffc.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_5cffc.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v2bqce/CheckIncludeFile.c
+        FAILED: CMakeFiles/cmTC_5cffc.dir/CheckIncludeFile.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_5cffc.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_5cffc.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_5cffc.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v2bqce/CheckIncludeFile.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v2bqce/CheckIncludeFile.c:1:10: fatal error: 'byteswap.h' file not found\x0d
+            1 | #include <byteswap.h>\x0d
+              |          ^~~~~~~~~~~~\x0d
+        1 error generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "build/_deps/flac-src/CMakeLists.txt:112 (check_include_file)"
+    checks:
+      - "Looking for inttypes.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pac4xz"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pac4xz"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_INTTYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pac4xz'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_d53db
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_d53db.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_d53db.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_d53db.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pac4xz/CheckIncludeFile.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_d53db.dir/CheckIncludeFile.c.obj -o cmTC_d53db.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_d53db.lib -Xlinker /pdb:cmTC_d53db.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "build/_deps/flac-src/CMakeLists.txt:114 (check_include_file)"
+    checks:
+      - "Looking for stdbool.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q3bhwo"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q3bhwo"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_STDBOOL_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q3bhwo'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_b60ce
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_b60ce.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_b60ce.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_b60ce.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q3bhwo/CheckIncludeFile.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_b60ce.dir/CheckIncludeFile.c.obj -o cmTC_b60ce.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_b60ce.lib -Xlinker /pdb:cmTC_b60ce.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "build/_deps/flac-src/CMakeLists.txt:115 (check_include_file)"
+    checks:
+      - "Looking for arm_neon.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ovse7o"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ovse7o"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "FLAC__HAS_NEONINTRIN"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ovse7o'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_3ee33
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_3ee33.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_3ee33.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_3ee33.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ovse7o/CheckIncludeFile.c
+        FAILED: CMakeFiles/cmTC_3ee33.dir/CheckIncludeFile.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_3ee33.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_3ee33.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_3ee33.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ovse7o/CheckIncludeFile.c
+        In file included from C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ovse7o/CheckIncludeFile.c:1:
+        C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\Llvm\\x64\\lib\\clang\\19\\include\\arm_neon.h:28:2: error: "NEON intrinsics not available with the soft-float ABI. Please use -mfloat-abi=softfp or -mfloat-abi=hard"\x0d
+           28 | #error "NEON intrinsics not available with the soft-float ABI. Please use -mfloat-abi=softfp or -mfloat-abi=hard"\x0d
+              |  ^\x0d
+        1 error generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "build/_deps/flac-src/CMakeLists.txt:124 (check_include_file)"
+    checks:
+      - "Looking for x86intrin.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v07cnx"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v07cnx"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "FLAC__HAS_X86INTRIN"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v07cnx'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_d6ebf
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_d6ebf.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_d6ebf.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_d6ebf.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-v07cnx/CheckIncludeFile.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_d6ebf.dir/CheckIncludeFile.c.obj -o cmTC_d6ebf.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_d6ebf.lib -Xlinker /pdb:cmTC_d6ebf.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "build/_deps/flac-src/CMakeLists.txt:127 (check_function_exists)"
+    checks:
+      - "Looking for fseeko"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q7yavo"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q7yavo"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_FSEEKO"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q7yavo'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_9677b
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=fseeko -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_9677b.dir/CheckFunctionExists.c.obj -MF CMakeFiles\\cmTC_9677b.dir\\CheckFunctionExists.c.obj.d -o CMakeFiles/cmTC_9677b.dir/CheckFunctionExists.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-q7yavo/CheckFunctionExists.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=fseeko -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_9677b.dir/CheckFunctionExists.c.obj -o cmTC_9677b.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_9677b.lib -Xlinker /pdb:cmTC_9677b.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        FAILED: cmTC_9677b.exe 
+        C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=fseeko -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_9677b.dir/CheckFunctionExists.c.obj -o cmTC_9677b.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_9677b.lib -Xlinker /pdb:cmTC_9677b.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: error: undefined symbol: fseeko
+        >>> referenced by C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\build\\CMakeFiles\\CMakeScratch\\TryCompile-q7yavo\\CheckFunctionExists.c:17
+        >>>               CMakeFiles/cmTC_9677b.dir/CheckFunctionExists.c.obj:(main)\x0d
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "build/_deps/flac-src/CMakeLists.txt:129 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_BSWAP16"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-hh1m4l"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-hh1m4l"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_BSWAP16"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-hh1m4l'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_40faa
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_BSWAP16  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_40faa.dir/src.c.obj -MF CMakeFiles\\cmTC_40faa.dir\\src.c.obj.d -o CMakeFiles/cmTC_40faa.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-hh1m4l/src.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-hh1m4l/src.c:1:9: warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]\x0d
+            1 | int main() { return __builtin_bswap16 (0) ; }\x0d
+              |         ^\x0d
+              |          void\x0d
+        1 warning generated.\x0d
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_40faa.dir/src.c.obj -o cmTC_40faa.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_40faa.lib -Xlinker /pdb:cmTC_40faa.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "build/_deps/flac-src/CMakeLists.txt:130 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_BSWAP32"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-h85i1q"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-h85i1q"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_BSWAP32"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-h85i1q'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_77d37
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_BSWAP32  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_77d37.dir/src.c.obj -MF CMakeFiles\\cmTC_77d37.dir\\src.c.obj.d -o CMakeFiles/cmTC_77d37.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-h85i1q/src.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-h85i1q/src.c:1:9: warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]\x0d
+            1 | int main() { return __builtin_bswap32 (0) ; }\x0d
+              |         ^\x0d
+              |          void\x0d
+        1 warning generated.\x0d
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_77d37.dir/src.c.obj -o cmTC_77d37.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_77d37.lib -Xlinker /pdb:cmTC_77d37.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "build/_deps/flac-src/CMakeLists.txt:131 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HAVE_LANGINFO_CODESET"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ffifhq"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ffifhq"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_LANGINFO_CODESET"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ffifhq'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_fbc7d
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_LANGINFO_CODESET  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_fbc7d.dir/src.c.obj -MF CMakeFiles\\cmTC_fbc7d.dir\\src.c.obj.d -o CMakeFiles/cmTC_fbc7d.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ffifhq/src.c
+        FAILED: CMakeFiles/cmTC_fbc7d.dir/src.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_LANGINFO_CODESET  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_fbc7d.dir/src.c.obj -MF CMakeFiles\\cmTC_fbc7d.dir\\src.c.obj.d -o CMakeFiles/cmTC_fbc7d.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ffifhq/src.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-ffifhq/src.c:2:14: fatal error: 'langinfo.h' file not found\x0d
+            2 |     #include <langinfo.h>\x0d
+              |              ^~~~~~~~~~~~\x0d
+        1 error generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "build/_deps/flac-src/CMakeLists.txt:142 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test HAVE_WERROR_FLAG"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-onttv0"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-onttv0"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_WERROR_FLAG"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-onttv0'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_e5d61
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_WERROR_FLAG  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -Werror -MD -MT CMakeFiles/cmTC_e5d61.dir/src.c.obj -MF CMakeFiles\\cmTC_e5d61.dir\\src.c.obj.d -o CMakeFiles/cmTC_e5d61.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-onttv0/src.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_e5d61.dir/src.c.obj -o cmTC_e5d61.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_e5d61.lib -Xlinker /pdb:cmTC_e5d61.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "build/_deps/flac-src/CMakeLists.txt:143 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test HAVE_DECL_AFTER_STMT_FLAG"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lsvbp2"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lsvbp2"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_DECL_AFTER_STMT_FLAG"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lsvbp2'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_09646
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_DECL_AFTER_STMT_FLAG  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -Wdeclaration-after-statement -MD -MT CMakeFiles/cmTC_09646.dir/src.c.obj -MF CMakeFiles\\cmTC_09646.dir\\src.c.obj.d -o CMakeFiles/cmTC_09646.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lsvbp2/src.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_09646.dir/src.c.obj -o cmTC_09646.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_09646.lib -Xlinker /pdb:cmTC_09646.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "build/_deps/flac-src/CMakeLists.txt:144 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test HAVE_STACKREALIGN_FLAG"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pdhbli"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pdhbli"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_STACKREALIGN_FLAG"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pdhbli'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_2aabc
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_STACKREALIGN_FLAG  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -mstackrealign -MD -MT CMakeFiles/cmTC_2aabc.dir/src.c.obj -MF CMakeFiles\\cmTC_2aabc.dir\\src.c.obj.d -o CMakeFiles/cmTC_2aabc.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-pdhbli/src.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_2aabc.dir/src.c.obj -o cmTC_2aabc.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_2aabc.lib -Xlinker /pdb:cmTC_2aabc.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "build/_deps/flac-src/CMakeLists.txt:145 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test HAVE_WEFFCXX_FLAG"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-b9zvox"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-b9zvox"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: "-Wall -Wextra -Wcast-align -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Wsign-promo -Wundef "
+      CMAKE_CXX_FLAGS_DEBUG: "-g -gdwarf-4 -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_WEFFCXX_FLAG"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-b9zvox'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_a99a8
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE -DHAVE_WEFFCXX_FLAG  -Wall -Wextra -Wcast-align -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Wsign-promo -Wundef   -g -gdwarf-4 -O0 -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -Weffc++ -MD -MT CMakeFiles/cmTC_a99a8.dir/src.cxx.obj -MF CMakeFiles\\cmTC_a99a8.dir\\src.cxx.obj.d -o CMakeFiles/cmTC_a99a8.dir/src.cxx.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-b9zvox/src.cxx
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE -nostartfiles -nostdlib -Wall -Wextra -Wcast-align -Wshadow -Wwrite-strings -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Wsign-promo -Wundef   -g -gdwarf-4 -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_a99a8.dir/src.cxx.obj -o cmTC_a99a8.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_a99a8.lib -Xlinker /pdb:cmTC_a99a8.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: warning: section name .debug_abbrev is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_info is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_line is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_str is longer than 8 characters and will use a non-standard string table\x0d
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "build/_deps/flac-src/src/libFLAC/CMakeLists.txt:3 (check_include_file)"
+    checks:
+      - "Looking for cpuid.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lphrka"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lphrka"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_CPUID_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lphrka'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_2825c
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_2825c.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_2825c.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_2825c.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-lphrka/CheckIncludeFile.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_2825c.dir/CheckIncludeFile.c.obj -o cmTC_2825c.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_2825c.lib -Xlinker /pdb:cmTC_2825c.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "build/_deps/flac-src/src/libFLAC/CMakeLists.txt:4 (check_include_file)"
+    checks:
+      - "Looking for sys/param.h"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-dbeb0g"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-dbeb0g"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_SYS_PARAM_H"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-dbeb0g'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_146fe
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_146fe.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_146fe.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_146fe.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-dbeb0g/CheckIncludeFile.c
+        FAILED: CMakeFiles/cmTC_146fe.dir/CheckIncludeFile.c.obj 
+        C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_146fe.dir/CheckIncludeFile.c.obj -MF CMakeFiles\\cmTC_146fe.dir\\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_146fe.dir/CheckIncludeFile.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-dbeb0g/CheckIncludeFile.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-dbeb0g/CheckIncludeFile.c:1:10: fatal error: 'sys/param.h' file not found\x0d
+            1 | #include <sys/param.h>\x0d
+              |          ^~~~~~~~~~~~~\x0d
+        1 error generated.\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "build/_deps/flac-src/src/libFLAC/CMakeLists.txt:7 (check_function_exists)"
+    checks:
+      - "Looking for lround"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9k06vx"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9k06vx"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_LROUND"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9k06vx'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_fb3cb
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=lround -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_fb3cb.dir/CheckFunctionExists.c.obj -MF CMakeFiles\\cmTC_fb3cb.dir\\CheckFunctionExists.c.obj.d -o CMakeFiles/cmTC_fb3cb.dir/CheckFunctionExists.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9k06vx/CheckFunctionExists.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9k06vx/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'lround' [-Wincompatible-library-redeclaration]
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^
+        <command line>:1:31: note: expanded from macro 'CHECK_FUNCTION_EXISTS'
+            1 | #define CHECK_FUNCTION_EXISTS lround
+              |                               ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-9k06vx/CheckFunctionExists.c:7:3: note: 'lround' is a builtin with type 'long (double)'\x0d
+        <command line>:1:31: note: expanded from macro 'CHECK_FUNCTION_EXISTS'\x0d
+            1 | #define CHECK_FUNCTION_EXISTS lround\x0d
+              |                               ^\x0d
+        1 warning generated.\x0d
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=lround -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_fb3cb.dir/CheckFunctionExists.c.obj -o cmTC_fb3cb.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_fb3cb.lib -Xlinker /pdb:cmTC_fb3cb.pdb -Xlinker /version:0.0   -lm.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        FAILED: cmTC_fb3cb.exe 
+        C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=lround -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_fb3cb.dir/CheckFunctionExists.c.obj -o cmTC_fb3cb.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_fb3cb.lib -Xlinker /pdb:cmTC_fb3cb.pdb -Xlinker /version:0.0   -lm.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: error: could not open 'm.lib': no such file or directory\x0d
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "build/_deps/flac-src/cmake/CheckCPUArch.cmake:6 (try_compile)"
+      - "build/_deps/flac-src/cmake/CheckCPUArch.cmake:18 (_CHECK_CPU_ARCH)"
+      - "build/_deps/flac-src/src/libFLAC/CMakeLists.txt:13 (check_cpu_arch_x64)"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-build/CMakeFiles/CMakeTmp"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-build/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_FLAC__CPU_X86_64"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-build/CMakeFiles/CMakeTmp'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_8cc9c
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_8cc9c.dir/CheckCPUArch.c.obj -MF CMakeFiles\\cmTC_8cc9c.dir\\CheckCPUArch.c.obj.d -o CMakeFiles/cmTC_8cc9c.dir/CheckCPUArch.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-build/CMakeFiles/CMakeTmp/CheckCPUArch.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_8cc9c.dir/CheckCPUArch.c.obj -o cmTC_8cc9c.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_8cc9c.lib -Xlinker /pdb:cmTC_8cc9c.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "build/_deps/flac-src/src/libFLAC/CMakeLists.txt:101 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test HAVE_ASSOC_MATH"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r8ky9n"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r8ky9n"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_ASSOC_MATH"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r8ky9n'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_64ec3
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -DHAVE_ASSOC_MATH  -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview   -fassociative-math -fno-signed-zeros -fno-trapping-math -freciprocal-math -MD -MT CMakeFiles/cmTC_64ec3.dir/src.c.obj -MF CMakeFiles\\cmTC_64ec3.dir\\src.c.obj.d -o CMakeFiles/cmTC_64ec3.dir/src.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r8ky9n/src.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_64ec3.dir/src.c.obj -o cmTC_64ec3.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_64ec3.lib -Xlinker /pdb:cmTC_64ec3.pdb -Xlinker /version:0.0   -lm.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        FAILED: cmTC_64ec3.exe 
+        C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline   -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_64ec3.dir/src.c.obj -o cmTC_64ec3.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_64ec3.lib -Xlinker /pdb:cmTC_64ec3.pdb -Xlinker /version:0.0   -lm.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: error: could not open 'm.lib': no such file or directory\x0d
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "build/_deps/flac-src/microbench/CMakeLists.txt:6 (check_function_exists)"
+    checks:
+      - "Looking for clock_gettime"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-i5wwpk"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-i5wwpk"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: "-Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline "
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/flac-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_CLOCK_GETTIME"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-i5wwpk'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_a882c
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=clock_gettime -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_a882c.dir/CheckFunctionExists.c.obj -MF CMakeFiles\\cmTC_a882c.dir\\CheckFunctionExists.c.obj.d -o CMakeFiles/cmTC_a882c.dir/CheckFunctionExists.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-i5wwpk/CheckFunctionExists.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=clock_gettime -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_a882c.dir/CheckFunctionExists.c.obj -o cmTC_a882c.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_a882c.lib -Xlinker /pdb:cmTC_a882c.pdb -Xlinker /version:0.0   -lrt.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        FAILED: cmTC_a882c.exe 
+        C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -Wall -Wextra -Wstrict-prototypes -Wmissing-prototypes -Waggregate-return -Wcast-align -Wnested-externs -Wshadow -Wundef -Wmissing-declarations -Winline  -DCHECK_FUNCTION_EXISTS=clock_gettime -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_a882c.dir/CheckFunctionExists.c.obj -o cmTC_a882c.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_a882c.lib -Xlinker /pdb:cmTC_a882c.pdb -Xlinker /version:0.0   -lrt.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: error: could not open 'rt.lib': no such file or directory\x0d
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckLibraryExists.cmake:112 (try_compile)"
+      - "build/_deps/vorbis-src/CMakeLists.txt:62 (check_library_exists)"
+    checks:
+      - "Looking for floor in m"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r9760k"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r9760k"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/sfml-src/cmake/Modules/;C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/_deps/vorbis-src/cmake"
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_LIBM"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r9760k'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_4efa5
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe   -DCHECK_FUNCTION_EXISTS=floor -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_4efa5.dir/CheckFunctionExists.c.obj -MF CMakeFiles\\cmTC_4efa5.dir\\CheckFunctionExists.c.obj.d -o CMakeFiles/cmTC_4efa5.dir/CheckFunctionExists.c.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r9760k/CheckFunctionExists.c
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r9760k/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'floor' [-Wincompatible-library-redeclaration]
+            7 |   CHECK_FUNCTION_EXISTS(void);
+              |   ^
+        <command line>:1:31: note: expanded from macro 'CHECK_FUNCTION_EXISTS'
+            1 | #define CHECK_FUNCTION_EXISTS floor
+              |                               ^
+        C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-r9760k/CheckFunctionExists.c:7:3: note: 'floor' is a builtin with type 'double (double)'\x0d
+        <command line>:1:31: note: expanded from macro 'CHECK_FUNCTION_EXISTS'\x0d
+            1 | #define CHECK_FUNCTION_EXISTS floor\x0d
+              |                               ^\x0d
+        1 warning generated.\x0d
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=floor -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_4efa5.dir/CheckFunctionExists.c.obj -o cmTC_4efa5.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_4efa5.lib -Xlinker /pdb:cmTC_4efa5.pdb -Xlinker /version:0.0   -lm.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        FAILED: cmTC_4efa5.exe 
+        C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=floor -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_4efa5.dir/CheckFunctionExists.c.obj -o cmTC_4efa5.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_4efa5.lib -Xlinker /pdb:cmTC_4efa5.pdb -Xlinker /version:0.0   -lm.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: error: could not open 'm.lib': no such file or directory\x0d
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)\x0d
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckSymbolExists.cmake:160 (try_compile)"
+      - "C:/Users/alast/scoop/apps/cmake/current/share/cmake-4.0/Modules/CheckSymbolExists.cmake:69 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "build/_deps/spdlog-src/CMakeLists.txt:247 (check_symbol_exists)"
+    checks:
+      - "Looking for _fwrite_nolock"
+    directories:
+      source: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4q7frv"
+      binary: "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4q7frv"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -gdwarf-4 -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: "13.0"
+    buildResult:
+      variable: "HAVE_FWRITE_UNLOCKED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4q7frv'
+        
+        Run Build Command(s): C:/Users/alast/scoop/shims/ninja.exe -v cmTC_7c6f1
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE   -g -gdwarf-4 -O0 -std=c++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -MD -MT CMakeFiles/cmTC_7c6f1.dir/CheckSymbolExists.cxx.obj -MF CMakeFiles\\cmTC_7c6f1.dir\\CheckSymbolExists.cxx.obj.d -o CMakeFiles/cmTC_7c6f1.dir/CheckSymbolExists.cxx.obj -c C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/CMakeFiles/CMakeScratch/TryCompile-4q7frv/CheckSymbolExists.cxx
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\Llvm\\x64\\bin\\CLANG_~1.EXE -nostartfiles -nostdlib -g -gdwarf-4 -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -g -Xclang -gcodeview -Xlinker /subsystem:console -fuse-ld=lld-link CMakeFiles/cmTC_7c6f1.dir/CheckSymbolExists.cxx.obj -o cmTC_7c6f1.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_7c6f1.lib -Xlinker /pdb:cmTC_7c6f1.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        lld-link: warning: section name .debug_abbrev is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_info is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_line is longer than 8 characters and will use a non-standard string table\x0d
+        lld-link: warning: section name .debug_str is longer than 8 characters and will use a non-standard string table\x0d
+        
+      exitCode: 0
+...

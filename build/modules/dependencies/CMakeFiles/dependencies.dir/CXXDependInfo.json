@@ -1,0 +1,30 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "Clang",
+	"compiler-simulate-id" : "MSVC",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"database-info" : null,
+	"dir-cur-bld" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/modules/dependencies",
+	"dir-cur-src" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/dependencies",
+	"dir-top-bld" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build",
+	"dir-top-src" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\modules\\dependencies"
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/modules/dependencies/CMakeFiles/dependencies.dir",
+	"sources" : 
+	{
+		"modules/dependencies/CMakeFiles/dependencies.dir/argh/argh.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/dependencies/argh/argh.cpp"
+		}
+	}
+}

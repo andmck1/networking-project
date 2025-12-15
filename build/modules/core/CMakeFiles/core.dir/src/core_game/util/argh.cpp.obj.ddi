@@ -1,0 +1,9 @@
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "modules\\core\\CMakeFiles\\core.dir\\src\\core_game\\util\\argh.cpp.obj"
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,9 @@
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "modules\\dependencies\\CMakeFiles\\argh.dir\\argh\\argh.cpp.obj"
+    }
+  ],
+  "version": 1
+}

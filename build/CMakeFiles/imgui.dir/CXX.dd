@@ -1,0 +1,13 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles/imgui.dir/_deps/imgui-src/imgui.cpp.obj: dyndep
+
+build CMakeFiles/imgui.dir/_deps/imgui-src/imgui_draw.cpp.obj: dyndep
+
+build CMakeFiles/imgui.dir/_deps/imgui-src/imgui_tables.cpp.obj: dyndep
+
+build CMakeFiles/imgui.dir/_deps/imgui-src/imgui_widgets.cpp.obj: dyndep
+
+build CMakeFiles/imgui.dir/_deps/imgui-src/backends/imgui_impl_win32.cpp.obj: dyndep
+
+build CMakeFiles/imgui.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.obj: dyndep
+

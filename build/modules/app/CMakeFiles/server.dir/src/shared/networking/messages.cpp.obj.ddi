@@ -1,0 +1,9 @@
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "modules\\app\\CMakeFiles\\server.dir\\src\\shared\\networking\\messages.cpp.obj"
+    }
+  ],
+  "version": 1
+}

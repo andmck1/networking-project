@@ -1,0 +1,9 @@
+{
+  "revision": 0,
+  "rules": [
+    {
+      "primary-output": "CMakeFiles\\imgui.dir\\_deps\\imgui-src\\imgui_widgets.cpp.obj"
+    }
+  ],
+  "version": 1
+}

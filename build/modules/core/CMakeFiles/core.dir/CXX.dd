@@ -1,0 +1,7 @@
+ninja_dyndep_version = 1.0
+build modules/core/CMakeFiles/core.dir/src/core_game/texturemanager/texturemanager.cpp.obj: dyndep
+
+build modules/core/CMakeFiles/core.dir/src/core_game/window/window.cpp.obj: dyndep
+
+build modules/core/CMakeFiles/core.dir/src/core_game/util/constants.cpp.obj: dyndep
+

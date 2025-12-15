@@ -1,0 +1,25 @@
+ninja_dyndep_version = 1.0
+build modules/app/CMakeFiles/server.dir/src/server/app.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/layer/app.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/layer/debug.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/actor/base.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/actor/ship.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/actor/projectile.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/config/settings.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/eventhandler/eventhandler.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/config/state.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/networking/messages.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/shared/networking/clientconnection.cpp.obj: dyndep
+
+build modules/app/CMakeFiles/server.dir/src/server/networking/server.cpp.obj: dyndep
+

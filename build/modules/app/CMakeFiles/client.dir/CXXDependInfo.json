@@ -1,0 +1,99 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "Clang",
+	"compiler-simulate-id" : "MSVC",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"database-info" : null,
+	"dir-cur-bld" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/modules/app",
+	"dir-cur-src" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app",
+	"dir-top-bld" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build",
+	"dir-top-src" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\modules\\app\\shared",
+		"C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\modules\\app\\PUBLIC",
+		"C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\modules\\core\\imgui",
+		"C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\modules\\core\\imgui\\backends",
+		"_deps\\imgui-src",
+		"_deps\\imgui-src\\backends",
+		"C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\modules\\dependencies",
+		"C:\\Users\\alast\\dev\\uni-cgt\\cmp501-networking\\assessment-project-andmck1\\modules\\core\\src",
+		"_deps\\sfml-src\\include",
+		"_deps\\spdlog-src\\include"
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/build/modules/app/CMakeFiles/client.dir",
+	"sources" : 
+	{
+		"modules/app/CMakeFiles/client.dir/src/client/app.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/client/app.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/client/networking/client.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/client/networking/client.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/client/utils/cli.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/client/utils/cli.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/actor/base.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/actor/base.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/actor/projectile.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/actor/projectile.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/actor/ship.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/actor/ship.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/config/settings.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/config/settings.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/config/state.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/config/state.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/eventhandler/eventhandler.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/eventhandler/eventhandler.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/layer/app.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/layer/app.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/layer/debug.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/layer/debug.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/networking/clientconnection.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/networking/clientconnection.cpp"
+		},
+		"modules/app/CMakeFiles/client.dir/src/shared/networking/messages.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/alast/dev/uni-cgt/cmp501-networking/assessment-project-andmck1/modules/app/src/shared/networking/messages.cpp"
+		}
+	}
+}
