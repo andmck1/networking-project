@@ -196,7 +196,7 @@ ShipMessage ClientConnection::predictShipMessage(
                 if (std::abs(this->lastRecordedClockDrift) >
                     Settings::Networking::maximumAllowedClockDrift)
                 {
-                    spdlog::warn(
+                    spdlog::debug(
                         "{} is too out of sync to predict position",
                         this->handle
                     );

@@ -37,7 +37,7 @@ namespace Settings
 
     namespace Networking
     {
-        static unsigned short serverPort = 6969;
+        static unsigned short serverPort = 6429;
         static unsigned short playerPort = sf::Socket::AnyPort;
         static float clientUpdateInterval = 0.1f;
         static float serverPingCheckInterval = 1.f;
