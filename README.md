@@ -1,6 +1,9 @@
-# Graphics Project
-This repo contains all files for Alastair Hamilton's (2503450)
-network project for course CMP501.
+# Networking Project
+A client-server multiplayer real-time 2D space shooter written in SFML as part
+of a research project for networked games. Investigates if it's possible to
+use TCP only for real-time shooter games.
+
+![Game demo](assets/showcase.gif)
 
 # Compiling
 ## Prerequisites
@@ -34,5 +37,6 @@ and skin index between 0-4 to run:
 Port and IP settings can be edited in `modules/app/src/shared/config/settings.h`.
 
 # Author
-Alastair Hamilton (2503450), 2503450@uad.ac.uk
+[Alastair Hamilton](alastair-hamilton.dev), alastair.amhamilton@icloud.com
+
 
